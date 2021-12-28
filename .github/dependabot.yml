@@ -1,0 +1,6 @@
+version: 2
+updates:
+- directory: 'provider/cmd/pulumi-resource-homelab'
+  package-ecosystem: npm
+  schedule:
+    interval: daily
