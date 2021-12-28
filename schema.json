@@ -1,5 +1,18 @@
 {
     "name": "homelab",
+    "displayName": "Homelab",
+    "description": "Popular homelab applications for docker and kubernetes",
+    "publisher": "UnstoppableMango",
+    "keywords": [
+        "category/cloud",
+        "category/infrastructure",
+        "kind/component",
+        "pulumi",
+        "kubernetes",
+        "k8s",
+        "docker",
+        "homelab"
+    ],
     "resources": {
         "homelab:index:StaticPage": {
             "isComponent": true,
