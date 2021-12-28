@@ -1,20 +1,20 @@
-# xyz Pulumi Component Provider (TypeScript)
+# homelab Pulumi Component Provider (TypeScript)
 
-This repo is a boilerplate showing how to create a Pulumi component provider written in TypeScript. You can search-replace `xyz` with the name of your desired provider as a starting point for creating a component provider for your component resources.
+This repo is a boilerplate showing how to create a Pulumi component provider written in TypeScript. You can search-replace `homelab` with the name of your desired provider as a starting point for creating a component provider for your component resources.
 
-An example `StaticPage` [component resource](https://www.pulumi.com/docs/intro/concepts/resources/#components) is available in `provider/cmd/pulumi-resource-xyz/staticPage.ts`. This component creates a static web page hosted in an AWS S3 Bucket. There is nothing special about `StaticPage` -- it is a typical component resource written in TypeScript.
+An example `StaticPage` [component resource](https://www.pulumi.com/docs/intro/concepts/resources/#components) is available in `provider/cmd/pulumi-resource-homelab/staticPage.ts`. This component creates a static web page hosted in an AWS S3 Bucket. There is nothing special about `StaticPage` -- it is a typical component resource written in TypeScript.
 
-The component provider makes component resources available to other languages. The implementation is in `provider/cmd/pulumi-resource-xyz/provider.ts`. Each component resource in the provider must have an implementation in the `construct` method to create an instance of the requested component resource and return its `URN` and state (outputs). There is an initial implementation that demonstrates an implementation of `construct` for the example `StaticPage` component.
+The component provider makes component resources available to other languages. The implementation is in `provider/cmd/pulumi-resource-homelab/provider.ts`. Each component resource in the provider must have an implementation in the `construct` method to create an instance of the requested component resource and return its `URN` and state (outputs). There is an initial implementation that demonstrates an implementation of `construct` for the example `StaticPage` component.
 
 A code generator is available which generates SDKs in TypeScript, Python, Go and .NET which are also checked in to the `sdk` folder. The SDKs are generated from a schema in `schema.json`. This file should be kept aligned with the component resources supported by the component provider implementation.
 
 An example of using the `StaticPage` component in TypeScript is in `examples/simple`.
 
-Note that the provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-xyz` is a platform-specific binary that includes its Node.js dependency along with the provider code, created using [nexe](https://github.com/nexe/nexe). By default, running `make install` will create the binary specific to your host environment, but you can override the binary target by passing in `make install target=<targe-string>` where `target-string` is a [valid nexe target](https://github.com/nexe/nexe#target-string--object).
+Note that the provider plugin (`pulumi-resource-homelab`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-homelab` is a platform-specific binary that includes its Node.js dependency along with the provider code, created using [nexe](https://github.com/nexe/nexe). By default, running `make install` will create the binary specific to your host environment, but you can override the binary target by passing in `make install target=<targe-string>` where `target-string` is a [valid nexe target](https://github.com/nexe/nexe#target-string--object).
 
-After running `make install`, `pulumi-resource-xyz` will be available in the `./bin` directory. You can add this to your path in bash with `export PATH=$PATH:$PWD/bin`.
+After running `make install`, `pulumi-resource-homelab` will be available in the `./bin` directory. You can add this to your path in bash with `export PATH=$PATH:$PWD/bin`.
 
-If creating a provider for distribution to other users, they will need `pulumi-resource-xyz` directory on their `PATH`. See the Packaging section below for more on distributing the provider to users.
+If creating a provider for distribution to other users, they will need `pulumi-resource-homelab` directory on their `PATH`. See the Packaging section below for more on distributing the provider to users.
 
 ## Prerequisites
 
@@ -34,14 +34,14 @@ make install_provider
 # Regenerate SDKs
 make generate
 
-# Ensure the pulumi-provider-xyz script is on PATH
+# Ensure the pulumi-provider-homelab script is on PATH
 $ export PATH=$PATH:$PWD/bin
 
 # Test Node.js SDK
 $ make install_nodejs_sdk
 $ cd examples/simple
 $ yarn install
-$ yarn link @pulumi/xyz
+$ yarn link @pulumi/homelab
 $ pulumi stack init test
 $ pulumi config set aws:region us-east-1
 $ pulumi up
@@ -49,7 +49,7 @@ $ pulumi up
 
 ## Naming
 
-The `xyz` provider's plugin must be named `pulumi-resource-xyz` (in the format `pulumi-resource-<provider>`).
+The `homelab` provider's plugin must be named `pulumi-resource-homelab` (in the format `pulumi-resource-<provider>`).
 
 While the provider plugin must follow this naming convention, the SDK package naming can be customized. TODO explain.
 
@@ -57,7 +57,7 @@ While the provider plugin must follow this naming convention, the SDK package na
 
 The provider plugin can be packaged into a tarball and hosted at a custom server URL to make it easier to distribute to users.
 
-Currently, three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same file: the platform-specific binary `pulumi-resource-xyz` created in the `./bin` directory after running `make install_provider`. These artifacts can be generated automatically in the `dist` directory using `make dist`.
+Currently, three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-homelab-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-homelab-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-homelab-v0.0.1-windows-amd64.tar.gz`) each containing the same file: the platform-specific binary `pulumi-resource-homelab` created in the `./bin` directory after running `make install_provider`. These artifacts can be generated automatically in the `dist` directory using `make dist`.
 
 TODO explain custom server hosting in more detail.
 
@@ -71,7 +71,7 @@ The example `StaticPage` component resource is defined in `schema.json`:
 
 ```json
 "resources": {
-    "xyz:index:StaticPage": {
+    "homelab:index:StaticPage": {
         "isComponent": true,
         "inputProperties": {
             "indexContent": {
@@ -100,7 +100,7 @@ The example `StaticPage` component resource is defined in `schema.json`:
 }
 ```
 
-The component resource's type token is `xyz:index:StaticPage` in the format of `<package>:<module>:<type>`. In this case, it's in the `xyz` package and `index` module. This is the same type token passed inside the implementation of `StaticPage` in `provider/cmd/pulumi-resource-xyz/staticPage.ts`, and also the same token referenced in `construct` in `provider/cmd/pulumi-resource-xyz/provider.ts`.
+The component resource's type token is `homelab:index:StaticPage` in the format of `<package>:<module>:<type>`. In this case, it's in the `homelab` package and `index` module. This is the same type token passed inside the implementation of `StaticPage` in `provider/cmd/pulumi-resource-homelab/staticPage.ts`, and also the same token referenced in `construct` in `provider/cmd/pulumi-resource-homelab/provider.ts`.
 
 This component has a required `indexContent` input property typed as `string`, and two required output properties: `bucket` and `websiteUrl`. Note that `bucket` is typed as the `aws:s3/bucket:Bucket` resource from the `aws` provider (in the schema the `/` is escaped as `%2F`).
 
@@ -135,7 +135,7 @@ For the Go SDK, dependencies are specified in the `sdk/go.mod` file.
 
 ### Implementation
 
-The implementation of this component is in `provider/cmd/pulumi-resource-xyz/staticPage.ts` and the structure of the component's inputs and outputs aligns with what is defined in `schema.json`:
+The implementation of this component is in `provider/cmd/pulumi-resource-homelab/staticPage.ts` and the structure of the component's inputs and outputs aligns with what is defined in `schema.json`:
 
 ```typescript
 export interface StaticPageArgs {
@@ -147,14 +147,14 @@ export class StaticPage extends pulumi.ComponentResource {
     public readonly websiteUrl: pulumi.Output<string>;
 
     constructor(name: string, args: StaticPageArgs, opts?: pulumi.ComponentResourceOptions) {
-        super("xyz:index:StaticPage", name, args, opts);
+        super("homelab:index:StaticPage", name, args, opts);
 
         ...
     }
 }
 ```
 
-The provider makes this component resource available in the `construct` method in `provider/cmd/pulumi-resource-xyz/provider.ts`. When `construct` is called and the `type` argument is `xyz:index:StaticPage`, we create an instance of the `StaticPage` component resource and return its `URN` and outputs as its state.
+The provider makes this component resource available in the `construct` method in `provider/cmd/pulumi-resource-homelab/provider.ts`. When `construct` is called and the `type` argument is `homelab:index:StaticPage`, we create an instance of the `StaticPage` component resource and return its `URN` and outputs as its state.
 
 
 ```typescript
