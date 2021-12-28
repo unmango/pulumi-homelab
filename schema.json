@@ -13,6 +13,8 @@
         "docker",
         "homelab"
     ],
+    "repository": "https://github.com/unmango/pulumi-homelab",
+    "pluginDownloadURL": "",
     "resources": {
         "homelab:index:StaticPage": {
             "isComponent": true,
@@ -50,9 +52,10 @@
         },
         "go": {
             "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/pulumi/pulumi-homelab/sdk/go/homelab"
+            "importBasePath": "github.com/unmango/pulumi-homelab/sdk/go/homelab"
         },
         "nodejs": {
+            "packageName": "@unmango/pulumi-homelab",
             "dependencies": {
                 "@pulumi/aws": "^4.0.0"
             },
