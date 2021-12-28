@@ -1,14 +1,27 @@
 {
-    "name": "@pulumi/xyz",
+    "name": "@unmango/pulumi-homelab",
     "version": "${VERSION}",
+    "keywords": [
+        "category/cloud",
+        "category/infrastructure",
+        "kind/component",
+        "pulumi",
+        "kubernetes",
+        "k8s",
+        "docker",
+        "homelab"
+    ],
+    "repository": "https://github.com/unmango/pulumi-homelab",
     "scripts": {
         "build": "tsc"
     },
     "dependencies": {
-        "@pulumi/aws": "^4.0.0"
+        "@pulumi/aws": "^4.0.0",
+        "@pulumi/docker": "^3.1.0",
+        "@pulumi/kubernetes": "^3.12.1"
     },
     "devDependencies": {
-        "typescript": "^3.7.0"
+        "typescript": "^4.5.4"
     },
     "peerDependencies": {
         "@pulumi/pulumi": "latest"

@@ -1,7 +1,22 @@
 {
-    "name": "xyz",
+    "name": "homelab",
+    "displayName": "Homelab",
+    "description": "Popular homelab applications for docker and kubernetes",
+    "publisher": "UnstoppableMango",
+    "keywords": [
+        "category/cloud",
+        "category/infrastructure",
+        "kind/component",
+        "pulumi",
+        "kubernetes",
+        "k8s",
+        "docker",
+        "homelab"
+    ],
+    "repository": "https://github.com/unmango/pulumi-homelab",
+    "pluginDownloadURL": "",
     "resources": {
-        "xyz:index:StaticPage": {
+        "homelab:index:StaticPage": {
             "isComponent": true,
             "inputProperties": {
                 "indexContent": {
@@ -32,25 +47,32 @@
         "csharp": {
             "packageReferences": {
                 "Pulumi": "3.*",
-                "Pulumi.Aws": "4.*"
+                "Pulumi.Aws": "4.*",
+                "Pulumi.Docker": "3.*",
+                "Pulumi.Kubernetes": "3.*"
             }
         },
         "go": {
             "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/pulumi/pulumi-xyz/sdk/go/xyz"
+            "importBasePath": "github.com/unmango/pulumi-homelab/sdk/go/homelab"
         },
         "nodejs": {
+            "packageName": "@unmango/pulumi-homelab",
             "dependencies": {
-                "@pulumi/aws": "^4.0.0"
+                "@pulumi/aws": "^4.0.0",
+                "@pulumi/docker": "^3.1.0",
+                "@pulumi/kubernetes": "^3.12.1"
             },
             "devDependencies": {
-                "typescript": "^3.7.0"
+                "typescript": "^4.5.4"
             }
         },
         "python": {
             "requires": {
                 "pulumi": ">=3.0.0,<4.0.0",
-                "pulumi-aws": ">=4.0.0,<5.0.0"
+                "pulumi-aws": ">=4.0.0,<5.0.0",
+                "pulumi-docker": ">=3.0.0,<4.0.0",
+                "pulumi-kubernetes": ">=3.0.0,<4.0.0"
             }
         }
     }
