@@ -1,53 +1,35 @@
 import * as pulumi from '@pulumi/pulumi';
-import * as k8s from '@pulumi/kubernetes';
-import * as kx from '@pulumi/kubernetesx';
-import { BaseArgs, MetaArgs } from '../../types/linuxserver';
+import { CommonArgs } from '../../types/linuxserver';
+import { CommonArgs as K8sCommonArgs, ImageArgs } from '../../types/kubernetes';
 
-export interface LinuxServerKubernetesArgs extends BaseArgs {
-    name?: pulumi.Input<string>;
-    namespace: pulumi.Input<string>;
-    image?: pulumi.Input<string>;
-    version?: pulumi.Input<string>;
-    deployment?: kx.types.PodBuilderDeploymentSpec;
-    service: kx.types.ServiceSpec;
+export const defaultRegistry = 'lscr.io';
+
+export type ImageFormatter = {
+    (image?: pulumi.Input<string | ImageArgs>): pulumi.Output<string>;
 }
 
-export class LinuxServerBase extends pulumi.ComponentResource {
-    public readonly deployment: k8s.apps.v1.Deployment;
-    public readonly ingress?: k8s.networking.v1.Ingress;
-    public readonly service: k8s.core.v1.Service;
+export type KubernetesArgs = CommonArgs & K8sCommonArgs;
 
-    constructor(
-        subType: string,
-        name: string,
-        args: LinuxServerKubernetesArgs,
-        metaArgs: MetaArgs,
-        opts?: pulumi.ComponentResourceOptions
-    ) {
-        super(`homelab:index:k8s:linuxserver:${subType}`, name, args, opts);
+export function createImageFormatter(imageName: string): ImageFormatter {
+    const resolveImage = (image?: string | pulumi.UnwrappedObject<ImageArgs>): string => {
+        if (!image)  {
+            return `${defaultRegistry}/linuxserver/${imageName}`;
+        }
 
-        const podBuidler = new kx.PodBuilder({
-            containers: [{
-                image: args.image ?? `lcsr.io/linuxserver/${metaArgs.imageName}`,
-            }],
-        });
+        if (typeof image === 'string') {
+            return image;
+        }
 
-        const deployment = new kx.Deployment(name, {
-            metadata: {
-                name: args.name,
-                namespace: args.namespace,
-            },
-            spec: podBuidler.asDeploymentSpec(args.deployment),
-        });
+        const registry = image.registry ?? defaultRegistry;
+        const repository = image.repository ?? imageName;
+        const version = image.tag ? `:${image.tag}` : '';
 
-        const service = deployment.createService(args.service);
+        return `${registry}/linuxserver/${repository}${version}`;
+    };
 
-        this.deployment = deployment;
-        this.service = service;
+    return (image) => pulumi.output(image).apply(resolveImage);
+}
 
-        this.registerOutputs({
-            deployment,
-            service,
-        });
-    }
+export function getType(subType: string) {
+    return `homelab:index:k8s:linuxserver:${subType}`;
 }
