@@ -41,6 +41,12 @@
                 "bucket",
                 "websiteUrl"
             ]
+        },
+        "homelab:index:kubernetes:linuxserver:radarr": {
+            "isComponent": true,
+            "inputProperties": {
+                
+            }
         }
     },
     "language": {

@@ -1,7 +1,11 @@
 import * as pulumi from '@pulumi/pulumi';
 import * as k8s from '@pulumi/kubernetes';
 import * as kx from '@pulumi/kubernetesx';
-import { createImageFormatter, getType, KubernetesArgs } from './linuxserver';
+import {
+    createImageFormatter,
+    getType,
+    KubernetesArgs
+} from './linuxserver';
 
 export const defaultPort = 7878;
 

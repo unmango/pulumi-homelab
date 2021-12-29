@@ -20,7 +20,7 @@ export interface CommonArgs {
     image?: pulumi.Input<string | ImageArgs>;
     deployment?: pulumi.Input<{
         strategy?: pulumi.Input<{
-            // TODO: Strategies
+            // TODO: Strategiess
             type: pulumi.Input<DeploymentStrategy>;
         }>;
     }>;
