@@ -416,6 +416,8 @@ github.com/prometheus/procfs v0.0.0-20190507164030-5867b95ac084/go.mod h1:TjEm7z
 github.com/prometheus/tsdb v0.7.1/go.mod h1:qhTCs0VvXwvX/y3TZrWD7rabWM+ijKTux40TwIPHuXU=
 github.com/pulumi/pulumi/pkg/v3 v3.0.1-0.20210419234039-6a33b4b7ee41 h1:BMAQqKLndgu6sGHYWFhNa2tQX1WWHWIAWl8GvwCwiRc=
 github.com/pulumi/pulumi/pkg/v3 v3.0.1-0.20210419234039-6a33b4b7ee41/go.mod h1:XsgC0PpPdjzZAj9YyEMvtU0ei542zOGxS7M1EzFmH84=
+github.com/pulumi/pulumi/pkg/v3 v3.21.0 h1:SDEpw4ZVhMifXWAH+bUACSuB9D2qvSJ84s1qp2pBj40=
+github.com/pulumi/pulumi/pkg/v3 v3.21.0/go.mod h1:5kAnRL4+uRdcq8IdCoboT4xEJrKIIVUZMAl+CP+3rRk=
 github.com/pulumi/pulumi/sdk/v3 v3.0.0 h1:zkragE05t1Rco/ymfqMU4UXdEmKMmOH0SXhUKQxujxQ=
 github.com/pulumi/pulumi/sdk/v3 v3.0.0/go.mod h1:GBHyQ7awNQSRmiKp/p8kIKrGrMOZeA/k2czoM/GOqds=
 github.com/rjeczalik/notify v0.9.2/go.mod h1:aErll2f0sUX9PXZnVNyeiObbmTlk5jnMoCa4QEjJeqM=
