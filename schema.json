@@ -29,6 +29,34 @@
                     "type": "string"
                 }
             }
+        },
+        "homelab:index:KubernetesDeployment": {
+            "type": "object",
+            "properties": {
+                "strategy": {
+                    "type": "object",
+                    "$ref": "#/types/homelab:index:KubernetesDeploymentStrategy"
+                }
+            }
+        },
+        "homelab:index:KubernetesDeploymentStrategy": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/types/homelab:index:KubernetesDeploymentStrategyType"
+                }
+            }
+        },
+        "homelab:index:KubernetesDeploymentStrategyType": {
+            "type": "string",
+            "enum": [
+                {
+                    "value": "Recreate"
+                },
+                {
+                    "value": "Rolling"
+                }
+            ]
         }
     },
     "resources": {
@@ -78,6 +106,10 @@
                             "$ref": "#/types/homelab:index:KubernetesImageArgs"
                         }
                     ]
+                },
+                "deployment": {
+                    "type": "object",
+                    "$ref": "#/types/homelab:index:KubernetesDeployment"
                 }
             }
         }
