@@ -33,10 +33,15 @@ def readme():
 
 setup(name='pulumi_homelab',
       version='${VERSION}',
+      description="Popular homelab applications for docker and kubernetes",
       long_description=readme(),
       long_description_content_type='text/markdown',
       cmdclass={
           'install': InstallPluginCommand,
+      },
+      keywords='category/cloud category/infrastructure kind/component pulumi kubernetes k8s docker homelab',
+      project_urls={
+          'Repository': 'https://github.com/unmango/pulumi-homelab'
       },
       packages=find_packages(),
       package_data={
@@ -48,6 +53,8 @@ setup(name='pulumi_homelab',
           'parver>=0.2.1',
           'pulumi>=3.0.0,<4.0.0',
           'pulumi-aws>=4.0.0,<5.0.0',
+          'pulumi-docker>=3.0.0,<4.0.0',
+          'pulumi-kubernetes>=3.0.0,<4.0.0',
           'semver>=2.8.1'
       ],
       zip_safe=False)

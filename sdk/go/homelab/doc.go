@@ -1,3 +1,3 @@
-// Package homelab exports types, functions, subpackages for provisioning homelab resources.
+// Popular homelab applications for docker and kubernetes
 //
 package homelab

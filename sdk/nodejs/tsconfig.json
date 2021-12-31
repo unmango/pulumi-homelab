@@ -14,8 +14,13 @@
     },
     "files": [
         "index.ts",
+        "kubernetesLinuxServerRadarr.ts",
         "provider.ts",
         "staticPage.ts",
+        "types/enums/index.ts",
+        "types/index.ts",
+        "types/input.ts",
+        "types/output.ts",
         "utilities.ts"
     ]
 }

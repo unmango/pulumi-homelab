@@ -3,8 +3,11 @@
 # *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 # Export this package's modules as members:
+from ._enums import *
+from .kubernetes_linux_server_radarr import *
 from .provider import *
 from .static_page import *
+from ._inputs import *
 
 def _register_module():
     import pulumi
@@ -18,7 +21,9 @@ def _register_module():
             return Module._version
 
         def construct(self, name: str, typ: str, urn: str) -> pulumi.Resource:
-            if typ == "homelab:index:StaticPage":
+            if typ == "homelab:index:KubernetesLinuxServerRadarr":
+                return KubernetesLinuxServerRadarr(name, pulumi.ResourceOptions(urn=urn))
+            elif typ == "homelab:index:StaticPage":
                 return StaticPage(name, pulumi.ResourceOptions(urn=urn))
             else:
                 raise Exception(f"unknown resource type {typ}")

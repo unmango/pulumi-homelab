@@ -135,6 +135,9 @@
                 "deployment": {
                     "type": "object",
                     "$ref": "#/types/homelab:index:KubernetesDeployment"
+                },
+                "service": {
+                    "$ref": "#/types/homelab:index:KubernetesService"
                 }
             }
         }

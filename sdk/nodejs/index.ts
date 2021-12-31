@@ -5,16 +5,30 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
+export * from "./kubernetesLinuxServerRadarr";
 export * from "./provider";
 export * from "./staticPage";
 
+// Export enums:
+export * from "./types/enums";
+
+// Export sub-modules:
+import * as types from "./types";
+
+export {
+    types,
+};
+
 // Import resources to register:
+import { KubernetesLinuxServerRadarr } from "./kubernetesLinuxServerRadarr";
 import { StaticPage } from "./staticPage";
 
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
+            case "homelab:index:KubernetesLinuxServerRadarr":
+                return new KubernetesLinuxServerRadarr(name, <any>undefined, { urn })
             case "homelab:index:StaticPage":
                 return new StaticPage(name, <any>undefined, { urn })
             default:
