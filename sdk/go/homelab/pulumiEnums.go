@@ -10,56 +10,56 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-type KubernetesDeploymentStrategyType pulumi.String
+type DeploymentStrategyType pulumi.String
 
 const (
-	KubernetesDeploymentStrategyTypeRecreate = KubernetesDeploymentStrategyType("Recreate")
-	KubernetesDeploymentStrategyTypeRolling  = KubernetesDeploymentStrategyType("Rolling")
+	DeploymentStrategyTypeRecreate = DeploymentStrategyType("Recreate")
+	DeploymentStrategyTypeRolling  = DeploymentStrategyType("Rolling")
 )
 
-func (KubernetesDeploymentStrategyType) ElementType() reflect.Type {
+func (DeploymentStrategyType) ElementType() reflect.Type {
 	return reflect.TypeOf((*pulumi.String)(nil)).Elem()
 }
 
-func (e KubernetesDeploymentStrategyType) ToStringOutput() pulumi.StringOutput {
+func (e DeploymentStrategyType) ToStringOutput() pulumi.StringOutput {
 	return pulumi.ToOutput(pulumi.String(e)).(pulumi.StringOutput)
 }
 
-func (e KubernetesDeploymentStrategyType) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+func (e DeploymentStrategyType) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
 	return pulumi.ToOutputWithContext(ctx, pulumi.String(e)).(pulumi.StringOutput)
 }
 
-func (e KubernetesDeploymentStrategyType) ToStringPtrOutput() pulumi.StringPtrOutput {
+func (e DeploymentStrategyType) ToStringPtrOutput() pulumi.StringPtrOutput {
 	return pulumi.String(e).ToStringPtrOutputWithContext(context.Background())
 }
 
-func (e KubernetesDeploymentStrategyType) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+func (e DeploymentStrategyType) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
 	return pulumi.String(e).ToStringOutputWithContext(ctx).ToStringPtrOutputWithContext(ctx)
 }
 
-type KubernetesServiceType pulumi.String
+type ServiceType pulumi.String
 
 const (
-	KubernetesServiceTypeClusterIP    = KubernetesServiceType("ClusterIP")
-	KubernetesServiceTypeLoadBalancer = KubernetesServiceType("LoadBalancer")
+	ServiceTypeClusterIP    = ServiceType("ClusterIP")
+	ServiceTypeLoadBalancer = ServiceType("LoadBalancer")
 )
 
-func (KubernetesServiceType) ElementType() reflect.Type {
+func (ServiceType) ElementType() reflect.Type {
 	return reflect.TypeOf((*pulumi.String)(nil)).Elem()
 }
 
-func (e KubernetesServiceType) ToStringOutput() pulumi.StringOutput {
+func (e ServiceType) ToStringOutput() pulumi.StringOutput {
 	return pulumi.ToOutput(pulumi.String(e)).(pulumi.StringOutput)
 }
 
-func (e KubernetesServiceType) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+func (e ServiceType) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
 	return pulumi.ToOutputWithContext(ctx, pulumi.String(e)).(pulumi.StringOutput)
 }
 
-func (e KubernetesServiceType) ToStringPtrOutput() pulumi.StringPtrOutput {
+func (e ServiceType) ToStringPtrOutput() pulumi.StringPtrOutput {
 	return pulumi.String(e).ToStringPtrOutputWithContext(context.Background())
 }
 
-func (e KubernetesServiceType) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+func (e ServiceType) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
 	return pulumi.String(e).ToStringOutputWithContext(ctx).ToStringPtrOutputWithContext(ctx)
 }

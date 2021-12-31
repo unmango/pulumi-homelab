@@ -5,16 +5,16 @@
 from enum import Enum
 
 __all__ = [
-    'KubernetesDeploymentStrategyType',
-    'KubernetesServiceType',
+    'DeploymentStrategyType',
+    'ServiceType',
 ]
 
 
-class KubernetesDeploymentStrategyType(str, Enum):
+class DeploymentStrategyType(str, Enum):
     RECREATE = "Recreate"
     ROLLING = "Rolling"
 
 
-class KubernetesServiceType(str, Enum):
+class ServiceType(str, Enum):
     CLUSTER_IP = "ClusterIP"
     LOAD_BALANCER = "LoadBalancer"

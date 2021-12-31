@@ -2,16 +2,16 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 
-export const KubernetesDeploymentStrategyType = {
+export const DeploymentStrategyType = {
     Recreate: "Recreate",
     Rolling: "Rolling",
 } as const;
 
-export type KubernetesDeploymentStrategyType = (typeof KubernetesDeploymentStrategyType)[keyof typeof KubernetesDeploymentStrategyType];
+export type DeploymentStrategyType = (typeof DeploymentStrategyType)[keyof typeof DeploymentStrategyType];
 
-export const KubernetesServiceType = {
+export const ServiceType = {
     ClusterIP: "ClusterIP",
     LoadBalancer: "LoadBalancer",
 } as const;
 
-export type KubernetesServiceType = (typeof KubernetesServiceType)[keyof typeof KubernetesServiceType];
+export type ServiceType = (typeof ServiceType)[keyof typeof ServiceType];

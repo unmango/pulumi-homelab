@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Homelab.Inputs
 {
 
-    public sealed class KubernetesImageArgsArgs : Pulumi.ResourceArgs
+    public sealed class ImageArgsArgs : Pulumi.ResourceArgs
     {
         [Input("registry")]
         public Input<string>? Registry { get; set; }
@@ -21,7 +21,7 @@ namespace Pulumi.Homelab.Inputs
         [Input("tag")]
         public Input<string>? Tag { get; set; }
 
-        public KubernetesImageArgsArgs()
+        public ImageArgsArgs()
         {
         }
     }

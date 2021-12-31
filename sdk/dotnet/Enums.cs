@@ -8,26 +8,26 @@ using Pulumi;
 namespace Pulumi.Homelab
 {
     [EnumType]
-    public readonly struct KubernetesDeploymentStrategyType : IEquatable<KubernetesDeploymentStrategyType>
+    public readonly struct DeploymentStrategyType : IEquatable<DeploymentStrategyType>
     {
         private readonly string _value;
 
-        private KubernetesDeploymentStrategyType(string value)
+        private DeploymentStrategyType(string value)
         {
             _value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        public static KubernetesDeploymentStrategyType Recreate { get; } = new KubernetesDeploymentStrategyType("Recreate");
-        public static KubernetesDeploymentStrategyType Rolling { get; } = new KubernetesDeploymentStrategyType("Rolling");
+        public static DeploymentStrategyType Recreate { get; } = new DeploymentStrategyType("Recreate");
+        public static DeploymentStrategyType Rolling { get; } = new DeploymentStrategyType("Rolling");
 
-        public static bool operator ==(KubernetesDeploymentStrategyType left, KubernetesDeploymentStrategyType right) => left.Equals(right);
-        public static bool operator !=(KubernetesDeploymentStrategyType left, KubernetesDeploymentStrategyType right) => !left.Equals(right);
+        public static bool operator ==(DeploymentStrategyType left, DeploymentStrategyType right) => left.Equals(right);
+        public static bool operator !=(DeploymentStrategyType left, DeploymentStrategyType right) => !left.Equals(right);
 
-        public static explicit operator string(KubernetesDeploymentStrategyType value) => value._value;
+        public static explicit operator string(DeploymentStrategyType value) => value._value;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override bool Equals(object? obj) => obj is KubernetesDeploymentStrategyType other && Equals(other);
-        public bool Equals(KubernetesDeploymentStrategyType other) => string.Equals(_value, other._value, StringComparison.Ordinal);
+        public override bool Equals(object? obj) => obj is DeploymentStrategyType other && Equals(other);
+        public bool Equals(DeploymentStrategyType other) => string.Equals(_value, other._value, StringComparison.Ordinal);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override int GetHashCode() => _value?.GetHashCode() ?? 0;
@@ -36,26 +36,26 @@ namespace Pulumi.Homelab
     }
 
     [EnumType]
-    public readonly struct KubernetesServiceType : IEquatable<KubernetesServiceType>
+    public readonly struct ServiceType : IEquatable<ServiceType>
     {
         private readonly string _value;
 
-        private KubernetesServiceType(string value)
+        private ServiceType(string value)
         {
             _value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        public static KubernetesServiceType ClusterIP { get; } = new KubernetesServiceType("ClusterIP");
-        public static KubernetesServiceType LoadBalancer { get; } = new KubernetesServiceType("LoadBalancer");
+        public static ServiceType ClusterIP { get; } = new ServiceType("ClusterIP");
+        public static ServiceType LoadBalancer { get; } = new ServiceType("LoadBalancer");
 
-        public static bool operator ==(KubernetesServiceType left, KubernetesServiceType right) => left.Equals(right);
-        public static bool operator !=(KubernetesServiceType left, KubernetesServiceType right) => !left.Equals(right);
+        public static bool operator ==(ServiceType left, ServiceType right) => left.Equals(right);
+        public static bool operator !=(ServiceType left, ServiceType right) => !left.Equals(right);
 
-        public static explicit operator string(KubernetesServiceType value) => value._value;
+        public static explicit operator string(ServiceType value) => value._value;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override bool Equals(object? obj) => obj is KubernetesServiceType other && Equals(other);
-        public bool Equals(KubernetesServiceType other) => string.Equals(_value, other._value, StringComparison.Ordinal);
+        public override bool Equals(object? obj) => obj is ServiceType other && Equals(other);
+        public bool Equals(ServiceType other) => string.Equals(_value, other._value, StringComparison.Ordinal);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override int GetHashCode() => _value?.GetHashCode() ?? 0;

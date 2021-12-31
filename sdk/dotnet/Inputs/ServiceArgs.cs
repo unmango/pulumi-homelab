@@ -10,15 +10,15 @@ using Pulumi.Serialization;
 namespace Pulumi.Homelab.Inputs
 {
 
-    public sealed class KubernetesServiceArgs : Pulumi.ResourceArgs
+    public sealed class ServiceArgs : Pulumi.ResourceArgs
     {
         [Input("name")]
         public Input<string>? Name { get; set; }
 
         [Input("type", required: true)]
-        public Input<Pulumi.Homelab.KubernetesServiceType> Type { get; set; } = null!;
+        public Input<Pulumi.Homelab.ServiceType> Type { get; set; } = null!;
 
-        public KubernetesServiceArgs()
+        public ServiceArgs()
         {
         }
     }

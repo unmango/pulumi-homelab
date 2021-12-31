@@ -10,13 +10,14 @@ using Pulumi.Serialization;
 namespace Pulumi.Homelab.Inputs
 {
 
-    public sealed class KubernetesDeploymentArgs : Pulumi.ResourceArgs
+    public sealed class DeploymentStrategyArgs : Pulumi.ResourceArgs
     {
-        [Input("strategy")]
-        public Input<Inputs.KubernetesDeploymentStrategyArgs>? Strategy { get; set; }
+        [Input("type")]
+        public Input<Pulumi.Homelab.DeploymentStrategyType>? Type { get; set; }
 
-        public KubernetesDeploymentArgs()
+        public DeploymentStrategyArgs()
         {
+            Type = Pulumi.Homelab.DeploymentStrategyType.Recreate;
         }
     }
 }

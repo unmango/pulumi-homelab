@@ -10,251 +10,251 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-type KubernetesDeployment struct {
-	Strategy *KubernetesDeploymentStrategy `pulumi:"strategy"`
+type Deployment struct {
+	Strategy *DeploymentStrategy `pulumi:"strategy"`
 }
 
-// KubernetesDeploymentInput is an input type that accepts KubernetesDeploymentArgs and KubernetesDeploymentOutput values.
-// You can construct a concrete instance of `KubernetesDeploymentInput` via:
+// DeploymentInput is an input type that accepts DeploymentArgs and DeploymentOutput values.
+// You can construct a concrete instance of `DeploymentInput` via:
 //
-//          KubernetesDeploymentArgs{...}
-type KubernetesDeploymentInput interface {
+//          DeploymentArgs{...}
+type DeploymentInput interface {
 	pulumi.Input
 
-	ToKubernetesDeploymentOutput() KubernetesDeploymentOutput
-	ToKubernetesDeploymentOutputWithContext(context.Context) KubernetesDeploymentOutput
+	ToDeploymentOutput() DeploymentOutput
+	ToDeploymentOutputWithContext(context.Context) DeploymentOutput
 }
 
-type KubernetesDeploymentArgs struct {
-	Strategy KubernetesDeploymentStrategyPtrInput `pulumi:"strategy"`
+type DeploymentArgs struct {
+	Strategy DeploymentStrategyPtrInput `pulumi:"strategy"`
 }
 
-func (KubernetesDeploymentArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*KubernetesDeployment)(nil)).Elem()
+func (DeploymentArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Deployment)(nil)).Elem()
 }
 
-func (i KubernetesDeploymentArgs) ToKubernetesDeploymentOutput() KubernetesDeploymentOutput {
-	return i.ToKubernetesDeploymentOutputWithContext(context.Background())
+func (i DeploymentArgs) ToDeploymentOutput() DeploymentOutput {
+	return i.ToDeploymentOutputWithContext(context.Background())
 }
 
-func (i KubernetesDeploymentArgs) ToKubernetesDeploymentOutputWithContext(ctx context.Context) KubernetesDeploymentOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(KubernetesDeploymentOutput)
+func (i DeploymentArgs) ToDeploymentOutputWithContext(ctx context.Context) DeploymentOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DeploymentOutput)
 }
 
-func (i KubernetesDeploymentArgs) ToKubernetesDeploymentPtrOutput() KubernetesDeploymentPtrOutput {
-	return i.ToKubernetesDeploymentPtrOutputWithContext(context.Background())
+func (i DeploymentArgs) ToDeploymentPtrOutput() DeploymentPtrOutput {
+	return i.ToDeploymentPtrOutputWithContext(context.Background())
 }
 
-func (i KubernetesDeploymentArgs) ToKubernetesDeploymentPtrOutputWithContext(ctx context.Context) KubernetesDeploymentPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(KubernetesDeploymentOutput).ToKubernetesDeploymentPtrOutputWithContext(ctx)
+func (i DeploymentArgs) ToDeploymentPtrOutputWithContext(ctx context.Context) DeploymentPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DeploymentOutput).ToDeploymentPtrOutputWithContext(ctx)
 }
 
-// KubernetesDeploymentPtrInput is an input type that accepts KubernetesDeploymentArgs, KubernetesDeploymentPtr and KubernetesDeploymentPtrOutput values.
-// You can construct a concrete instance of `KubernetesDeploymentPtrInput` via:
+// DeploymentPtrInput is an input type that accepts DeploymentArgs, DeploymentPtr and DeploymentPtrOutput values.
+// You can construct a concrete instance of `DeploymentPtrInput` via:
 //
-//          KubernetesDeploymentArgs{...}
+//          DeploymentArgs{...}
 //
 //  or:
 //
 //          nil
-type KubernetesDeploymentPtrInput interface {
+type DeploymentPtrInput interface {
 	pulumi.Input
 
-	ToKubernetesDeploymentPtrOutput() KubernetesDeploymentPtrOutput
-	ToKubernetesDeploymentPtrOutputWithContext(context.Context) KubernetesDeploymentPtrOutput
+	ToDeploymentPtrOutput() DeploymentPtrOutput
+	ToDeploymentPtrOutputWithContext(context.Context) DeploymentPtrOutput
 }
 
-type kubernetesDeploymentPtrType KubernetesDeploymentArgs
+type deploymentPtrType DeploymentArgs
 
-func KubernetesDeploymentPtr(v *KubernetesDeploymentArgs) KubernetesDeploymentPtrInput {
-	return (*kubernetesDeploymentPtrType)(v)
+func DeploymentPtr(v *DeploymentArgs) DeploymentPtrInput {
+	return (*deploymentPtrType)(v)
 }
 
-func (*kubernetesDeploymentPtrType) ElementType() reflect.Type {
-	return reflect.TypeOf((**KubernetesDeployment)(nil)).Elem()
+func (*deploymentPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**Deployment)(nil)).Elem()
 }
 
-func (i *kubernetesDeploymentPtrType) ToKubernetesDeploymentPtrOutput() KubernetesDeploymentPtrOutput {
-	return i.ToKubernetesDeploymentPtrOutputWithContext(context.Background())
+func (i *deploymentPtrType) ToDeploymentPtrOutput() DeploymentPtrOutput {
+	return i.ToDeploymentPtrOutputWithContext(context.Background())
 }
 
-func (i *kubernetesDeploymentPtrType) ToKubernetesDeploymentPtrOutputWithContext(ctx context.Context) KubernetesDeploymentPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(KubernetesDeploymentPtrOutput)
+func (i *deploymentPtrType) ToDeploymentPtrOutputWithContext(ctx context.Context) DeploymentPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DeploymentPtrOutput)
 }
 
-type KubernetesDeploymentOutput struct{ *pulumi.OutputState }
+type DeploymentOutput struct{ *pulumi.OutputState }
 
-func (KubernetesDeploymentOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*KubernetesDeployment)(nil)).Elem()
+func (DeploymentOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Deployment)(nil)).Elem()
 }
 
-func (o KubernetesDeploymentOutput) ToKubernetesDeploymentOutput() KubernetesDeploymentOutput {
+func (o DeploymentOutput) ToDeploymentOutput() DeploymentOutput {
 	return o
 }
 
-func (o KubernetesDeploymentOutput) ToKubernetesDeploymentOutputWithContext(ctx context.Context) KubernetesDeploymentOutput {
+func (o DeploymentOutput) ToDeploymentOutputWithContext(ctx context.Context) DeploymentOutput {
 	return o
 }
 
-func (o KubernetesDeploymentOutput) ToKubernetesDeploymentPtrOutput() KubernetesDeploymentPtrOutput {
-	return o.ToKubernetesDeploymentPtrOutputWithContext(context.Background())
+func (o DeploymentOutput) ToDeploymentPtrOutput() DeploymentPtrOutput {
+	return o.ToDeploymentPtrOutputWithContext(context.Background())
 }
 
-func (o KubernetesDeploymentOutput) ToKubernetesDeploymentPtrOutputWithContext(ctx context.Context) KubernetesDeploymentPtrOutput {
-	return o.ApplyT(func(v KubernetesDeployment) *KubernetesDeployment {
+func (o DeploymentOutput) ToDeploymentPtrOutputWithContext(ctx context.Context) DeploymentPtrOutput {
+	return o.ApplyT(func(v Deployment) *Deployment {
 		return &v
-	}).(KubernetesDeploymentPtrOutput)
+	}).(DeploymentPtrOutput)
 }
-func (o KubernetesDeploymentOutput) Strategy() KubernetesDeploymentStrategyPtrOutput {
-	return o.ApplyT(func(v KubernetesDeployment) *KubernetesDeploymentStrategy { return v.Strategy }).(KubernetesDeploymentStrategyPtrOutput)
-}
-
-type KubernetesDeploymentPtrOutput struct{ *pulumi.OutputState }
-
-func (KubernetesDeploymentPtrOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((**KubernetesDeployment)(nil)).Elem()
+func (o DeploymentOutput) Strategy() DeploymentStrategyPtrOutput {
+	return o.ApplyT(func(v Deployment) *DeploymentStrategy { return v.Strategy }).(DeploymentStrategyPtrOutput)
 }
 
-func (o KubernetesDeploymentPtrOutput) ToKubernetesDeploymentPtrOutput() KubernetesDeploymentPtrOutput {
+type DeploymentPtrOutput struct{ *pulumi.OutputState }
+
+func (DeploymentPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**Deployment)(nil)).Elem()
+}
+
+func (o DeploymentPtrOutput) ToDeploymentPtrOutput() DeploymentPtrOutput {
 	return o
 }
 
-func (o KubernetesDeploymentPtrOutput) ToKubernetesDeploymentPtrOutputWithContext(ctx context.Context) KubernetesDeploymentPtrOutput {
+func (o DeploymentPtrOutput) ToDeploymentPtrOutputWithContext(ctx context.Context) DeploymentPtrOutput {
 	return o
 }
 
-func (o KubernetesDeploymentPtrOutput) Elem() KubernetesDeploymentOutput {
-	return o.ApplyT(func(v *KubernetesDeployment) KubernetesDeployment { return *v }).(KubernetesDeploymentOutput)
+func (o DeploymentPtrOutput) Elem() DeploymentOutput {
+	return o.ApplyT(func(v *Deployment) Deployment { return *v }).(DeploymentOutput)
 }
 
-func (o KubernetesDeploymentPtrOutput) Strategy() KubernetesDeploymentStrategyPtrOutput {
-	return o.ApplyT(func(v *KubernetesDeployment) *KubernetesDeploymentStrategy {
+func (o DeploymentPtrOutput) Strategy() DeploymentStrategyPtrOutput {
+	return o.ApplyT(func(v *Deployment) *DeploymentStrategy {
 		if v == nil {
 			return nil
 		}
 		return v.Strategy
-	}).(KubernetesDeploymentStrategyPtrOutput)
+	}).(DeploymentStrategyPtrOutput)
 }
 
-type KubernetesDeploymentStrategy struct {
+type DeploymentStrategy struct {
 	Type *string `pulumi:"type"`
 }
 
-// KubernetesDeploymentStrategyInput is an input type that accepts KubernetesDeploymentStrategyArgs and KubernetesDeploymentStrategyOutput values.
-// You can construct a concrete instance of `KubernetesDeploymentStrategyInput` via:
+// DeploymentStrategyInput is an input type that accepts DeploymentStrategyArgs and DeploymentStrategyOutput values.
+// You can construct a concrete instance of `DeploymentStrategyInput` via:
 //
-//          KubernetesDeploymentStrategyArgs{...}
-type KubernetesDeploymentStrategyInput interface {
+//          DeploymentStrategyArgs{...}
+type DeploymentStrategyInput interface {
 	pulumi.Input
 
-	ToKubernetesDeploymentStrategyOutput() KubernetesDeploymentStrategyOutput
-	ToKubernetesDeploymentStrategyOutputWithContext(context.Context) KubernetesDeploymentStrategyOutput
+	ToDeploymentStrategyOutput() DeploymentStrategyOutput
+	ToDeploymentStrategyOutputWithContext(context.Context) DeploymentStrategyOutput
 }
 
-type KubernetesDeploymentStrategyArgs struct {
-	Type *KubernetesDeploymentStrategyType `pulumi:"type"`
+type DeploymentStrategyArgs struct {
+	Type *DeploymentStrategyType `pulumi:"type"`
 }
 
-func (KubernetesDeploymentStrategyArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*KubernetesDeploymentStrategy)(nil)).Elem()
+func (DeploymentStrategyArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*DeploymentStrategy)(nil)).Elem()
 }
 
-func (i KubernetesDeploymentStrategyArgs) ToKubernetesDeploymentStrategyOutput() KubernetesDeploymentStrategyOutput {
-	return i.ToKubernetesDeploymentStrategyOutputWithContext(context.Background())
+func (i DeploymentStrategyArgs) ToDeploymentStrategyOutput() DeploymentStrategyOutput {
+	return i.ToDeploymentStrategyOutputWithContext(context.Background())
 }
 
-func (i KubernetesDeploymentStrategyArgs) ToKubernetesDeploymentStrategyOutputWithContext(ctx context.Context) KubernetesDeploymentStrategyOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(KubernetesDeploymentStrategyOutput)
+func (i DeploymentStrategyArgs) ToDeploymentStrategyOutputWithContext(ctx context.Context) DeploymentStrategyOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DeploymentStrategyOutput)
 }
 
-func (i KubernetesDeploymentStrategyArgs) ToKubernetesDeploymentStrategyPtrOutput() KubernetesDeploymentStrategyPtrOutput {
-	return i.ToKubernetesDeploymentStrategyPtrOutputWithContext(context.Background())
+func (i DeploymentStrategyArgs) ToDeploymentStrategyPtrOutput() DeploymentStrategyPtrOutput {
+	return i.ToDeploymentStrategyPtrOutputWithContext(context.Background())
 }
 
-func (i KubernetesDeploymentStrategyArgs) ToKubernetesDeploymentStrategyPtrOutputWithContext(ctx context.Context) KubernetesDeploymentStrategyPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(KubernetesDeploymentStrategyOutput).ToKubernetesDeploymentStrategyPtrOutputWithContext(ctx)
+func (i DeploymentStrategyArgs) ToDeploymentStrategyPtrOutputWithContext(ctx context.Context) DeploymentStrategyPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DeploymentStrategyOutput).ToDeploymentStrategyPtrOutputWithContext(ctx)
 }
 
-// KubernetesDeploymentStrategyPtrInput is an input type that accepts KubernetesDeploymentStrategyArgs, KubernetesDeploymentStrategyPtr and KubernetesDeploymentStrategyPtrOutput values.
-// You can construct a concrete instance of `KubernetesDeploymentStrategyPtrInput` via:
+// DeploymentStrategyPtrInput is an input type that accepts DeploymentStrategyArgs, DeploymentStrategyPtr and DeploymentStrategyPtrOutput values.
+// You can construct a concrete instance of `DeploymentStrategyPtrInput` via:
 //
-//          KubernetesDeploymentStrategyArgs{...}
+//          DeploymentStrategyArgs{...}
 //
 //  or:
 //
 //          nil
-type KubernetesDeploymentStrategyPtrInput interface {
+type DeploymentStrategyPtrInput interface {
 	pulumi.Input
 
-	ToKubernetesDeploymentStrategyPtrOutput() KubernetesDeploymentStrategyPtrOutput
-	ToKubernetesDeploymentStrategyPtrOutputWithContext(context.Context) KubernetesDeploymentStrategyPtrOutput
+	ToDeploymentStrategyPtrOutput() DeploymentStrategyPtrOutput
+	ToDeploymentStrategyPtrOutputWithContext(context.Context) DeploymentStrategyPtrOutput
 }
 
-type kubernetesDeploymentStrategyPtrType KubernetesDeploymentStrategyArgs
+type deploymentStrategyPtrType DeploymentStrategyArgs
 
-func KubernetesDeploymentStrategyPtr(v *KubernetesDeploymentStrategyArgs) KubernetesDeploymentStrategyPtrInput {
-	return (*kubernetesDeploymentStrategyPtrType)(v)
+func DeploymentStrategyPtr(v *DeploymentStrategyArgs) DeploymentStrategyPtrInput {
+	return (*deploymentStrategyPtrType)(v)
 }
 
-func (*kubernetesDeploymentStrategyPtrType) ElementType() reflect.Type {
-	return reflect.TypeOf((**KubernetesDeploymentStrategy)(nil)).Elem()
+func (*deploymentStrategyPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**DeploymentStrategy)(nil)).Elem()
 }
 
-func (i *kubernetesDeploymentStrategyPtrType) ToKubernetesDeploymentStrategyPtrOutput() KubernetesDeploymentStrategyPtrOutput {
-	return i.ToKubernetesDeploymentStrategyPtrOutputWithContext(context.Background())
+func (i *deploymentStrategyPtrType) ToDeploymentStrategyPtrOutput() DeploymentStrategyPtrOutput {
+	return i.ToDeploymentStrategyPtrOutputWithContext(context.Background())
 }
 
-func (i *kubernetesDeploymentStrategyPtrType) ToKubernetesDeploymentStrategyPtrOutputWithContext(ctx context.Context) KubernetesDeploymentStrategyPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(KubernetesDeploymentStrategyPtrOutput)
+func (i *deploymentStrategyPtrType) ToDeploymentStrategyPtrOutputWithContext(ctx context.Context) DeploymentStrategyPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DeploymentStrategyPtrOutput)
 }
 
-type KubernetesDeploymentStrategyOutput struct{ *pulumi.OutputState }
+type DeploymentStrategyOutput struct{ *pulumi.OutputState }
 
-func (KubernetesDeploymentStrategyOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*KubernetesDeploymentStrategy)(nil)).Elem()
+func (DeploymentStrategyOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*DeploymentStrategy)(nil)).Elem()
 }
 
-func (o KubernetesDeploymentStrategyOutput) ToKubernetesDeploymentStrategyOutput() KubernetesDeploymentStrategyOutput {
+func (o DeploymentStrategyOutput) ToDeploymentStrategyOutput() DeploymentStrategyOutput {
 	return o
 }
 
-func (o KubernetesDeploymentStrategyOutput) ToKubernetesDeploymentStrategyOutputWithContext(ctx context.Context) KubernetesDeploymentStrategyOutput {
+func (o DeploymentStrategyOutput) ToDeploymentStrategyOutputWithContext(ctx context.Context) DeploymentStrategyOutput {
 	return o
 }
 
-func (o KubernetesDeploymentStrategyOutput) ToKubernetesDeploymentStrategyPtrOutput() KubernetesDeploymentStrategyPtrOutput {
-	return o.ToKubernetesDeploymentStrategyPtrOutputWithContext(context.Background())
+func (o DeploymentStrategyOutput) ToDeploymentStrategyPtrOutput() DeploymentStrategyPtrOutput {
+	return o.ToDeploymentStrategyPtrOutputWithContext(context.Background())
 }
 
-func (o KubernetesDeploymentStrategyOutput) ToKubernetesDeploymentStrategyPtrOutputWithContext(ctx context.Context) KubernetesDeploymentStrategyPtrOutput {
-	return o.ApplyT(func(v KubernetesDeploymentStrategy) *KubernetesDeploymentStrategy {
+func (o DeploymentStrategyOutput) ToDeploymentStrategyPtrOutputWithContext(ctx context.Context) DeploymentStrategyPtrOutput {
+	return o.ApplyT(func(v DeploymentStrategy) *DeploymentStrategy {
 		return &v
-	}).(KubernetesDeploymentStrategyPtrOutput)
+	}).(DeploymentStrategyPtrOutput)
 }
-func (o KubernetesDeploymentStrategyOutput) Type() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v KubernetesDeploymentStrategy) *string { return v.Type }).(pulumi.StringPtrOutput)
-}
-
-type KubernetesDeploymentStrategyPtrOutput struct{ *pulumi.OutputState }
-
-func (KubernetesDeploymentStrategyPtrOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((**KubernetesDeploymentStrategy)(nil)).Elem()
+func (o DeploymentStrategyOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v DeploymentStrategy) *string { return v.Type }).(pulumi.StringPtrOutput)
 }
 
-func (o KubernetesDeploymentStrategyPtrOutput) ToKubernetesDeploymentStrategyPtrOutput() KubernetesDeploymentStrategyPtrOutput {
+type DeploymentStrategyPtrOutput struct{ *pulumi.OutputState }
+
+func (DeploymentStrategyPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**DeploymentStrategy)(nil)).Elem()
+}
+
+func (o DeploymentStrategyPtrOutput) ToDeploymentStrategyPtrOutput() DeploymentStrategyPtrOutput {
 	return o
 }
 
-func (o KubernetesDeploymentStrategyPtrOutput) ToKubernetesDeploymentStrategyPtrOutputWithContext(ctx context.Context) KubernetesDeploymentStrategyPtrOutput {
+func (o DeploymentStrategyPtrOutput) ToDeploymentStrategyPtrOutputWithContext(ctx context.Context) DeploymentStrategyPtrOutput {
 	return o
 }
 
-func (o KubernetesDeploymentStrategyPtrOutput) Elem() KubernetesDeploymentStrategyOutput {
-	return o.ApplyT(func(v *KubernetesDeploymentStrategy) KubernetesDeploymentStrategy { return *v }).(KubernetesDeploymentStrategyOutput)
+func (o DeploymentStrategyPtrOutput) Elem() DeploymentStrategyOutput {
+	return o.ApplyT(func(v *DeploymentStrategy) DeploymentStrategy { return *v }).(DeploymentStrategyOutput)
 }
 
-func (o KubernetesDeploymentStrategyPtrOutput) Type() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *KubernetesDeploymentStrategy) *string {
+func (o DeploymentStrategyPtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *DeploymentStrategy) *string {
 		if v == nil {
 			return nil
 		}
@@ -262,192 +262,192 @@ func (o KubernetesDeploymentStrategyPtrOutput) Type() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-type KubernetesImageArgs struct {
+type ImageArgs struct {
 	Registry   *string `pulumi:"registry"`
 	Repository *string `pulumi:"repository"`
 	Tag        *string `pulumi:"tag"`
 }
 
-// KubernetesImageArgsInput is an input type that accepts KubernetesImageArgsArgs and KubernetesImageArgsOutput values.
-// You can construct a concrete instance of `KubernetesImageArgsInput` via:
+// ImageArgsInput is an input type that accepts ImageArgsArgs and ImageArgsOutput values.
+// You can construct a concrete instance of `ImageArgsInput` via:
 //
-//          KubernetesImageArgsArgs{...}
-type KubernetesImageArgsInput interface {
+//          ImageArgsArgs{...}
+type ImageArgsInput interface {
 	pulumi.Input
 
-	ToKubernetesImageArgsOutput() KubernetesImageArgsOutput
-	ToKubernetesImageArgsOutputWithContext(context.Context) KubernetesImageArgsOutput
+	ToImageArgsOutput() ImageArgsOutput
+	ToImageArgsOutputWithContext(context.Context) ImageArgsOutput
 }
 
-type KubernetesImageArgsArgs struct {
+type ImageArgsArgs struct {
 	Registry   pulumi.StringPtrInput `pulumi:"registry"`
 	Repository pulumi.StringPtrInput `pulumi:"repository"`
 	Tag        pulumi.StringPtrInput `pulumi:"tag"`
 }
 
-func (KubernetesImageArgsArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*KubernetesImageArgs)(nil)).Elem()
+func (ImageArgsArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ImageArgs)(nil)).Elem()
 }
 
-func (i KubernetesImageArgsArgs) ToKubernetesImageArgsOutput() KubernetesImageArgsOutput {
-	return i.ToKubernetesImageArgsOutputWithContext(context.Background())
+func (i ImageArgsArgs) ToImageArgsOutput() ImageArgsOutput {
+	return i.ToImageArgsOutputWithContext(context.Background())
 }
 
-func (i KubernetesImageArgsArgs) ToKubernetesImageArgsOutputWithContext(ctx context.Context) KubernetesImageArgsOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(KubernetesImageArgsOutput)
+func (i ImageArgsArgs) ToImageArgsOutputWithContext(ctx context.Context) ImageArgsOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ImageArgsOutput)
 }
 
-type KubernetesImageArgsOutput struct{ *pulumi.OutputState }
+type ImageArgsOutput struct{ *pulumi.OutputState }
 
-func (KubernetesImageArgsOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*KubernetesImageArgs)(nil)).Elem()
+func (ImageArgsOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ImageArgs)(nil)).Elem()
 }
 
-func (o KubernetesImageArgsOutput) ToKubernetesImageArgsOutput() KubernetesImageArgsOutput {
+func (o ImageArgsOutput) ToImageArgsOutput() ImageArgsOutput {
 	return o
 }
 
-func (o KubernetesImageArgsOutput) ToKubernetesImageArgsOutputWithContext(ctx context.Context) KubernetesImageArgsOutput {
+func (o ImageArgsOutput) ToImageArgsOutputWithContext(ctx context.Context) ImageArgsOutput {
 	return o
 }
 
-func (o KubernetesImageArgsOutput) Registry() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v KubernetesImageArgs) *string { return v.Registry }).(pulumi.StringPtrOutput)
+func (o ImageArgsOutput) Registry() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ImageArgs) *string { return v.Registry }).(pulumi.StringPtrOutput)
 }
 
-func (o KubernetesImageArgsOutput) Repository() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v KubernetesImageArgs) *string { return v.Repository }).(pulumi.StringPtrOutput)
+func (o ImageArgsOutput) Repository() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ImageArgs) *string { return v.Repository }).(pulumi.StringPtrOutput)
 }
 
-func (o KubernetesImageArgsOutput) Tag() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v KubernetesImageArgs) *string { return v.Tag }).(pulumi.StringPtrOutput)
+func (o ImageArgsOutput) Tag() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ImageArgs) *string { return v.Tag }).(pulumi.StringPtrOutput)
 }
 
-type KubernetesService struct {
+type Service struct {
 	Name *string `pulumi:"name"`
 	Type string  `pulumi:"type"`
 }
 
-// KubernetesServiceInput is an input type that accepts KubernetesServiceArgs and KubernetesServiceOutput values.
-// You can construct a concrete instance of `KubernetesServiceInput` via:
+// ServiceInput is an input type that accepts ServiceArgs and ServiceOutput values.
+// You can construct a concrete instance of `ServiceInput` via:
 //
-//          KubernetesServiceArgs{...}
-type KubernetesServiceInput interface {
+//          ServiceArgs{...}
+type ServiceInput interface {
 	pulumi.Input
 
-	ToKubernetesServiceOutput() KubernetesServiceOutput
-	ToKubernetesServiceOutputWithContext(context.Context) KubernetesServiceOutput
+	ToServiceOutput() ServiceOutput
+	ToServiceOutputWithContext(context.Context) ServiceOutput
 }
 
-type KubernetesServiceArgs struct {
+type ServiceArgs struct {
 	Name pulumi.StringPtrInput `pulumi:"name"`
-	Type KubernetesServiceType `pulumi:"type"`
+	Type ServiceType           `pulumi:"type"`
 }
 
-func (KubernetesServiceArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*KubernetesService)(nil)).Elem()
+func (ServiceArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Service)(nil)).Elem()
 }
 
-func (i KubernetesServiceArgs) ToKubernetesServiceOutput() KubernetesServiceOutput {
-	return i.ToKubernetesServiceOutputWithContext(context.Background())
+func (i ServiceArgs) ToServiceOutput() ServiceOutput {
+	return i.ToServiceOutputWithContext(context.Background())
 }
 
-func (i KubernetesServiceArgs) ToKubernetesServiceOutputWithContext(ctx context.Context) KubernetesServiceOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(KubernetesServiceOutput)
+func (i ServiceArgs) ToServiceOutputWithContext(ctx context.Context) ServiceOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceOutput)
 }
 
-func (i KubernetesServiceArgs) ToKubernetesServicePtrOutput() KubernetesServicePtrOutput {
-	return i.ToKubernetesServicePtrOutputWithContext(context.Background())
+func (i ServiceArgs) ToServicePtrOutput() ServicePtrOutput {
+	return i.ToServicePtrOutputWithContext(context.Background())
 }
 
-func (i KubernetesServiceArgs) ToKubernetesServicePtrOutputWithContext(ctx context.Context) KubernetesServicePtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(KubernetesServiceOutput).ToKubernetesServicePtrOutputWithContext(ctx)
+func (i ServiceArgs) ToServicePtrOutputWithContext(ctx context.Context) ServicePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServiceOutput).ToServicePtrOutputWithContext(ctx)
 }
 
-// KubernetesServicePtrInput is an input type that accepts KubernetesServiceArgs, KubernetesServicePtr and KubernetesServicePtrOutput values.
-// You can construct a concrete instance of `KubernetesServicePtrInput` via:
+// ServicePtrInput is an input type that accepts ServiceArgs, ServicePtr and ServicePtrOutput values.
+// You can construct a concrete instance of `ServicePtrInput` via:
 //
-//          KubernetesServiceArgs{...}
+//          ServiceArgs{...}
 //
 //  or:
 //
 //          nil
-type KubernetesServicePtrInput interface {
+type ServicePtrInput interface {
 	pulumi.Input
 
-	ToKubernetesServicePtrOutput() KubernetesServicePtrOutput
-	ToKubernetesServicePtrOutputWithContext(context.Context) KubernetesServicePtrOutput
+	ToServicePtrOutput() ServicePtrOutput
+	ToServicePtrOutputWithContext(context.Context) ServicePtrOutput
 }
 
-type kubernetesServicePtrType KubernetesServiceArgs
+type servicePtrType ServiceArgs
 
-func KubernetesServicePtr(v *KubernetesServiceArgs) KubernetesServicePtrInput {
-	return (*kubernetesServicePtrType)(v)
+func ServicePtr(v *ServiceArgs) ServicePtrInput {
+	return (*servicePtrType)(v)
 }
 
-func (*kubernetesServicePtrType) ElementType() reflect.Type {
-	return reflect.TypeOf((**KubernetesService)(nil)).Elem()
+func (*servicePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**Service)(nil)).Elem()
 }
 
-func (i *kubernetesServicePtrType) ToKubernetesServicePtrOutput() KubernetesServicePtrOutput {
-	return i.ToKubernetesServicePtrOutputWithContext(context.Background())
+func (i *servicePtrType) ToServicePtrOutput() ServicePtrOutput {
+	return i.ToServicePtrOutputWithContext(context.Background())
 }
 
-func (i *kubernetesServicePtrType) ToKubernetesServicePtrOutputWithContext(ctx context.Context) KubernetesServicePtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(KubernetesServicePtrOutput)
+func (i *servicePtrType) ToServicePtrOutputWithContext(ctx context.Context) ServicePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ServicePtrOutput)
 }
 
-type KubernetesServiceOutput struct{ *pulumi.OutputState }
+type ServiceOutput struct{ *pulumi.OutputState }
 
-func (KubernetesServiceOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*KubernetesService)(nil)).Elem()
+func (ServiceOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Service)(nil)).Elem()
 }
 
-func (o KubernetesServiceOutput) ToKubernetesServiceOutput() KubernetesServiceOutput {
+func (o ServiceOutput) ToServiceOutput() ServiceOutput {
 	return o
 }
 
-func (o KubernetesServiceOutput) ToKubernetesServiceOutputWithContext(ctx context.Context) KubernetesServiceOutput {
+func (o ServiceOutput) ToServiceOutputWithContext(ctx context.Context) ServiceOutput {
 	return o
 }
 
-func (o KubernetesServiceOutput) ToKubernetesServicePtrOutput() KubernetesServicePtrOutput {
-	return o.ToKubernetesServicePtrOutputWithContext(context.Background())
+func (o ServiceOutput) ToServicePtrOutput() ServicePtrOutput {
+	return o.ToServicePtrOutputWithContext(context.Background())
 }
 
-func (o KubernetesServiceOutput) ToKubernetesServicePtrOutputWithContext(ctx context.Context) KubernetesServicePtrOutput {
-	return o.ApplyT(func(v KubernetesService) *KubernetesService {
+func (o ServiceOutput) ToServicePtrOutputWithContext(ctx context.Context) ServicePtrOutput {
+	return o.ApplyT(func(v Service) *Service {
 		return &v
-	}).(KubernetesServicePtrOutput)
+	}).(ServicePtrOutput)
 }
-func (o KubernetesServiceOutput) Name() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v KubernetesService) *string { return v.Name }).(pulumi.StringPtrOutput)
-}
-
-func (o KubernetesServiceOutput) Type() pulumi.StringOutput {
-	return o.ApplyT(func(v KubernetesService) string { return v.Type }).(pulumi.StringOutput)
+func (o ServiceOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Service) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
-type KubernetesServicePtrOutput struct{ *pulumi.OutputState }
-
-func (KubernetesServicePtrOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((**KubernetesService)(nil)).Elem()
+func (o ServiceOutput) Type() pulumi.StringOutput {
+	return o.ApplyT(func(v Service) string { return v.Type }).(pulumi.StringOutput)
 }
 
-func (o KubernetesServicePtrOutput) ToKubernetesServicePtrOutput() KubernetesServicePtrOutput {
+type ServicePtrOutput struct{ *pulumi.OutputState }
+
+func (ServicePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**Service)(nil)).Elem()
+}
+
+func (o ServicePtrOutput) ToServicePtrOutput() ServicePtrOutput {
 	return o
 }
 
-func (o KubernetesServicePtrOutput) ToKubernetesServicePtrOutputWithContext(ctx context.Context) KubernetesServicePtrOutput {
+func (o ServicePtrOutput) ToServicePtrOutputWithContext(ctx context.Context) ServicePtrOutput {
 	return o
 }
 
-func (o KubernetesServicePtrOutput) Elem() KubernetesServiceOutput {
-	return o.ApplyT(func(v *KubernetesService) KubernetesService { return *v }).(KubernetesServiceOutput)
+func (o ServicePtrOutput) Elem() ServiceOutput {
+	return o.ApplyT(func(v *Service) Service { return *v }).(ServiceOutput)
 }
 
-func (o KubernetesServicePtrOutput) Name() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *KubernetesService) *string {
+func (o ServicePtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Service) *string {
 		if v == nil {
 			return nil
 		}
@@ -455,8 +455,8 @@ func (o KubernetesServicePtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-func (o KubernetesServicePtrOutput) Type() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *KubernetesService) *string {
+func (o ServicePtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Service) *string {
 		if v == nil {
 			return nil
 		}
@@ -465,11 +465,11 @@ func (o KubernetesServicePtrOutput) Type() pulumi.StringPtrOutput {
 }
 
 func init() {
-	pulumi.RegisterOutputType(KubernetesDeploymentOutput{})
-	pulumi.RegisterOutputType(KubernetesDeploymentPtrOutput{})
-	pulumi.RegisterOutputType(KubernetesDeploymentStrategyOutput{})
-	pulumi.RegisterOutputType(KubernetesDeploymentStrategyPtrOutput{})
-	pulumi.RegisterOutputType(KubernetesImageArgsOutput{})
-	pulumi.RegisterOutputType(KubernetesServiceOutput{})
-	pulumi.RegisterOutputType(KubernetesServicePtrOutput{})
+	pulumi.RegisterOutputType(DeploymentOutput{})
+	pulumi.RegisterOutputType(DeploymentPtrOutput{})
+	pulumi.RegisterOutputType(DeploymentStrategyOutput{})
+	pulumi.RegisterOutputType(DeploymentStrategyPtrOutput{})
+	pulumi.RegisterOutputType(ImageArgsOutput{})
+	pulumi.RegisterOutputType(ServiceOutput{})
+	pulumi.RegisterOutputType(ServicePtrOutput{})
 }

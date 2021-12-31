@@ -5,30 +5,30 @@ import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "./types";
 import * as utilities from "./utilities";
 
-export class KubernetesLinuxServerRadarr extends pulumi.ComponentResource {
+export class Radarr extends pulumi.ComponentResource {
     /** @internal */
-    public static readonly __pulumiType = 'homelab:index:KubernetesLinuxServerRadarr';
+    public static readonly __pulumiType = 'homelab:index/kubernetes/linuxserver:Radarr';
 
     /**
-     * Returns true if the given object is an instance of KubernetesLinuxServerRadarr.  This is designed to work even
+     * Returns true if the given object is an instance of Radarr.  This is designed to work even
      * when multiple copies of the Pulumi SDK have been loaded into the same process.
      */
-    public static isInstance(obj: any): obj is KubernetesLinuxServerRadarr {
+    public static isInstance(obj: any): obj is Radarr {
         if (obj === undefined || obj === null) {
             return false;
         }
-        return obj['__pulumiType'] === KubernetesLinuxServerRadarr.__pulumiType;
+        return obj['__pulumiType'] === Radarr.__pulumiType;
     }
 
 
     /**
-     * Create a KubernetesLinuxServerRadarr resource with the given unique name, arguments, and options.
+     * Create a Radarr resource with the given unique name, arguments, and options.
      *
      * @param name The _unique_ name of the resource.
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args?: KubernetesLinuxServerRadarrArgs, opts?: pulumi.ComponentResourceOptions) {
+    constructor(name: string, args?: RadarrArgs, opts?: pulumi.ComponentResourceOptions) {
         let inputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
@@ -42,16 +42,16 @@ export class KubernetesLinuxServerRadarr extends pulumi.ComponentResource {
         if (!opts.version) {
             opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
         }
-        super(KubernetesLinuxServerRadarr.__pulumiType, name, inputs, opts, true /*remote*/);
+        super(Radarr.__pulumiType, name, inputs, opts, true /*remote*/);
     }
 }
 
 /**
- * The set of arguments for constructing a KubernetesLinuxServerRadarr resource.
+ * The set of arguments for constructing a Radarr resource.
  */
-export interface KubernetesLinuxServerRadarrArgs {
-    readonly deployment?: pulumi.Input<inputs.KubernetesDeploymentArgs>;
-    readonly image?: pulumi.Input<string | inputs.KubernetesImageArgsArgs>;
+export interface RadarrArgs {
+    readonly deployment?: pulumi.Input<inputs.DeploymentArgs>;
+    readonly image?: pulumi.Input<string | inputs.ImageArgsArgs>;
     /**
      * Optional name override.
      */
@@ -60,5 +60,5 @@ export interface KubernetesLinuxServerRadarrArgs {
      * Namespace to provision resources in.
      */
     readonly namespace?: pulumi.Input<string>;
-    readonly service?: pulumi.Input<inputs.KubernetesServiceArgs>;
+    readonly service?: pulumi.Input<inputs.ServiceArgs>;
 }

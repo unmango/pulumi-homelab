@@ -20,8 +20,8 @@ func (m *module) Version() semver.Version {
 
 func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
 	switch typ {
-	case "homelab:index:KubernetesLinuxServerRadarr":
-		r = &KubernetesLinuxServerRadarr{}
+	case "homelab:index/kubernetes/linuxserver:Radarr":
+		r = &Radarr{}
 	case "homelab:index:StaticPage":
 		r = &StaticPage{}
 	default:
@@ -58,6 +58,11 @@ func init() {
 	pulumi.RegisterResourceModule(
 		"homelab",
 		"index",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"homelab",
+		"index/kubernetes/linuxserver",
 		&module{version},
 	)
 	pulumi.RegisterResourcePackage(

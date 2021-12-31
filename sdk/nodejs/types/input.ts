@@ -4,21 +4,21 @@
 import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "../types";
 
-export interface KubernetesDeploymentArgs {
-    strategy?: pulumi.Input<inputs.KubernetesDeploymentStrategyArgs>;
+export interface DeploymentArgs {
+    strategy?: pulumi.Input<inputs.DeploymentStrategyArgs>;
 }
 
-export interface KubernetesDeploymentStrategyArgs {
-    type?: pulumi.Input<enums.KubernetesDeploymentStrategyType>;
+export interface DeploymentStrategyArgs {
+    type?: pulumi.Input<enums.DeploymentStrategyType>;
 }
 
-export interface KubernetesImageArgsArgs {
+export interface ImageArgsArgs {
     registry?: pulumi.Input<string>;
     repository?: pulumi.Input<string>;
     tag?: pulumi.Input<string>;
 }
 
-export interface KubernetesServiceArgs {
+export interface ServiceArgs {
     name?: pulumi.Input<string>;
-    type: pulumi.Input<enums.KubernetesServiceType>;
+    type: pulumi.Input<enums.ServiceType>;
 }

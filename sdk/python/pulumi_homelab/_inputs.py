@@ -10,48 +10,50 @@ from . import _utilities
 from ._enums import *
 
 __all__ = [
-    'KubernetesDeploymentArgs',
-    'KubernetesDeploymentStrategyArgs',
-    'KubernetesImageArgsArgs',
-    'KubernetesServiceArgs',
+    'DeploymentArgs',
+    'DeploymentStrategyArgs',
+    'ImageArgsArgs',
+    'ServiceArgs',
 ]
 
 @pulumi.input_type
-class KubernetesDeploymentArgs:
+class DeploymentArgs:
     def __init__(__self__, *,
-                 strategy: Optional[pulumi.Input['KubernetesDeploymentStrategyArgs']] = None):
+                 strategy: Optional[pulumi.Input['DeploymentStrategyArgs']] = None):
         if strategy is not None:
             pulumi.set(__self__, "strategy", strategy)
 
     @property
     @pulumi.getter
-    def strategy(self) -> Optional[pulumi.Input['KubernetesDeploymentStrategyArgs']]:
+    def strategy(self) -> Optional[pulumi.Input['DeploymentStrategyArgs']]:
         return pulumi.get(self, "strategy")
 
     @strategy.setter
-    def strategy(self, value: Optional[pulumi.Input['KubernetesDeploymentStrategyArgs']]):
+    def strategy(self, value: Optional[pulumi.Input['DeploymentStrategyArgs']]):
         pulumi.set(self, "strategy", value)
 
 
 @pulumi.input_type
-class KubernetesDeploymentStrategyArgs:
+class DeploymentStrategyArgs:
     def __init__(__self__, *,
-                 type: Optional[pulumi.Input['KubernetesDeploymentStrategyType']] = None):
+                 type: Optional[pulumi.Input['DeploymentStrategyType']] = None):
+        if type is None:
+            type = 'Recreate'
         if type is not None:
             pulumi.set(__self__, "type", type)
 
     @property
     @pulumi.getter
-    def type(self) -> Optional[pulumi.Input['KubernetesDeploymentStrategyType']]:
+    def type(self) -> Optional[pulumi.Input['DeploymentStrategyType']]:
         return pulumi.get(self, "type")
 
     @type.setter
-    def type(self, value: Optional[pulumi.Input['KubernetesDeploymentStrategyType']]):
+    def type(self, value: Optional[pulumi.Input['DeploymentStrategyType']]):
         pulumi.set(self, "type", value)
 
 
 @pulumi.input_type
-class KubernetesImageArgsArgs:
+class ImageArgsArgs:
     def __init__(__self__, *,
                  registry: Optional[pulumi.Input[str]] = None,
                  repository: Optional[pulumi.Input[str]] = None,
@@ -92,9 +94,9 @@ class KubernetesImageArgsArgs:
 
 
 @pulumi.input_type
-class KubernetesServiceArgs:
+class ServiceArgs:
     def __init__(__self__, *,
-                 type: pulumi.Input['KubernetesServiceType'],
+                 type: pulumi.Input['ServiceType'],
                  name: Optional[pulumi.Input[str]] = None):
         pulumi.set(__self__, "type", type)
         if name is not None:
@@ -102,11 +104,11 @@ class KubernetesServiceArgs:
 
     @property
     @pulumi.getter
-    def type(self) -> pulumi.Input['KubernetesServiceType']:
+    def type(self) -> pulumi.Input['ServiceType']:
         return pulumi.get(self, "type")
 
     @type.setter
-    def type(self, value: pulumi.Input['KubernetesServiceType']):
+    def type(self, value: pulumi.Input['ServiceType']):
         pulumi.set(self, "type", value)
 
     @property

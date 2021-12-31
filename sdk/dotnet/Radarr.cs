@@ -9,18 +9,18 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Homelab
 {
-    [HomelabResourceType("homelab:index:KubernetesLinuxServerRadarr")]
-    public partial class KubernetesLinuxServerRadarr : Pulumi.ComponentResource
+    [HomelabResourceType("homelab:index/kubernetes/linuxserver:Radarr")]
+    public partial class Radarr : Pulumi.ComponentResource
     {
         /// <summary>
-        /// Create a KubernetesLinuxServerRadarr resource with the given unique name, arguments, and options.
+        /// Create a Radarr resource with the given unique name, arguments, and options.
         /// </summary>
         ///
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public KubernetesLinuxServerRadarr(string name, KubernetesLinuxServerRadarrArgs? args = null, ComponentResourceOptions? options = null)
-            : base("homelab:index:KubernetesLinuxServerRadarr", name, args ?? new KubernetesLinuxServerRadarrArgs(), MakeResourceOptions(options, ""), remote: true)
+        public Radarr(string name, RadarrArgs? args = null, ComponentResourceOptions? options = null)
+            : base("homelab:index/kubernetes/linuxserver:Radarr", name, args ?? new RadarrArgs(), MakeResourceOptions(options, ""), remote: true)
         {
         }
 
@@ -37,13 +37,13 @@ namespace Pulumi.Homelab
         }
     }
 
-    public sealed class KubernetesLinuxServerRadarrArgs : Pulumi.ResourceArgs
+    public sealed class RadarrArgs : Pulumi.ResourceArgs
     {
         [Input("deployment")]
-        public Input<Inputs.KubernetesDeploymentArgs>? Deployment { get; set; }
+        public Input<Inputs.DeploymentArgs>? Deployment { get; set; }
 
         [Input("image")]
-        public InputUnion<string, Inputs.KubernetesImageArgsArgs>? Image { get; set; }
+        public InputUnion<string, Inputs.ImageArgsArgs>? Image { get; set; }
 
         /// <summary>
         /// Optional name override.
@@ -58,9 +58,9 @@ namespace Pulumi.Homelab
         public Input<string>? Namespace { get; set; }
 
         [Input("service")]
-        public Input<Inputs.KubernetesServiceArgs>? Service { get; set; }
+        public Input<Inputs.ServiceArgs>? Service { get; set; }
 
-        public KubernetesLinuxServerRadarrArgs()
+        public RadarrArgs()
         {
         }
     }

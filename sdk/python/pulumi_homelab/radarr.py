@@ -10,18 +10,18 @@ from . import _utilities
 from ._enums import *
 from ._inputs import *
 
-__all__ = ['KubernetesLinuxServerRadarrArgs', 'KubernetesLinuxServerRadarr']
+__all__ = ['RadarrArgs', 'Radarr']
 
 @pulumi.input_type
-class KubernetesLinuxServerRadarrArgs:
+class RadarrArgs:
     def __init__(__self__, *,
-                 deployment: Optional[pulumi.Input['KubernetesDeploymentArgs']] = None,
-                 image: Optional[pulumi.Input[Union[str, 'KubernetesImageArgsArgs']]] = None,
+                 deployment: Optional[pulumi.Input['DeploymentArgs']] = None,
+                 image: Optional[pulumi.Input[Union[str, 'ImageArgsArgs']]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  namespace: Optional[pulumi.Input[str]] = None,
-                 service: Optional[pulumi.Input['KubernetesServiceArgs']] = None):
+                 service: Optional[pulumi.Input['ServiceArgs']] = None):
         """
-        The set of arguments for constructing a KubernetesLinuxServerRadarr resource.
+        The set of arguments for constructing a Radarr resource.
         :param pulumi.Input[str] name: Optional name override.
         :param pulumi.Input[str] namespace: Namespace to provision resources in.
         """
@@ -38,20 +38,20 @@ class KubernetesLinuxServerRadarrArgs:
 
     @property
     @pulumi.getter
-    def deployment(self) -> Optional[pulumi.Input['KubernetesDeploymentArgs']]:
+    def deployment(self) -> Optional[pulumi.Input['DeploymentArgs']]:
         return pulumi.get(self, "deployment")
 
     @deployment.setter
-    def deployment(self, value: Optional[pulumi.Input['KubernetesDeploymentArgs']]):
+    def deployment(self, value: Optional[pulumi.Input['DeploymentArgs']]):
         pulumi.set(self, "deployment", value)
 
     @property
     @pulumi.getter
-    def image(self) -> Optional[pulumi.Input[Union[str, 'KubernetesImageArgsArgs']]]:
+    def image(self) -> Optional[pulumi.Input[Union[str, 'ImageArgsArgs']]]:
         return pulumi.get(self, "image")
 
     @image.setter
-    def image(self, value: Optional[pulumi.Input[Union[str, 'KubernetesImageArgsArgs']]]):
+    def image(self, value: Optional[pulumi.Input[Union[str, 'ImageArgsArgs']]]):
         pulumi.set(self, "image", value)
 
     @property
@@ -80,27 +80,27 @@ class KubernetesLinuxServerRadarrArgs:
 
     @property
     @pulumi.getter
-    def service(self) -> Optional[pulumi.Input['KubernetesServiceArgs']]:
+    def service(self) -> Optional[pulumi.Input['ServiceArgs']]:
         return pulumi.get(self, "service")
 
     @service.setter
-    def service(self, value: Optional[pulumi.Input['KubernetesServiceArgs']]):
+    def service(self, value: Optional[pulumi.Input['ServiceArgs']]):
         pulumi.set(self, "service", value)
 
 
-class KubernetesLinuxServerRadarr(pulumi.ComponentResource):
+class Radarr(pulumi.ComponentResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 deployment: Optional[pulumi.Input[pulumi.InputType['KubernetesDeploymentArgs']]] = None,
-                 image: Optional[pulumi.Input[Union[str, pulumi.InputType['KubernetesImageArgsArgs']]]] = None,
+                 deployment: Optional[pulumi.Input[pulumi.InputType['DeploymentArgs']]] = None,
+                 image: Optional[pulumi.Input[Union[str, pulumi.InputType['ImageArgsArgs']]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  namespace: Optional[pulumi.Input[str]] = None,
-                 service: Optional[pulumi.Input[pulumi.InputType['KubernetesServiceArgs']]] = None,
+                 service: Optional[pulumi.Input[pulumi.InputType['ServiceArgs']]] = None,
                  __props__=None):
         """
-        Create a KubernetesLinuxServerRadarr resource with the given unique name, props, and options.
+        Create a Radarr resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] name: Optional name override.
@@ -110,17 +110,17 @@ class KubernetesLinuxServerRadarr(pulumi.ComponentResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: Optional[KubernetesLinuxServerRadarrArgs] = None,
+                 args: Optional[RadarrArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a KubernetesLinuxServerRadarr resource with the given unique name, props, and options.
+        Create a Radarr resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
-        :param KubernetesLinuxServerRadarrArgs args: The arguments to use to populate this resource's properties.
+        :param RadarrArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
         """
         ...
     def __init__(__self__, resource_name: str, *args, **kwargs):
-        resource_args, opts = _utilities.get_resource_args_opts(KubernetesLinuxServerRadarrArgs, pulumi.ResourceOptions, *args, **kwargs)
+        resource_args, opts = _utilities.get_resource_args_opts(RadarrArgs, pulumi.ResourceOptions, *args, **kwargs)
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
@@ -129,11 +129,11 @@ class KubernetesLinuxServerRadarr(pulumi.ComponentResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 deployment: Optional[pulumi.Input[pulumi.InputType['KubernetesDeploymentArgs']]] = None,
-                 image: Optional[pulumi.Input[Union[str, pulumi.InputType['KubernetesImageArgsArgs']]]] = None,
+                 deployment: Optional[pulumi.Input[pulumi.InputType['DeploymentArgs']]] = None,
+                 image: Optional[pulumi.Input[Union[str, pulumi.InputType['ImageArgsArgs']]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  namespace: Optional[pulumi.Input[str]] = None,
-                 service: Optional[pulumi.Input[pulumi.InputType['KubernetesServiceArgs']]] = None,
+                 service: Optional[pulumi.Input[pulumi.InputType['ServiceArgs']]] = None,
                  __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()
@@ -146,15 +146,15 @@ class KubernetesLinuxServerRadarr(pulumi.ComponentResource):
         else:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
-            __props__ = KubernetesLinuxServerRadarrArgs.__new__(KubernetesLinuxServerRadarrArgs)
+            __props__ = RadarrArgs.__new__(RadarrArgs)
 
             __props__.__dict__["deployment"] = deployment
             __props__.__dict__["image"] = image
             __props__.__dict__["name"] = name
             __props__.__dict__["namespace"] = namespace
             __props__.__dict__["service"] = service
-        super(KubernetesLinuxServerRadarr, __self__).__init__(
-            'homelab:index:KubernetesLinuxServerRadarr',
+        super(Radarr, __self__).__init__(
+            'homelab:index/kubernetes/linuxserver:Radarr',
             resource_name,
             __props__,
             opts,

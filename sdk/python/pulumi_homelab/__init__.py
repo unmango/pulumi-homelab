@@ -4,8 +4,8 @@
 
 # Export this package's modules as members:
 from ._enums import *
-from .kubernetes_linux_server_radarr import *
 from .provider import *
+from .radarr import *
 from .static_page import *
 from ._inputs import *
 
@@ -21,8 +21,8 @@ def _register_module():
             return Module._version
 
         def construct(self, name: str, typ: str, urn: str) -> pulumi.Resource:
-            if typ == "homelab:index:KubernetesLinuxServerRadarr":
-                return KubernetesLinuxServerRadarr(name, pulumi.ResourceOptions(urn=urn))
+            if typ == "homelab:index/kubernetes/linuxserver:Radarr":
+                return Radarr(name, pulumi.ResourceOptions(urn=urn))
             elif typ == "homelab:index:StaticPage":
                 return StaticPage(name, pulumi.ResourceOptions(urn=urn))
             else:
@@ -31,6 +31,7 @@ def _register_module():
 
     _module_instance = Module()
     pulumi.runtime.register_resource_module("homelab", "index", _module_instance)
+    pulumi.runtime.register_resource_module("homelab", "index/kubernetes/linuxserver", _module_instance)
 
 
     class Package(pulumi.runtime.ResourcePackage):
