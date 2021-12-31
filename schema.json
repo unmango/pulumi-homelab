@@ -68,6 +68,16 @@
                 "namespace": {
                     "type": "string",
                     "description": "Namespace to provision resources in."
+                },
+                "image": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "#/types/homelab:index:KubernetesImageArgs"
+                        }
+                    ]
                 }
             }
         }
