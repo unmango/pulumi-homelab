@@ -57,6 +57,31 @@
                     "value": "Rolling"
                 }
             ]
+        },
+        "homelab:index:KubernetesService": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/types/homelab:index:KubernetesServiceType"
+                }
+            },
+            "required": [
+                "type"
+            ]
+        },
+        "homelab:index:KubernetesServiceType": {
+            "type": "string",
+            "enum": [
+                {
+                    "value": "ClusterIP"
+                },
+                {
+                    "value": "LoadBalancer"
+                }
+            ]
         }
     },
     "resources": {
