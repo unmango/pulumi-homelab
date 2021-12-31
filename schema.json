@@ -15,6 +15,22 @@
     ],
     "repository": "https://github.com/unmango/pulumi-homelab",
     "pluginDownloadURL": "",
+    "types": {
+        "homelab:index:kubernetes:imageArgs": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                }
+            }
+        }
+    },
     "resources": {
         "homelab:index:StaticPage": {
             "isComponent": true,
@@ -45,7 +61,25 @@
         "homelab:index:kubernetes:linuxserver:radarr": {
             "isComponent": true,
             "inputProperties": {
-                
+                "name": {
+                    "type": "string",
+                    "description": "Optional name override."
+                },
+                "namespace": {
+                    "type": "string",
+                    "description": "Namespace to provision resources in."
+                },
+                "image": {
+                    "type": "object",
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "#/types/homelab:index:kubernetes:imageArgs"
+                        }
+                    ]
+                }
             }
         }
     },
