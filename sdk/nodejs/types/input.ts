@@ -4,12 +4,32 @@
 import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "../types";
 
+import * as utilities from "../utilities";
+
 export interface DeploymentArgs {
     strategy?: pulumi.Input<inputs.DeploymentStrategyArgs>;
+}
+/**
+ * deploymentArgsProvideDefaults sets the appropriate defaults for DeploymentArgs
+ */
+export function deploymentArgsProvideDefaults(val: DeploymentArgs): DeploymentArgs {
+    return {
+        ...val,
+        strategy: (val.strategy ? pulumi.output(val.strategy).apply(inputs.deploymentStrategyArgsProvideDefaults) : undefined),
+    };
 }
 
 export interface DeploymentStrategyArgs {
     type?: pulumi.Input<enums.DeploymentStrategyType>;
+}
+/**
+ * deploymentStrategyArgsProvideDefaults sets the appropriate defaults for DeploymentStrategyArgs
+ */
+export function deploymentStrategyArgsProvideDefaults(val: DeploymentStrategyArgs): DeploymentStrategyArgs {
+    return {
+        ...val,
+        type: (val.type) ?? "Recreate",
+    };
 }
 
 export interface ImageArgsArgs {

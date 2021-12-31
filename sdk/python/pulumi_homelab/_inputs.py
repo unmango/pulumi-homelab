@@ -10,28 +10,11 @@ from . import _utilities
 from ._enums import *
 
 __all__ = [
-    'DeploymentArgs',
     'DeploymentStrategyArgs',
+    'DeploymentArgs',
     'ImageArgsArgs',
     'ServiceArgs',
 ]
-
-@pulumi.input_type
-class DeploymentArgs:
-    def __init__(__self__, *,
-                 strategy: Optional[pulumi.Input['DeploymentStrategyArgs']] = None):
-        if strategy is not None:
-            pulumi.set(__self__, "strategy", strategy)
-
-    @property
-    @pulumi.getter
-    def strategy(self) -> Optional[pulumi.Input['DeploymentStrategyArgs']]:
-        return pulumi.get(self, "strategy")
-
-    @strategy.setter
-    def strategy(self, value: Optional[pulumi.Input['DeploymentStrategyArgs']]):
-        pulumi.set(self, "strategy", value)
-
 
 @pulumi.input_type
 class DeploymentStrategyArgs:
@@ -50,6 +33,23 @@ class DeploymentStrategyArgs:
     @type.setter
     def type(self, value: Optional[pulumi.Input['DeploymentStrategyType']]):
         pulumi.set(self, "type", value)
+
+
+@pulumi.input_type
+class DeploymentArgs:
+    def __init__(__self__, *,
+                 strategy: Optional[pulumi.Input['DeploymentStrategyArgs']] = None):
+        if strategy is not None:
+            pulumi.set(__self__, "strategy", strategy)
+
+    @property
+    @pulumi.getter
+    def strategy(self) -> Optional[pulumi.Input['DeploymentStrategyArgs']]:
+        return pulumi.get(self, "strategy")
+
+    @strategy.setter
+    def strategy(self, value: Optional[pulumi.Input['DeploymentStrategyArgs']]):
+        pulumi.set(self, "strategy", value)
 
 
 @pulumi.input_type

@@ -29,20 +29,20 @@ export class Radarr extends pulumi.ComponentResource {
      * @param opts A bag of options that control this resource's behavior.
      */
     constructor(name: string, args?: RadarrArgs, opts?: pulumi.ComponentResourceOptions) {
-        let inputs: pulumi.Inputs = {};
+        let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            inputs["deployment"] = args ? args.deployment : undefined;
-            inputs["image"] = args ? args.image : undefined;
-            inputs["name"] = args ? args.name : undefined;
-            inputs["namespace"] = args ? args.namespace : undefined;
-            inputs["service"] = args ? args.service : undefined;
+            resourceInputs["deployment"] = args ? (args.deployment ? pulumi.output(args.deployment).apply(inputs.deploymentArgsProvideDefaults) : undefined) : undefined;
+            resourceInputs["image"] = args ? args.image : undefined;
+            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["namespace"] = args ? args.namespace : undefined;
+            resourceInputs["service"] = args ? args.service : undefined;
         } else {
         }
         if (!opts.version) {
             opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
         }
-        super(Radarr.__pulumiType, name, inputs, opts, true /*remote*/);
+        super(Radarr.__pulumiType, name, resourceInputs, opts, true /*remote*/);
     }
 }
 
@@ -50,15 +50,15 @@ export class Radarr extends pulumi.ComponentResource {
  * The set of arguments for constructing a Radarr resource.
  */
 export interface RadarrArgs {
-    readonly deployment?: pulumi.Input<inputs.DeploymentArgs>;
-    readonly image?: pulumi.Input<string | inputs.ImageArgsArgs>;
+    deployment?: pulumi.Input<inputs.DeploymentArgs>;
+    image?: pulumi.Input<string | inputs.ImageArgsArgs>;
     /**
      * Optional name override.
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
     /**
      * Namespace to provision resources in.
      */
-    readonly namespace?: pulumi.Input<string>;
-    readonly service?: pulumi.Input<inputs.ServiceArgs>;
+    namespace?: pulumi.Input<string>;
+    service?: pulumi.Input<inputs.ServiceArgs>;
 }

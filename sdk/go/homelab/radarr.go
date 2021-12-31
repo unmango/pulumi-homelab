@@ -21,6 +21,9 @@ func NewRadarr(ctx *pulumi.Context,
 		args = &RadarrArgs{}
 	}
 
+	if args.Deployment != nil {
+		args.Deployment = args.Deployment.ToDeploymentPtrOutput().ApplyT(func(v *Deployment) *Deployment { return v.Defaults() }).(DeploymentPtrOutput)
+	}
 	var resource Radarr
 	err := ctx.RegisterRemoteComponentResource("homelab:index/kubernetes/linuxserver:Radarr", name, args, &resource, opts...)
 	if err != nil {
@@ -62,7 +65,7 @@ type RadarrInput interface {
 }
 
 func (*Radarr) ElementType() reflect.Type {
-	return reflect.TypeOf((*Radarr)(nil))
+	return reflect.TypeOf((**Radarr)(nil)).Elem()
 }
 
 func (i *Radarr) ToRadarrOutput() RadarrOutput {
@@ -71,35 +74,6 @@ func (i *Radarr) ToRadarrOutput() RadarrOutput {
 
 func (i *Radarr) ToRadarrOutputWithContext(ctx context.Context) RadarrOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RadarrOutput)
-}
-
-func (i *Radarr) ToRadarrPtrOutput() RadarrPtrOutput {
-	return i.ToRadarrPtrOutputWithContext(context.Background())
-}
-
-func (i *Radarr) ToRadarrPtrOutputWithContext(ctx context.Context) RadarrPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(RadarrPtrOutput)
-}
-
-type RadarrPtrInput interface {
-	pulumi.Input
-
-	ToRadarrPtrOutput() RadarrPtrOutput
-	ToRadarrPtrOutputWithContext(ctx context.Context) RadarrPtrOutput
-}
-
-type radarrPtrType RadarrArgs
-
-func (*radarrPtrType) ElementType() reflect.Type {
-	return reflect.TypeOf((**Radarr)(nil))
-}
-
-func (i *radarrPtrType) ToRadarrPtrOutput() RadarrPtrOutput {
-	return i.ToRadarrPtrOutputWithContext(context.Background())
-}
-
-func (i *radarrPtrType) ToRadarrPtrOutputWithContext(ctx context.Context) RadarrPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(RadarrPtrOutput)
 }
 
 // RadarrArrayInput is an input type that accepts RadarrArray and RadarrArrayOutput values.
@@ -116,7 +90,7 @@ type RadarrArrayInput interface {
 type RadarrArray []RadarrInput
 
 func (RadarrArray) ElementType() reflect.Type {
-	return reflect.TypeOf(([]*Radarr)(nil))
+	return reflect.TypeOf((*[]*Radarr)(nil)).Elem()
 }
 
 func (i RadarrArray) ToRadarrArrayOutput() RadarrArrayOutput {
@@ -141,7 +115,7 @@ type RadarrMapInput interface {
 type RadarrMap map[string]RadarrInput
 
 func (RadarrMap) ElementType() reflect.Type {
-	return reflect.TypeOf((map[string]*Radarr)(nil))
+	return reflect.TypeOf((*map[string]*Radarr)(nil)).Elem()
 }
 
 func (i RadarrMap) ToRadarrMapOutput() RadarrMapOutput {
@@ -152,12 +126,10 @@ func (i RadarrMap) ToRadarrMapOutputWithContext(ctx context.Context) RadarrMapOu
 	return pulumi.ToOutputWithContext(ctx, i).(RadarrMapOutput)
 }
 
-type RadarrOutput struct {
-	*pulumi.OutputState
-}
+type RadarrOutput struct{ *pulumi.OutputState }
 
 func (RadarrOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*Radarr)(nil))
+	return reflect.TypeOf((**Radarr)(nil)).Elem()
 }
 
 func (o RadarrOutput) ToRadarrOutput() RadarrOutput {
@@ -168,36 +140,10 @@ func (o RadarrOutput) ToRadarrOutputWithContext(ctx context.Context) RadarrOutpu
 	return o
 }
 
-func (o RadarrOutput) ToRadarrPtrOutput() RadarrPtrOutput {
-	return o.ToRadarrPtrOutputWithContext(context.Background())
-}
-
-func (o RadarrOutput) ToRadarrPtrOutputWithContext(ctx context.Context) RadarrPtrOutput {
-	return o.ApplyT(func(v Radarr) *Radarr {
-		return &v
-	}).(RadarrPtrOutput)
-}
-
-type RadarrPtrOutput struct {
-	*pulumi.OutputState
-}
-
-func (RadarrPtrOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((**Radarr)(nil))
-}
-
-func (o RadarrPtrOutput) ToRadarrPtrOutput() RadarrPtrOutput {
-	return o
-}
-
-func (o RadarrPtrOutput) ToRadarrPtrOutputWithContext(ctx context.Context) RadarrPtrOutput {
-	return o
-}
-
 type RadarrArrayOutput struct{ *pulumi.OutputState }
 
 func (RadarrArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]Radarr)(nil))
+	return reflect.TypeOf((*[]*Radarr)(nil)).Elem()
 }
 
 func (o RadarrArrayOutput) ToRadarrArrayOutput() RadarrArrayOutput {
@@ -209,15 +155,15 @@ func (o RadarrArrayOutput) ToRadarrArrayOutputWithContext(ctx context.Context) R
 }
 
 func (o RadarrArrayOutput) Index(i pulumi.IntInput) RadarrOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) Radarr {
-		return vs[0].([]Radarr)[vs[1].(int)]
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *Radarr {
+		return vs[0].([]*Radarr)[vs[1].(int)]
 	}).(RadarrOutput)
 }
 
 type RadarrMapOutput struct{ *pulumi.OutputState }
 
 func (RadarrMapOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*map[string]Radarr)(nil))
+	return reflect.TypeOf((*map[string]*Radarr)(nil)).Elem()
 }
 
 func (o RadarrMapOutput) ToRadarrMapOutput() RadarrMapOutput {
@@ -229,14 +175,16 @@ func (o RadarrMapOutput) ToRadarrMapOutputWithContext(ctx context.Context) Radar
 }
 
 func (o RadarrMapOutput) MapIndex(k pulumi.StringInput) RadarrOutput {
-	return pulumi.All(o, k).ApplyT(func(vs []interface{}) Radarr {
-		return vs[0].(map[string]Radarr)[vs[1].(string)]
+	return pulumi.All(o, k).ApplyT(func(vs []interface{}) *Radarr {
+		return vs[0].(map[string]*Radarr)[vs[1].(string)]
 	}).(RadarrOutput)
 }
 
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*RadarrInput)(nil)).Elem(), &Radarr{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RadarrArrayInput)(nil)).Elem(), RadarrArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RadarrMapInput)(nil)).Elem(), RadarrMap{})
 	pulumi.RegisterOutputType(RadarrOutput{})
-	pulumi.RegisterOutputType(RadarrPtrOutput{})
 	pulumi.RegisterOutputType(RadarrArrayOutput{})
 	pulumi.RegisterOutputType(RadarrMapOutput{})
 }

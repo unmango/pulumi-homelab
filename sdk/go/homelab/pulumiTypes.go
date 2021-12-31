@@ -14,6 +14,17 @@ type Deployment struct {
 	Strategy *DeploymentStrategy `pulumi:"strategy"`
 }
 
+// Defaults sets the appropriate defaults for Deployment
+func (val *Deployment) Defaults() *Deployment {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	tmp.Strategy = tmp.Strategy.Defaults()
+
+	return &tmp
+}
+
 // DeploymentInput is an input type that accepts DeploymentArgs and DeploymentOutput values.
 // You can construct a concrete instance of `DeploymentInput` via:
 //
@@ -101,10 +112,11 @@ func (o DeploymentOutput) ToDeploymentPtrOutput() DeploymentPtrOutput {
 }
 
 func (o DeploymentOutput) ToDeploymentPtrOutputWithContext(ctx context.Context) DeploymentPtrOutput {
-	return o.ApplyT(func(v Deployment) *Deployment {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v Deployment) *Deployment {
 		return &v
 	}).(DeploymentPtrOutput)
 }
+
 func (o DeploymentOutput) Strategy() DeploymentStrategyPtrOutput {
 	return o.ApplyT(func(v Deployment) *DeploymentStrategy { return v.Strategy }).(DeploymentStrategyPtrOutput)
 }
@@ -124,7 +136,13 @@ func (o DeploymentPtrOutput) ToDeploymentPtrOutputWithContext(ctx context.Contex
 }
 
 func (o DeploymentPtrOutput) Elem() DeploymentOutput {
-	return o.ApplyT(func(v *Deployment) Deployment { return *v }).(DeploymentOutput)
+	return o.ApplyT(func(v *Deployment) Deployment {
+		if v != nil {
+			return *v
+		}
+		var ret Deployment
+		return ret
+	}).(DeploymentOutput)
 }
 
 func (o DeploymentPtrOutput) Strategy() DeploymentStrategyPtrOutput {
@@ -137,7 +155,20 @@ func (o DeploymentPtrOutput) Strategy() DeploymentStrategyPtrOutput {
 }
 
 type DeploymentStrategy struct {
-	Type *string `pulumi:"type"`
+	Type *DeploymentStrategyType `pulumi:"type"`
+}
+
+// Defaults sets the appropriate defaults for DeploymentStrategy
+func (val *DeploymentStrategy) Defaults() *DeploymentStrategy {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if isZero(tmp.Type) {
+		type_ := DeploymentStrategyType("Recreate")
+		tmp.Type = &type_
+	}
+	return &tmp
 }
 
 // DeploymentStrategyInput is an input type that accepts DeploymentStrategyArgs and DeploymentStrategyOutput values.
@@ -152,7 +183,7 @@ type DeploymentStrategyInput interface {
 }
 
 type DeploymentStrategyArgs struct {
-	Type *DeploymentStrategyType `pulumi:"type"`
+	Type DeploymentStrategyTypePtrInput `pulumi:"type"`
 }
 
 func (DeploymentStrategyArgs) ElementType() reflect.Type {
@@ -227,12 +258,13 @@ func (o DeploymentStrategyOutput) ToDeploymentStrategyPtrOutput() DeploymentStra
 }
 
 func (o DeploymentStrategyOutput) ToDeploymentStrategyPtrOutputWithContext(ctx context.Context) DeploymentStrategyPtrOutput {
-	return o.ApplyT(func(v DeploymentStrategy) *DeploymentStrategy {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v DeploymentStrategy) *DeploymentStrategy {
 		return &v
 	}).(DeploymentStrategyPtrOutput)
 }
-func (o DeploymentStrategyOutput) Type() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v DeploymentStrategy) *string { return v.Type }).(pulumi.StringPtrOutput)
+
+func (o DeploymentStrategyOutput) Type() DeploymentStrategyTypePtrOutput {
+	return o.ApplyT(func(v DeploymentStrategy) *DeploymentStrategyType { return v.Type }).(DeploymentStrategyTypePtrOutput)
 }
 
 type DeploymentStrategyPtrOutput struct{ *pulumi.OutputState }
@@ -250,16 +282,22 @@ func (o DeploymentStrategyPtrOutput) ToDeploymentStrategyPtrOutputWithContext(ct
 }
 
 func (o DeploymentStrategyPtrOutput) Elem() DeploymentStrategyOutput {
-	return o.ApplyT(func(v *DeploymentStrategy) DeploymentStrategy { return *v }).(DeploymentStrategyOutput)
+	return o.ApplyT(func(v *DeploymentStrategy) DeploymentStrategy {
+		if v != nil {
+			return *v
+		}
+		var ret DeploymentStrategy
+		return ret
+	}).(DeploymentStrategyOutput)
 }
 
-func (o DeploymentStrategyPtrOutput) Type() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *DeploymentStrategy) *string {
+func (o DeploymentStrategyPtrOutput) Type() DeploymentStrategyTypePtrOutput {
+	return o.ApplyT(func(v *DeploymentStrategy) *DeploymentStrategyType {
 		if v == nil {
 			return nil
 		}
 		return v.Type
-	}).(pulumi.StringPtrOutput)
+	}).(DeploymentStrategyTypePtrOutput)
 }
 
 type ImageArgs struct {
@@ -268,64 +306,9 @@ type ImageArgs struct {
 	Tag        *string `pulumi:"tag"`
 }
 
-// ImageArgsInput is an input type that accepts ImageArgsArgs and ImageArgsOutput values.
-// You can construct a concrete instance of `ImageArgsInput` via:
-//
-//          ImageArgsArgs{...}
-type ImageArgsInput interface {
-	pulumi.Input
-
-	ToImageArgsOutput() ImageArgsOutput
-	ToImageArgsOutputWithContext(context.Context) ImageArgsOutput
-}
-
-type ImageArgsArgs struct {
-	Registry   pulumi.StringPtrInput `pulumi:"registry"`
-	Repository pulumi.StringPtrInput `pulumi:"repository"`
-	Tag        pulumi.StringPtrInput `pulumi:"tag"`
-}
-
-func (ImageArgsArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*ImageArgs)(nil)).Elem()
-}
-
-func (i ImageArgsArgs) ToImageArgsOutput() ImageArgsOutput {
-	return i.ToImageArgsOutputWithContext(context.Background())
-}
-
-func (i ImageArgsArgs) ToImageArgsOutputWithContext(ctx context.Context) ImageArgsOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(ImageArgsOutput)
-}
-
-type ImageArgsOutput struct{ *pulumi.OutputState }
-
-func (ImageArgsOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*ImageArgs)(nil)).Elem()
-}
-
-func (o ImageArgsOutput) ToImageArgsOutput() ImageArgsOutput {
-	return o
-}
-
-func (o ImageArgsOutput) ToImageArgsOutputWithContext(ctx context.Context) ImageArgsOutput {
-	return o
-}
-
-func (o ImageArgsOutput) Registry() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ImageArgs) *string { return v.Registry }).(pulumi.StringPtrOutput)
-}
-
-func (o ImageArgsOutput) Repository() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ImageArgs) *string { return v.Repository }).(pulumi.StringPtrOutput)
-}
-
-func (o ImageArgsOutput) Tag() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ImageArgs) *string { return v.Tag }).(pulumi.StringPtrOutput)
-}
-
 type Service struct {
-	Name *string `pulumi:"name"`
-	Type string  `pulumi:"type"`
+	Name *string     `pulumi:"name"`
+	Type ServiceType `pulumi:"type"`
 }
 
 // ServiceInput is an input type that accepts ServiceArgs and ServiceOutput values.
@@ -341,7 +324,7 @@ type ServiceInput interface {
 
 type ServiceArgs struct {
 	Name pulumi.StringPtrInput `pulumi:"name"`
-	Type ServiceType           `pulumi:"type"`
+	Type ServiceTypeInput      `pulumi:"type"`
 }
 
 func (ServiceArgs) ElementType() reflect.Type {
@@ -416,16 +399,17 @@ func (o ServiceOutput) ToServicePtrOutput() ServicePtrOutput {
 }
 
 func (o ServiceOutput) ToServicePtrOutputWithContext(ctx context.Context) ServicePtrOutput {
-	return o.ApplyT(func(v Service) *Service {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v Service) *Service {
 		return &v
 	}).(ServicePtrOutput)
 }
+
 func (o ServiceOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v Service) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
-func (o ServiceOutput) Type() pulumi.StringOutput {
-	return o.ApplyT(func(v Service) string { return v.Type }).(pulumi.StringOutput)
+func (o ServiceOutput) Type() ServiceTypeOutput {
+	return o.ApplyT(func(v Service) ServiceType { return v.Type }).(ServiceTypeOutput)
 }
 
 type ServicePtrOutput struct{ *pulumi.OutputState }
@@ -443,7 +427,13 @@ func (o ServicePtrOutput) ToServicePtrOutputWithContext(ctx context.Context) Ser
 }
 
 func (o ServicePtrOutput) Elem() ServiceOutput {
-	return o.ApplyT(func(v *Service) Service { return *v }).(ServiceOutput)
+	return o.ApplyT(func(v *Service) Service {
+		if v != nil {
+			return *v
+		}
+		var ret Service
+		return ret
+	}).(ServiceOutput)
 }
 
 func (o ServicePtrOutput) Name() pulumi.StringPtrOutput {
@@ -455,21 +445,26 @@ func (o ServicePtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
-func (o ServicePtrOutput) Type() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Service) *string {
+func (o ServicePtrOutput) Type() ServiceTypePtrOutput {
+	return o.ApplyT(func(v *Service) *ServiceType {
 		if v == nil {
 			return nil
 		}
 		return &v.Type
-	}).(pulumi.StringPtrOutput)
+	}).(ServiceTypePtrOutput)
 }
 
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*DeploymentInput)(nil)).Elem(), DeploymentArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DeploymentPtrInput)(nil)).Elem(), DeploymentArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DeploymentStrategyInput)(nil)).Elem(), DeploymentStrategyArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DeploymentStrategyPtrInput)(nil)).Elem(), DeploymentStrategyArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ServiceInput)(nil)).Elem(), ServiceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ServicePtrInput)(nil)).Elem(), ServiceArgs{})
 	pulumi.RegisterOutputType(DeploymentOutput{})
 	pulumi.RegisterOutputType(DeploymentPtrOutput{})
 	pulumi.RegisterOutputType(DeploymentStrategyOutput{})
 	pulumi.RegisterOutputType(DeploymentStrategyPtrOutput{})
-	pulumi.RegisterOutputType(ImageArgsOutput{})
 	pulumi.RegisterOutputType(ServiceOutput{})
 	pulumi.RegisterOutputType(ServicePtrOutput{})
 }
