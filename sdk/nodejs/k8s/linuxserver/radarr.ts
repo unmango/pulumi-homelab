@@ -5,6 +5,8 @@ import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "../../types";
 import * as utilities from "../../utilities";
 
+import * as pulumiKubernetes from "@pulumi/kubernetes";
+
 export class Radarr extends pulumi.ComponentResource {
     /** @internal */
     public static readonly __pulumiType = 'homelab:k8s/linuxserver:Radarr';
@@ -20,6 +22,22 @@ export class Radarr extends pulumi.ComponentResource {
         return obj['__pulumiType'] === Radarr.__pulumiType;
     }
 
+    /**
+     * Radarr deployment.
+     */
+    public readonly deployment!: pulumi.Output<pulumiKubernetes.apps.v1.Deployment>;
+    /**
+     * Radarr service port.
+     */
+    public /*out*/ readonly port!: pulumi.Output<number>;
+    /**
+     * Radarr service.
+     */
+    public readonly service!: pulumi.Output<pulumiKubernetes.core.v1.Service>;
+    /**
+     * Radarr service name.
+     */
+    public /*out*/ readonly serviceName!: pulumi.Output<string>;
 
     /**
      * Create a Radarr resource with the given unique name, arguments, and options.
@@ -37,7 +55,13 @@ export class Radarr extends pulumi.ComponentResource {
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["namespace"] = args ? args.namespace : undefined;
             resourceInputs["service"] = args ? args.service : undefined;
+            resourceInputs["port"] = undefined /*out*/;
+            resourceInputs["serviceName"] = undefined /*out*/;
         } else {
+            resourceInputs["deployment"] = undefined /*out*/;
+            resourceInputs["port"] = undefined /*out*/;
+            resourceInputs["service"] = undefined /*out*/;
+            resourceInputs["serviceName"] = undefined /*out*/;
         }
         if (!opts.version) {
             opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});

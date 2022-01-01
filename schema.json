@@ -152,7 +152,31 @@
                     "$ref": "#/types/homelab:k8s:Service",
                     "description": "Arguments for the kubernetes service."
                 }
-            }
+            },
+            "properties": {
+                "deployment": {
+                    "$ref": "/kubernetes/v3.12.1/schema.json#/resources/kubernetes:apps%2Fv1:Deployment",
+                    "description": "Radarr deployment."
+                },
+                "port": {
+                    "type": "number",
+                    "description": "Radarr service port."
+                },
+                "service": {
+                    "$ref": "/kubernetes/v3.12.1/schema.json#/resources/kubernetes:core%2Fv1:Service",
+                    "description": "Radarr service."
+                },
+                "serviceName": {
+                    "type": "string",
+                    "description": "Radarr service name."
+                }
+            },
+            "required": [
+                "deployment",
+                "port",
+                "service",
+                "serviceName"
+            ]
         }
     },
     "language": {
@@ -183,10 +207,6 @@
             },
             "devDependencies": {
                 "typescript": "^4.5.4"
-            },
-            "moduleToPackage": {
-                "k8s": "k8s",
-                "k8s/linuxserver": "k8s/linuxserver"
             }
         },
         "python": {

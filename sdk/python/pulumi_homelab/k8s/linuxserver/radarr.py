@@ -9,6 +9,7 @@ from typing import Any, Mapping, Optional, Sequence, Union, overload
 from ... import _utilities
 from ... import k8s
 from ... import k8s as _k8s
+import pulumi_kubernetes
 
 __all__ = ['RadarrArgs', 'Radarr']
 
@@ -168,10 +169,44 @@ class Radarr(pulumi.ComponentResource):
             __props__.__dict__["name"] = name
             __props__.__dict__["namespace"] = namespace
             __props__.__dict__["service"] = service
+            __props__.__dict__["port"] = None
+            __props__.__dict__["service_name"] = None
         super(Radarr, __self__).__init__(
             'homelab:k8s/linuxserver:Radarr',
             resource_name,
             __props__,
             opts,
             remote=True)
+
+    @property
+    @pulumi.getter
+    def deployment(self) -> pulumi.Output['pulumi_kubernetes.apps.v1.Deployment']:
+        """
+        Radarr deployment.
+        """
+        return pulumi.get(self, "deployment")
+
+    @property
+    @pulumi.getter
+    def port(self) -> pulumi.Output[float]:
+        """
+        Radarr service port.
+        """
+        return pulumi.get(self, "port")
+
+    @property
+    @pulumi.getter
+    def service(self) -> pulumi.Output['pulumi_kubernetes.core.v1.Service']:
+        """
+        Radarr service.
+        """
+        return pulumi.get(self, "service")
+
+    @property
+    @pulumi.getter(name="serviceName")
+    def service_name(self) -> pulumi.Output[str]:
+        """
+        Radarr service name.
+        """
+        return pulumi.get(self, "service_name")
 

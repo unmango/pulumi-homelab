@@ -13,6 +13,31 @@ namespace Pulumi.Homelab.K8s.LinuxServer
     public partial class Radarr : Pulumi.ComponentResource
     {
         /// <summary>
+        /// Radarr deployment.
+        /// </summary>
+        [Output("deployment")]
+        public Output<Pulumi.Kubernetes.Apps.V1.Deployment> Deployment { get; private set; } = null!;
+
+        /// <summary>
+        /// Radarr service port.
+        /// </summary>
+        [Output("port")]
+        public Output<double> Port { get; private set; } = null!;
+
+        /// <summary>
+        /// Radarr service.
+        /// </summary>
+        [Output("service")]
+        public Output<Pulumi.Kubernetes.Core.V1.Service> Service { get; private set; } = null!;
+
+        /// <summary>
+        /// Radarr service name.
+        /// </summary>
+        [Output("serviceName")]
+        public Output<string> ServiceName { get; private set; } = null!;
+
+
+        /// <summary>
         /// Create a Radarr resource with the given unique name, arguments, and options.
         /// </summary>
         ///

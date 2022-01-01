@@ -7,12 +7,23 @@ import (
 	"context"
 	"reflect"
 
+	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/apps/v1"
+	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/unmango/pulumi-homelab/sdk/go/homelab/k8s"
 )
 
 type Radarr struct {
 	pulumi.ResourceState
+
+	// Radarr deployment.
+	Deployment appsv1.DeploymentOutput `pulumi:"deployment"`
+	// Radarr service port.
+	Port pulumi.Float64Output `pulumi:"port"`
+	// Radarr service.
+	Service corev1.ServiceOutput `pulumi:"service"`
+	// Radarr service name.
+	ServiceName pulumi.StringOutput `pulumi:"serviceName"`
 }
 
 // NewRadarr registers a new resource with the given unique name, arguments, and options.
