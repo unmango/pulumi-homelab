@@ -15,6 +15,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as provider from "@pulumi/pulumi/provider";
 
+import * as k8s from "./k8s";
 import { StaticPage, StaticPageArgs } from "./staticPage";
 
 export class Provider implements provider.Provider {
@@ -27,10 +28,34 @@ export class Provider implements provider.Provider {
         switch (type) {
             case "homelab:index:StaticPage":
                 return await constructStaticPage(name, inputs, options);
+            case "homelab:k8s/linuxserver:Radarr":
+                return await constructKubernetesLinuxServerRadarr(name, inputs, options);
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
     }
+}
+
+async function constructKubernetesLinuxServerRadarr(
+    name: string,
+    inputs: pulumi.Inputs,
+    options: pulumi.ComponentResourceOptions,
+): Promise<provider.ConstructResult> {
+    const radarr = new k8s.linuxserver.Radarr(
+        name,
+        inputs as k8s.linuxserver.RadarrArgs,
+        options
+    );
+
+    return {
+        urn: radarr.urn,
+        state: {
+            deployment: radarr.deployment,
+            port: radarr.port,
+            service: radarr.service,
+            serviceName: radarr.serviceName,
+        },
+    };
 }
 
 async function constructStaticPage(name: string, inputs: pulumi.Inputs,
