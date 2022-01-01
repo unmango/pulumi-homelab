@@ -31,5 +31,5 @@ export function createImageFormatter(imageName: string): ImageFormatter {
 }
 
 export function getType(subType: string) {
-    return `homelab:index:k8s:linuxserver:${subType}`;
+    return `homelab:index/k8s/linuxserver:${subType}`;
 }

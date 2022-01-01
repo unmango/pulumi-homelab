@@ -16,7 +16,7 @@
     "repository": "https://github.com/unmango/pulumi-homelab",
     "pluginDownloadURL": "",
     "types": {
-        "homelab:index/kubernetes:ImageArgs": {
+        "homelab:index/k8s:ImageArgs": {
             "type": "object",
             "properties": {
                 "registry": {
@@ -30,25 +30,25 @@
                 }
             }
         },
-        "homelab:index/kubernetes:Deployment": {
+        "homelab:index/k8s:Deployment": {
             "type": "object",
             "properties": {
                 "strategy": {
                     "type": "object",
-                    "$ref": "#/types/homelab:index/kubernetes:DeploymentStrategy"
+                    "$ref": "#/types/homelab:index/k8s:DeploymentStrategy"
                 }
             }
         },
-        "homelab:index/kubernetes:DeploymentStrategy": {
+        "homelab:index/k8s:DeploymentStrategy": {
             "type": "object",
             "properties": {
                 "type": {
-                    "$ref": "#/types/homelab:index/kubernetes:DeploymentStrategyType",
+                    "$ref": "#/types/homelab:index/k8s:DeploymentStrategyType",
                     "default": "Recreate"
                 }
             }
         },
-        "homelab:index/kubernetes:DeploymentStrategyType": {
+        "homelab:index/k8s:DeploymentStrategyType": {
             "type": "string",
             "enum": [
                 {
@@ -59,21 +59,21 @@
                 }
             ]
         },
-        "homelab:index/kubernetes:Service": {
+        "homelab:index/k8s:Service": {
             "type": "object",
             "properties": {
                 "name": {
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/types/homelab:index/kubernetes:ServiceType"
+                    "$ref": "#/types/homelab:index/k8s:ServiceType"
                 }
             },
             "required": [
                 "type"
             ]
         },
-        "homelab:index/kubernetes:ServiceType": {
+        "homelab:index/k8s:ServiceType": {
             "type": "string",
             "enum": [
                 {
@@ -112,7 +112,7 @@
                 "websiteUrl"
             ]
         },
-        "homelab:index/kubernetes/linuxserver:Radarr": {
+        "homelab:index/k8s/linuxserver:Radarr": {
             "isComponent": true,
             "inputProperties": {
                 "name": {
@@ -129,22 +129,27 @@
                             "type": "string"
                         },
                         {
-                            "$ref": "#/types/homelab:index/kubernetes:ImageArgs"
+                            "$ref": "#/types/homelab:index/k8s:ImageArgs"
                         }
                     ]
                 },
                 "deployment": {
                     "type": "object",
-                    "$ref": "#/types/homelab:index/kubernetes:Deployment"
+                    "$ref": "#/types/homelab:index/k8s:Deployment"
                 },
                 "service": {
-                    "$ref": "#/types/homelab:index/kubernetes:Service"
+                    "$ref": "#/types/homelab:index/k8s:Service"
                 }
             }
         }
     },
     "language": {
         "csharp": {
+            "dictionaryConstructors": true,
+            "namespaces": {
+                "": "Provider",
+                "k8s/linuxserver": "K8s.LinuxServer"
+            },
             "packageReferences": {
                 "Pulumi": "3.*",
                 "Pulumi.Aws": "4.*",

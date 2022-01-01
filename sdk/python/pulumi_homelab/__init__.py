@@ -23,10 +23,10 @@ _utilities.register(
  },
  {
   "pkg": "homelab",
-  "mod": "index/kubernetes/linuxserver",
+  "mod": "index/k8s/linuxserver",
   "fqn": "pulumi_homelab",
   "classes": {
-   "homelab:index/kubernetes/linuxserver:Radarr": "Radarr"
+   "homelab:index/k8s/linuxserver:Radarr": "Radarr"
   }
  }
 ]

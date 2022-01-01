@@ -9,7 +9,7 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Homelab
 {
-    [HomelabResourceType("homelab:index/kubernetes/linuxserver:Radarr")]
+    [HomelabResourceType("homelab:index/k8s/linuxserver:Radarr")]
     public partial class Radarr : Pulumi.ComponentResource
     {
         /// <summary>
@@ -20,7 +20,7 @@ namespace Pulumi.Homelab
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Radarr(string name, RadarrArgs? args = null, ComponentResourceOptions? options = null)
-            : base("homelab:index/kubernetes/linuxserver:Radarr", name, args ?? new RadarrArgs(), MakeResourceOptions(options, ""), remote: true)
+            : base("homelab:index/k8s/linuxserver:Radarr", name, args ?? new RadarrArgs(), MakeResourceOptions(options, ""), remote: true)
         {
         }
 

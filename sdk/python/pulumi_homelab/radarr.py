@@ -154,7 +154,7 @@ class Radarr(pulumi.ComponentResource):
             __props__.__dict__["namespace"] = namespace
             __props__.__dict__["service"] = service
         super(Radarr, __self__).__init__(
-            'homelab:index/kubernetes/linuxserver:Radarr',
+            'homelab:index/k8s/linuxserver:Radarr',
             resource_name,
             __props__,
             opts,

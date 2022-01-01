@@ -25,7 +25,7 @@ func NewRadarr(ctx *pulumi.Context,
 		args.Deployment = args.Deployment.ToDeploymentPtrOutput().ApplyT(func(v *Deployment) *Deployment { return v.Defaults() }).(DeploymentPtrOutput)
 	}
 	var resource Radarr
-	err := ctx.RegisterRemoteComponentResource("homelab:index/kubernetes/linuxserver:Radarr", name, args, &resource, opts...)
+	err := ctx.RegisterRemoteComponentResource("homelab:index/k8s/linuxserver:Radarr", name, args, &resource, opts...)
 	if err != nil {
 		return nil, err
 	}

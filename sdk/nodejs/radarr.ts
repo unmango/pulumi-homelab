@@ -7,7 +7,7 @@ import * as utilities from "./utilities";
 
 export class Radarr extends pulumi.ComponentResource {
     /** @internal */
-    public static readonly __pulumiType = 'homelab:index/kubernetes/linuxserver:Radarr';
+    public static readonly __pulumiType = 'homelab:index/k8s/linuxserver:Radarr';
 
     /**
      * Returns true if the given object is an instance of Radarr.  This is designed to work even

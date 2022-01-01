@@ -23,6 +23,10 @@ namespace Pulumi.Homelab
             : base("homelab", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
+        internal Provider(string name, ImmutableDictionary<string, object?> dictionary, CustomResourceOptions? options = null)
+            : base("homelab", name, new DictionaryResourceArgs(dictionary), MakeResourceOptions(options, ""))
+        {
+        }
 
         private static CustomResourceOptions MakeResourceOptions(CustomResourceOptions? options, Input<string>? id)
         {

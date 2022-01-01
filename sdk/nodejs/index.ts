@@ -27,7 +27,7 @@ const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
-            case "homelab:index/kubernetes/linuxserver:Radarr":
+            case "homelab:index/k8s/linuxserver:Radarr":
                 return new Radarr(name, <any>undefined, { urn })
             case "homelab:index:StaticPage":
                 return new StaticPage(name, <any>undefined, { urn })
@@ -37,7 +37,7 @@ const _module = {
     },
 };
 pulumi.runtime.registerResourceModule("homelab", "index", _module)
-pulumi.runtime.registerResourceModule("homelab", "index/kubernetes/linuxserver", _module)
+pulumi.runtime.registerResourceModule("homelab", "index/k8s/linuxserver", _module)
 
 import { Provider } from "./provider";
 
