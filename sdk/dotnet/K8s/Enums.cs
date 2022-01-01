@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel;
 using Pulumi;
 
-namespace Pulumi.Homelab
+namespace Pulumi.Homelab.K8s
 {
     [EnumType]
     public readonly struct DeploymentStrategyType : IEquatable<DeploymentStrategyType>

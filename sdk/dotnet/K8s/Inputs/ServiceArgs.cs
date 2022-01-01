@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Homelab.Inputs
+namespace Pulumi.Homelab.K8s.Inputs
 {
 
     public sealed class ServiceArgs : Pulumi.ResourceArgs
@@ -16,7 +16,7 @@ namespace Pulumi.Homelab.Inputs
         public Input<string>? Name { get; set; }
 
         [Input("type", required: true)]
-        public Input<Pulumi.Homelab.ServiceType> Type { get; set; } = null!;
+        public Input<Pulumi.Homelab.K8s.ServiceType> Type { get; set; } = null!;
 
         public ServiceArgs()
         {

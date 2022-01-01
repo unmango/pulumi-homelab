@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Homelab
+namespace Pulumi.Homelab.K8s.LinuxServer
 {
-    [HomelabResourceType("homelab:index/k8s/linuxserver:Radarr")]
+    [HomelabResourceType("homelab:k8s/linuxserver:Radarr")]
     public partial class Radarr : Pulumi.ComponentResource
     {
         /// <summary>
@@ -20,7 +20,7 @@ namespace Pulumi.Homelab
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Radarr(string name, RadarrArgs? args = null, ComponentResourceOptions? options = null)
-            : base("homelab:index/k8s/linuxserver:Radarr", name, args ?? new RadarrArgs(), MakeResourceOptions(options, ""), remote: true)
+            : base("homelab:k8s/linuxserver:Radarr", name, args ?? new RadarrArgs(), MakeResourceOptions(options, ""), remote: true)
         {
         }
 
@@ -40,10 +40,10 @@ namespace Pulumi.Homelab
     public sealed class RadarrArgs : Pulumi.ResourceArgs
     {
         [Input("deployment")]
-        public Input<Inputs.DeploymentArgs>? Deployment { get; set; }
+        public Input<Pulumi.Homelab.K8s.Inputs.DeploymentArgs>? Deployment { get; set; }
 
         [Input("image")]
-        public InputUnion<string, Inputs.ImageArgsArgs>? Image { get; set; }
+        public InputUnion<string, Pulumi.Homelab.K8s.Inputs.ImageArgsArgs>? Image { get; set; }
 
         /// <summary>
         /// Optional name override.
@@ -58,7 +58,7 @@ namespace Pulumi.Homelab
         public Input<string>? Namespace { get; set; }
 
         [Input("service")]
-        public Input<Inputs.ServiceArgs>? Service { get; set; }
+        public Input<Pulumi.Homelab.K8s.Inputs.ServiceArgs>? Service { get; set; }
 
         public RadarrArgs()
         {

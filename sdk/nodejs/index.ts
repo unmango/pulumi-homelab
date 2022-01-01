@@ -6,29 +6,24 @@ import * as utilities from "./utilities";
 
 // Export members:
 export * from "./provider";
-export * from "./radarr";
 export * from "./staticPage";
 
-// Export enums:
-export * from "./types/enums";
-
 // Export sub-modules:
+import * as k8s from "./k8s";
 import * as types from "./types";
 
 export {
+    k8s,
     types,
 };
 
 // Import resources to register:
-import { Radarr } from "./radarr";
 import { StaticPage } from "./staticPage";
 
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
-            case "homelab:index/k8s/linuxserver:Radarr":
-                return new Radarr(name, <any>undefined, { urn })
             case "homelab:index:StaticPage":
                 return new StaticPage(name, <any>undefined, { urn })
             default:
@@ -37,7 +32,6 @@ const _module = {
     },
 };
 pulumi.runtime.registerResourceModule("homelab", "index", _module)
-pulumi.runtime.registerResourceModule("homelab", "index/k8s/linuxserver", _module)
 
 import { Provider } from "./provider";
 

@@ -7,17 +7,16 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Homelab.Inputs
+namespace Pulumi.Homelab.K8s.Inputs
 {
 
-    public sealed class DeploymentStrategyArgs : Pulumi.ResourceArgs
+    public sealed class DeploymentArgs : Pulumi.ResourceArgs
     {
-        [Input("type")]
-        public Input<Pulumi.Homelab.DeploymentStrategyType>? Type { get; set; }
+        [Input("strategy")]
+        public Input<Inputs.DeploymentStrategyArgs>? Strategy { get; set; }
 
-        public DeploymentStrategyArgs()
+        public DeploymentArgs()
         {
-            Type = Pulumi.Homelab.DeploymentStrategyType.Recreate;
         }
     }
 }

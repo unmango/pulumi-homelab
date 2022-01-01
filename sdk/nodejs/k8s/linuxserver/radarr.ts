@@ -2,12 +2,12 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import { input as inputs, output as outputs, enums } from "./types";
-import * as utilities from "./utilities";
+import { input as inputs, output as outputs, enums } from "../../types";
+import * as utilities from "../../utilities";
 
 export class Radarr extends pulumi.ComponentResource {
     /** @internal */
-    public static readonly __pulumiType = 'homelab:index/k8s/linuxserver:Radarr';
+    public static readonly __pulumiType = 'homelab:k8s/linuxserver:Radarr';
 
     /**
      * Returns true if the given object is an instance of Radarr.  This is designed to work even
@@ -32,7 +32,7 @@ export class Radarr extends pulumi.ComponentResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            resourceInputs["deployment"] = args ? (args.deployment ? pulumi.output(args.deployment).apply(inputs.deploymentArgsProvideDefaults) : undefined) : undefined;
+            resourceInputs["deployment"] = args ? (args.deployment ? pulumi.output(args.deployment).apply(inputs.k8s.deploymentArgsProvideDefaults) : undefined) : undefined;
             resourceInputs["image"] = args ? args.image : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["namespace"] = args ? args.namespace : undefined;
@@ -50,8 +50,8 @@ export class Radarr extends pulumi.ComponentResource {
  * The set of arguments for constructing a Radarr resource.
  */
 export interface RadarrArgs {
-    deployment?: pulumi.Input<inputs.DeploymentArgs>;
-    image?: pulumi.Input<string | inputs.ImageArgsArgs>;
+    deployment?: pulumi.Input<inputs.k8s.DeploymentArgs>;
+    image?: pulumi.Input<string | inputs.k8s.ImageArgsArgs>;
     /**
      * Optional name override.
      */
@@ -60,5 +60,5 @@ export interface RadarrArgs {
      * Namespace to provision resources in.
      */
     namespace?: pulumi.Input<string>;
-    service?: pulumi.Input<inputs.ServiceArgs>;
+    service?: pulumi.Input<inputs.k8s.ServiceArgs>;
 }

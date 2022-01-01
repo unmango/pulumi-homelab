@@ -5,11 +5,16 @@
 from . import _utilities
 import typing
 # Export this package's modules as members:
-from ._enums import *
 from .provider import *
-from .radarr import *
 from .static_page import *
-from ._inputs import *
+
+# Make subpackages available:
+if typing.TYPE_CHECKING:
+    import pulumi_homelab.k8s as __k8s
+    k8s = __k8s
+else:
+    k8s = _utilities.lazy_import('pulumi_homelab.k8s')
+
 _utilities.register(
     resource_modules="""
 [
@@ -23,10 +28,10 @@ _utilities.register(
  },
  {
   "pkg": "homelab",
-  "mod": "index/k8s/linuxserver",
-  "fqn": "pulumi_homelab",
+  "mod": "k8s/linuxserver",
+  "fqn": "pulumi_homelab.k8s.linuxserver",
   "classes": {
-   "homelab:index/k8s/linuxserver:Radarr": "Radarr"
+   "homelab:k8s/linuxserver:Radarr": "Radarr"
   }
  }
 ]

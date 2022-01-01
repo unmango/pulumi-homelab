@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Homelab.Inputs
+namespace Pulumi.Homelab.K8s.Inputs
 {
 
     public sealed class ImageArgsArgs : Pulumi.ResourceArgs
