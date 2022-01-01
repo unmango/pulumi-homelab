@@ -18,7 +18,7 @@
     ],
     "include": [
         "types/*.ts",
-        "kubernetes/**/*.ts"
+        "k8s/**/*.ts"
     ],
     "exclude": [
         "**/*.spec.ts"
