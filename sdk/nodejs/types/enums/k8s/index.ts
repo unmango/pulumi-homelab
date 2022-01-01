@@ -7,6 +7,9 @@ export const DeploymentStrategyType = {
     Rolling: "Rolling",
 } as const;
 
+/**
+ * Kubernetes deployment strategies.
+ */
 export type DeploymentStrategyType = (typeof DeploymentStrategyType)[keyof typeof DeploymentStrategyType];
 
 export const ServiceType = {
@@ -14,4 +17,7 @@ export const ServiceType = {
     LoadBalancer: "LoadBalancer",
 } as const;
 
+/**
+ * Kubernetes service types.
+ */
 export type ServiceType = (typeof ServiceType)[keyof typeof ServiceType];

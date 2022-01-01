@@ -50,7 +50,13 @@ export class Radarr extends pulumi.ComponentResource {
  * The set of arguments for constructing a Radarr resource.
  */
 export interface RadarrArgs {
+    /**
+     * Arguments for the kubernetes deployment.
+     */
     deployment?: pulumi.Input<inputs.k8s.DeploymentArgs>;
+    /**
+     * Optional custom image to use.
+     */
     image?: pulumi.Input<string | inputs.k8s.ImageArgsArgs>;
     /**
      * Optional name override.
@@ -60,5 +66,8 @@ export interface RadarrArgs {
      * Namespace to provision resources in.
      */
     namespace?: pulumi.Input<string>;
+    /**
+     * Arguments for the kubernetes service.
+     */
     service?: pulumi.Input<inputs.k8s.ServiceArgs>;
 }

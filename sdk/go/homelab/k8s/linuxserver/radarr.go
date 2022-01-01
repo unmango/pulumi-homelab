@@ -34,24 +34,30 @@ func NewRadarr(ctx *pulumi.Context,
 }
 
 type radarrArgs struct {
+	// Arguments for the kubernetes deployment.
 	Deployment *k8s.Deployment `pulumi:"deployment"`
-	Image      interface{}     `pulumi:"image"`
+	// Optional custom image to use.
+	Image interface{} `pulumi:"image"`
 	// Optional name override.
 	Name *string `pulumi:"name"`
 	// Namespace to provision resources in.
-	Namespace *string      `pulumi:"namespace"`
-	Service   *k8s.Service `pulumi:"service"`
+	Namespace *string `pulumi:"namespace"`
+	// Arguments for the kubernetes service.
+	Service *k8s.Service `pulumi:"service"`
 }
 
 // The set of arguments for constructing a Radarr resource.
 type RadarrArgs struct {
+	// Arguments for the kubernetes deployment.
 	Deployment k8s.DeploymentPtrInput
-	Image      pulumi.Input
+	// Optional custom image to use.
+	Image pulumi.Input
 	// Optional name override.
 	Name pulumi.StringPtrInput
 	// Namespace to provision resources in.
 	Namespace pulumi.StringPtrInput
-	Service   k8s.ServicePtrInput
+	// Arguments for the kubernetes service.
+	Service k8s.ServicePtrInput
 }
 
 func (RadarrArgs) ElementType() reflect.Type {

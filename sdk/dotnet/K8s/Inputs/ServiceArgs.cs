@@ -12,9 +12,15 @@ namespace Pulumi.Homelab.K8s.Inputs
 
     public sealed class ServiceArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Optional service name.
+        /// </summary>
         [Input("name")]
         public Input<string>? Name { get; set; }
 
+        /// <summary>
+        /// Type of service to deploy.
+        /// </summary>
         [Input("type", required: true)]
         public Input<Pulumi.Homelab.K8s.ServiceType> Type { get; set; } = null!;
 

@@ -11,6 +11,7 @@ import (
 )
 
 type Deployment struct {
+	// Deployment strategy to use.
 	Strategy *DeploymentStrategy `pulumi:"strategy"`
 }
 
@@ -37,6 +38,7 @@ type DeploymentInput interface {
 }
 
 type DeploymentArgs struct {
+	// Deployment strategy to use.
 	Strategy DeploymentStrategyPtrInput `pulumi:"strategy"`
 }
 
@@ -117,6 +119,7 @@ func (o DeploymentOutput) ToDeploymentPtrOutputWithContext(ctx context.Context) 
 	}).(DeploymentPtrOutput)
 }
 
+// Deployment strategy to use.
 func (o DeploymentOutput) Strategy() DeploymentStrategyPtrOutput {
 	return o.ApplyT(func(v Deployment) *DeploymentStrategy { return v.Strategy }).(DeploymentStrategyPtrOutput)
 }
@@ -145,6 +148,7 @@ func (o DeploymentPtrOutput) Elem() DeploymentOutput {
 	}).(DeploymentOutput)
 }
 
+// Deployment strategy to use.
 func (o DeploymentPtrOutput) Strategy() DeploymentStrategyPtrOutput {
 	return o.ApplyT(func(v *Deployment) *DeploymentStrategy {
 		if v == nil {
@@ -155,6 +159,7 @@ func (o DeploymentPtrOutput) Strategy() DeploymentStrategyPtrOutput {
 }
 
 type DeploymentStrategy struct {
+	// Type of deployment strategy.
 	Type *DeploymentStrategyType `pulumi:"type"`
 }
 
@@ -183,6 +188,7 @@ type DeploymentStrategyInput interface {
 }
 
 type DeploymentStrategyArgs struct {
+	// Type of deployment strategy.
 	Type DeploymentStrategyTypePtrInput `pulumi:"type"`
 }
 
@@ -263,6 +269,7 @@ func (o DeploymentStrategyOutput) ToDeploymentStrategyPtrOutputWithContext(ctx c
 	}).(DeploymentStrategyPtrOutput)
 }
 
+// Type of deployment strategy.
 func (o DeploymentStrategyOutput) Type() DeploymentStrategyTypePtrOutput {
 	return o.ApplyT(func(v DeploymentStrategy) *DeploymentStrategyType { return v.Type }).(DeploymentStrategyTypePtrOutput)
 }
@@ -291,6 +298,7 @@ func (o DeploymentStrategyPtrOutput) Elem() DeploymentStrategyOutput {
 	}).(DeploymentStrategyOutput)
 }
 
+// Type of deployment strategy.
 func (o DeploymentStrategyPtrOutput) Type() DeploymentStrategyTypePtrOutput {
 	return o.ApplyT(func(v *DeploymentStrategy) *DeploymentStrategyType {
 		if v == nil {
@@ -301,13 +309,18 @@ func (o DeploymentStrategyPtrOutput) Type() DeploymentStrategyTypePtrOutput {
 }
 
 type ImageArgs struct {
-	Registry   *string `pulumi:"registry"`
+	// Registry to use for the image. e.g. 'lcsr.io'
+	Registry *string `pulumi:"registry"`
+	// Repository to use for the image. e.g. 'linuxserver'
 	Repository *string `pulumi:"repository"`
-	Tag        *string `pulumi:"tag"`
+	// Tag to use for the image. e.g. 'latest'
+	Tag *string `pulumi:"tag"`
 }
 
 type Service struct {
-	Name *string     `pulumi:"name"`
+	// Optional service name.
+	Name *string `pulumi:"name"`
+	// Type of service to deploy.
 	Type ServiceType `pulumi:"type"`
 }
 
@@ -323,8 +336,10 @@ type ServiceInput interface {
 }
 
 type ServiceArgs struct {
+	// Optional service name.
 	Name pulumi.StringPtrInput `pulumi:"name"`
-	Type ServiceTypeInput      `pulumi:"type"`
+	// Type of service to deploy.
+	Type ServiceTypeInput `pulumi:"type"`
 }
 
 func (ServiceArgs) ElementType() reflect.Type {
@@ -404,10 +419,12 @@ func (o ServiceOutput) ToServicePtrOutputWithContext(ctx context.Context) Servic
 	}).(ServicePtrOutput)
 }
 
+// Optional service name.
 func (o ServiceOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v Service) *string { return v.Name }).(pulumi.StringPtrOutput)
 }
 
+// Type of service to deploy.
 func (o ServiceOutput) Type() ServiceTypeOutput {
 	return o.ApplyT(func(v Service) ServiceType { return v.Type }).(ServiceTypeOutput)
 }
@@ -436,6 +453,7 @@ func (o ServicePtrOutput) Elem() ServiceOutput {
 	}).(ServiceOutput)
 }
 
+// Optional service name.
 func (o ServicePtrOutput) Name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Service) *string {
 		if v == nil {
@@ -445,6 +463,7 @@ func (o ServicePtrOutput) Name() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// Type of service to deploy.
 func (o ServicePtrOutput) Type() ServiceTypePtrOutput {
 	return o.ApplyT(func(v *Service) *ServiceType {
 		if v == nil {

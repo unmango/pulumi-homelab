@@ -20,13 +20,16 @@
             "type": "object",
             "properties": {
                 "registry": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Registry to use for the image. e.g. 'lcsr.io'"
                 },
                 "repository": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Repository to use for the image. e.g. 'linuxserver'"
                 },
                 "tag": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Tag to use for the image. e.g. 'latest'"
                 }
             }
         },
@@ -35,7 +38,8 @@
             "properties": {
                 "strategy": {
                     "type": "object",
-                    "$ref": "#/types/homelab:k8s:DeploymentStrategy"
+                    "$ref": "#/types/homelab:k8s:DeploymentStrategy",
+                    "Description": "Deployment strategy to use."
                 }
             }
         },
@@ -44,12 +48,14 @@
             "properties": {
                 "type": {
                     "$ref": "#/types/homelab:k8s:DeploymentStrategyType",
-                    "default": "Recreate"
+                    "default": "Recreate",
+                    "description": "Type of deployment strategy."
                 }
             }
         },
         "homelab:k8s:DeploymentStrategyType": {
             "type": "string",
+            "description": "Kubernetes deployment strategies.",
             "enum": [
                 {
                     "value": "Recreate"
@@ -63,10 +69,12 @@
             "type": "object",
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Optional service name."
                 },
                 "type": {
-                    "$ref": "#/types/homelab:k8s:ServiceType"
+                    "$ref": "#/types/homelab:k8s:ServiceType",
+                    "description": "Type of service to deploy."
                 }
             },
             "required": [
@@ -75,6 +83,7 @@
         },
         "homelab:k8s:ServiceType": {
             "type": "string",
+            "description": "Kubernetes service types.",
             "enum": [
                 {
                     "value": "ClusterIP"
@@ -124,6 +133,7 @@
                     "description": "Namespace to provision resources in."
                 },
                 "image": {
+                    "description": "Optional custom image to use.",
                     "oneOf": [
                         {
                             "type": "string"
@@ -135,10 +145,12 @@
                 },
                 "deployment": {
                     "type": "object",
-                    "$ref": "#/types/homelab:k8s:Deployment"
+                    "$ref": "#/types/homelab:k8s:Deployment",
+                    "description": "Arguments for the kubernetes deployment."
                 },
                 "service": {
-                    "$ref": "#/types/homelab:k8s:Service"
+                    "$ref": "#/types/homelab:k8s:Service",
+                    "description": "Arguments for the kubernetes service."
                 }
             }
         }

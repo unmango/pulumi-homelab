@@ -8,6 +8,9 @@ import * as utilities from "../utilities";
 
 export namespace k8s {
     export interface DeploymentArgs {
+        /**
+         * Deployment strategy to use.
+         */
         strategy?: pulumi.Input<inputs.k8s.DeploymentStrategyArgs>;
     }
     /**
@@ -21,6 +24,9 @@ export namespace k8s {
     }
 
     export interface DeploymentStrategyArgs {
+        /**
+         * Type of deployment strategy.
+         */
         type?: pulumi.Input<enums.k8s.DeploymentStrategyType>;
     }
     /**
@@ -34,13 +40,28 @@ export namespace k8s {
     }
 
     export interface ImageArgsArgs {
+        /**
+         * Registry to use for the image. e.g. 'lcsr.io'
+         */
         registry?: pulumi.Input<string>;
+        /**
+         * Repository to use for the image. e.g. 'linuxserver'
+         */
         repository?: pulumi.Input<string>;
+        /**
+         * Tag to use for the image. e.g. 'latest'
+         */
         tag?: pulumi.Input<string>;
     }
 
     export interface ServiceArgs {
+        /**
+         * Optional service name.
+         */
         name?: pulumi.Input<string>;
+        /**
+         * Type of service to deploy.
+         */
         type: pulumi.Input<enums.k8s.ServiceType>;
     }
 }

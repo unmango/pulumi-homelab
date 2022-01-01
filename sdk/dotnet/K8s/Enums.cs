@@ -7,6 +7,9 @@ using Pulumi;
 
 namespace Pulumi.Homelab.K8s
 {
+    /// <summary>
+    /// Kubernetes deployment strategies.
+    /// </summary>
     [EnumType]
     public readonly struct DeploymentStrategyType : IEquatable<DeploymentStrategyType>
     {
@@ -35,6 +38,9 @@ namespace Pulumi.Homelab.K8s
         public override string ToString() => _value;
     }
 
+    /// <summary>
+    /// Kubernetes service types.
+    /// </summary>
     [EnumType]
     public readonly struct ServiceType : IEquatable<ServiceType>
     {

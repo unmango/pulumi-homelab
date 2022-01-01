@@ -12,6 +12,9 @@ namespace Pulumi.Homelab.K8s.Inputs
 
     public sealed class DeploymentArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Deployment strategy to use.
+        /// </summary>
         [Input("strategy")]
         public Input<Inputs.DeploymentStrategyArgs>? Strategy { get; set; }
 

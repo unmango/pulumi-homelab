@@ -39,9 +39,15 @@ namespace Pulumi.Homelab.K8s.LinuxServer
 
     public sealed class RadarrArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Arguments for the kubernetes deployment.
+        /// </summary>
         [Input("deployment")]
         public Input<Pulumi.Homelab.K8s.Inputs.DeploymentArgs>? Deployment { get; set; }
 
+        /// <summary>
+        /// Optional custom image to use.
+        /// </summary>
         [Input("image")]
         public InputUnion<string, Pulumi.Homelab.K8s.Inputs.ImageArgsArgs>? Image { get; set; }
 
@@ -57,6 +63,9 @@ namespace Pulumi.Homelab.K8s.LinuxServer
         [Input("namespace")]
         public Input<string>? Namespace { get; set; }
 
+        /// <summary>
+        /// Arguments for the kubernetes service.
+        /// </summary>
         [Input("service")]
         public Input<Pulumi.Homelab.K8s.Inputs.ServiceArgs>? Service { get; set; }
 

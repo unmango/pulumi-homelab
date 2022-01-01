@@ -10,6 +10,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// Kubernetes deployment strategies.
 type DeploymentStrategyType string
 
 const (
@@ -174,6 +175,7 @@ func (in *deploymentStrategyTypePtr) ToDeploymentStrategyTypePtrOutputWithContex
 	return pulumi.ToOutputWithContext(ctx, in).(DeploymentStrategyTypePtrOutput)
 }
 
+// Kubernetes service types.
 type ServiceType string
 
 const (

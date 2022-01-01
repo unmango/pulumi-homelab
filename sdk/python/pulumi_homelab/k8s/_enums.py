@@ -11,10 +11,16 @@ __all__ = [
 
 
 class DeploymentStrategyType(str, Enum):
+    """
+    Kubernetes deployment strategies.
+    """
     RECREATE = "Recreate"
     ROLLING = "Rolling"
 
 
 class ServiceType(str, Enum):
+    """
+    Kubernetes service types.
+    """
     CLUSTER_IP = "ClusterIP"
     LOAD_BALANCER = "LoadBalancer"

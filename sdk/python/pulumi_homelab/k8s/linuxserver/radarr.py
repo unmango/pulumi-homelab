@@ -22,8 +22,11 @@ class RadarrArgs:
                  service: Optional[pulumi.Input['_k8s.ServiceArgs']] = None):
         """
         The set of arguments for constructing a Radarr resource.
+        :param pulumi.Input['_k8s.DeploymentArgs'] deployment: Arguments for the kubernetes deployment.
+        :param pulumi.Input[Union[str, '_k8s.ImageArgsArgs']] image: Optional custom image to use.
         :param pulumi.Input[str] name: Optional name override.
         :param pulumi.Input[str] namespace: Namespace to provision resources in.
+        :param pulumi.Input['_k8s.ServiceArgs'] service: Arguments for the kubernetes service.
         """
         if deployment is not None:
             pulumi.set(__self__, "deployment", deployment)
@@ -39,6 +42,9 @@ class RadarrArgs:
     @property
     @pulumi.getter
     def deployment(self) -> Optional[pulumi.Input['_k8s.DeploymentArgs']]:
+        """
+        Arguments for the kubernetes deployment.
+        """
         return pulumi.get(self, "deployment")
 
     @deployment.setter
@@ -48,6 +54,9 @@ class RadarrArgs:
     @property
     @pulumi.getter
     def image(self) -> Optional[pulumi.Input[Union[str, '_k8s.ImageArgsArgs']]]:
+        """
+        Optional custom image to use.
+        """
         return pulumi.get(self, "image")
 
     @image.setter
@@ -81,6 +90,9 @@ class RadarrArgs:
     @property
     @pulumi.getter
     def service(self) -> Optional[pulumi.Input['_k8s.ServiceArgs']]:
+        """
+        Arguments for the kubernetes service.
+        """
         return pulumi.get(self, "service")
 
     @service.setter
@@ -103,8 +115,11 @@ class Radarr(pulumi.ComponentResource):
         Create a Radarr resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[pulumi.InputType['_k8s.DeploymentArgs']] deployment: Arguments for the kubernetes deployment.
+        :param pulumi.Input[Union[str, pulumi.InputType['_k8s.ImageArgsArgs']]] image: Optional custom image to use.
         :param pulumi.Input[str] name: Optional name override.
         :param pulumi.Input[str] namespace: Namespace to provision resources in.
+        :param pulumi.Input[pulumi.InputType['_k8s.ServiceArgs']] service: Arguments for the kubernetes service.
         """
         ...
     @overload

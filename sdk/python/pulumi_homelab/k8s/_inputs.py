@@ -20,6 +20,9 @@ __all__ = [
 class DeploymentStrategyArgs:
     def __init__(__self__, *,
                  type: Optional[pulumi.Input['DeploymentStrategyType']] = None):
+        """
+        :param pulumi.Input['DeploymentStrategyType'] type: Type of deployment strategy.
+        """
         if type is None:
             type = 'Recreate'
         if type is not None:
@@ -28,6 +31,9 @@ class DeploymentStrategyArgs:
     @property
     @pulumi.getter
     def type(self) -> Optional[pulumi.Input['DeploymentStrategyType']]:
+        """
+        Type of deployment strategy.
+        """
         return pulumi.get(self, "type")
 
     @type.setter
@@ -39,12 +45,18 @@ class DeploymentStrategyArgs:
 class DeploymentArgs:
     def __init__(__self__, *,
                  strategy: Optional[pulumi.Input['DeploymentStrategyArgs']] = None):
+        """
+        :param pulumi.Input['DeploymentStrategyArgs'] strategy: Deployment strategy to use.
+        """
         if strategy is not None:
             pulumi.set(__self__, "strategy", strategy)
 
     @property
     @pulumi.getter
     def strategy(self) -> Optional[pulumi.Input['DeploymentStrategyArgs']]:
+        """
+        Deployment strategy to use.
+        """
         return pulumi.get(self, "strategy")
 
     @strategy.setter
@@ -58,6 +70,11 @@ class ImageArgsArgs:
                  registry: Optional[pulumi.Input[str]] = None,
                  repository: Optional[pulumi.Input[str]] = None,
                  tag: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] registry: Registry to use for the image. e.g. 'lcsr.io'
+        :param pulumi.Input[str] repository: Repository to use for the image. e.g. 'linuxserver'
+        :param pulumi.Input[str] tag: Tag to use for the image. e.g. 'latest'
+        """
         if registry is not None:
             pulumi.set(__self__, "registry", registry)
         if repository is not None:
@@ -68,6 +85,9 @@ class ImageArgsArgs:
     @property
     @pulumi.getter
     def registry(self) -> Optional[pulumi.Input[str]]:
+        """
+        Registry to use for the image. e.g. 'lcsr.io'
+        """
         return pulumi.get(self, "registry")
 
     @registry.setter
@@ -77,6 +97,9 @@ class ImageArgsArgs:
     @property
     @pulumi.getter
     def repository(self) -> Optional[pulumi.Input[str]]:
+        """
+        Repository to use for the image. e.g. 'linuxserver'
+        """
         return pulumi.get(self, "repository")
 
     @repository.setter
@@ -86,6 +109,9 @@ class ImageArgsArgs:
     @property
     @pulumi.getter
     def tag(self) -> Optional[pulumi.Input[str]]:
+        """
+        Tag to use for the image. e.g. 'latest'
+        """
         return pulumi.get(self, "tag")
 
     @tag.setter
@@ -98,6 +124,10 @@ class ServiceArgs:
     def __init__(__self__, *,
                  type: pulumi.Input['ServiceType'],
                  name: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input['ServiceType'] type: Type of service to deploy.
+        :param pulumi.Input[str] name: Optional service name.
+        """
         pulumi.set(__self__, "type", type)
         if name is not None:
             pulumi.set(__self__, "name", name)
@@ -105,6 +135,9 @@ class ServiceArgs:
     @property
     @pulumi.getter
     def type(self) -> pulumi.Input['ServiceType']:
+        """
+        Type of service to deploy.
+        """
         return pulumi.get(self, "type")
 
     @type.setter
@@ -114,6 +147,9 @@ class ServiceArgs:
     @property
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional service name.
+        """
         return pulumi.get(self, "name")
 
     @name.setter

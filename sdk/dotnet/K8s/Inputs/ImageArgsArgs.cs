@@ -12,12 +12,21 @@ namespace Pulumi.Homelab.K8s.Inputs
 
     public sealed class ImageArgsArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Registry to use for the image. e.g. 'lcsr.io'
+        /// </summary>
         [Input("registry")]
         public Input<string>? Registry { get; set; }
 
+        /// <summary>
+        /// Repository to use for the image. e.g. 'linuxserver'
+        /// </summary>
         [Input("repository")]
         public Input<string>? Repository { get; set; }
 
+        /// <summary>
+        /// Tag to use for the image. e.g. 'latest'
+        /// </summary>
         [Input("tag")]
         public Input<string>? Tag { get; set; }
 
