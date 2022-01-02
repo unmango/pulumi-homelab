@@ -4,25 +4,45 @@ import * as kx from '@pulumi/kubernetesx';
 import {
     createImageFormatter,
     getType,
-    KubernetesArgs
+    KubernetesArgs,
 } from './linuxserver';
+import {
+    PersistenceArgsBase,
+    PersistentVolumeClaimMap,
+} from 'types/kubernetes';
 
 export const defaultPort = 7878;
 
 const imageFormatter = createImageFormatter('radarr');
 
 export interface RadarrArgs extends KubernetesArgs {
-    volume: pulumi.Input<string>; // TODO
+    persistence?: pulumi.Input<
+        & PersistenceArgsBase
+        & PersistentVolumeClaimMap<
+            | 'config'
+            | 'downloads'
+            | 'movies'
+        >
+    >;
 }
 
 export class Radarr extends pulumi.ComponentResource {
+    public readonly configVolumeClaim?: k8s.core.v1.PersistentVolumeClaim;
     public readonly deployment: k8s.apps.v1.Deployment;
+    public readonly downloadsVolumeClaim?: k8s.core.v1.PersistentVolumeClaim;
+    public readonly moveiesVolumeClaim?: k8s.core.v1.PersistentVolumeClaim;
     public readonly port: pulumi.Output<number>;
     public readonly service: k8s.core.v1.Service;
     public readonly serviceName: pulumi.Output<string>;
 
     constructor(name: string, args: RadarrArgs, opts?: pulumi.ComponentResourceOptions) {
         super(getType('radarr'), name, args, opts);
+
+        const volumeMounts = [];
+        
+        pulumi.output(args.persistence).apply(p => {
+            if (!p || !p.enabled) return [];
+        });
 
         const podBuilder = new kx.PodBuilder({
             containers: [{
@@ -35,6 +55,7 @@ export class Radarr extends pulumi.ComponentResource {
                 ports: {
                     http: defaultPort,
                 },
+                volumeMounts: []
             }],
         });
 

@@ -10,7 +10,12 @@
         "pretty": true,
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "baseUrl": ".",
+        "paths": {
+            "k8s": ["./k8s/*"],
+            "types": ["./types/*"]
+        }
     },
     "files": [
         "index.ts",

@@ -20,7 +20,6 @@ export interface CommonArgs {
     image?: pulumi.Input<string | ImageArgs>;
     deployment?: pulumi.Input<{
         strategy?: pulumi.Input<{
-            // TODO: Strategiess
             type: pulumi.Input<DeploymentStrategy>;
         }>;
     }>;
@@ -28,4 +27,20 @@ export interface CommonArgs {
         name?: pulumi.Input<string>;
         type: pulumi.Input<ServiceType>;
     }>;
+}
+
+export interface PersistentVolumeClaimArgs {
+    existingClaim?: pulumi.Input<string>;
+    storageClass?: pulumi.Input<string>;
+    subPath?: pulumi.Input<string>;
+    accessMode?: pulumi.Input<string>;
+    size?: pulumi.Input<string>;
+}
+
+export type PersistentVolumeClaimMap<T extends string> = {
+    [P in T]?: pulumi.Input<PersistentVolumeClaimArgs>;
+}
+
+export interface PersistenceArgsBase {
+    enabled?: pulumi.Input<boolean>;
 }
