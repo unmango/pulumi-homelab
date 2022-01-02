@@ -8,8 +8,12 @@ import {
 } from './linuxserver';
 import {
     PersistenceArgsBase,
+    PersistentVolumeClaimArgs,
     PersistentVolumeClaimMap,
 } from 'types/kubernetes';
+import {
+    asPersistentVolumeClaimSpec,
+} from 'k8s/util';
 
 export const defaultPort = 7878;
 
@@ -38,11 +42,25 @@ export class Radarr extends pulumi.ComponentResource {
     constructor(name: string, args: RadarrArgs, opts?: pulumi.ComponentResourceOptions) {
         super(getType('radarr'), name, args, opts);
 
-        const volumeMounts = [];
-        
-        pulumi.output(args.persistence).apply(p => {
-            if (!p || !p.enabled) return [];
-        });
+        const createClaim = (
+            claimName: string,
+            claimArgs?: PersistentVolumeClaimArgs,
+        ): kx.PersistentVolumeClaim | undefined => {
+            return claimArgs ? new kx.PersistentVolumeClaim(claimName, {
+                metadata: {
+                    name: args.name,
+                    namespace: args.namespace,
+                },
+                spec: asPersistentVolumeClaimSpec(claimArgs),
+            }, {
+                parent: this,
+            }) : undefined;
+        };
+
+        const pArgs = pulumi.output(args.persistence);
+        const configClaim = pArgs.apply(p => p?.enabled ? createClaim('config', p.config) : undefined);
+        const downloadsClaim = pArgs.apply(p => p?.enabled ? createClaim('downloads', p.downloads) : undefined);
+        const moviesClaim = pArgs.apply(p => p?.enabled ? createClaim('movies', p.movies) : undefined);
 
         const podBuilder = new kx.PodBuilder({
             containers: [{
