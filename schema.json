@@ -151,6 +151,19 @@
                 "service": {
                     "$ref": "#/types/homelab:k8s:Service",
                     "description": "Arguments for the kubernetes service."
+                },
+                "puid": {
+                    "type": "string",
+                    "description": "User ID to run as."
+                },
+                "pgid": {
+                    "type": "string",
+                    "description": "Group ID to run as."
+                },
+                "tz": {
+                    "type": "string",
+                    "description": "Timezone to use. e.g. Europe/London",
+                    "default": "Europe/London"
                 }
             },
             "properties": {
