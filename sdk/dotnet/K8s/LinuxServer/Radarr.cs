@@ -89,13 +89,32 @@ namespace Pulumi.Homelab.K8s.LinuxServer
         public Input<string>? Namespace { get; set; }
 
         /// <summary>
+        /// Group ID to run as.
+        /// </summary>
+        [Input("pgid")]
+        public Input<string>? Pgid { get; set; }
+
+        /// <summary>
+        /// User ID to run as.
+        /// </summary>
+        [Input("puid")]
+        public Input<string>? Puid { get; set; }
+
+        /// <summary>
         /// Arguments for the kubernetes service.
         /// </summary>
         [Input("service")]
         public Input<Pulumi.Homelab.K8s.Inputs.ServiceArgs>? Service { get; set; }
 
+        /// <summary>
+        /// Timezone to use. e.g. Europe/London
+        /// </summary>
+        [Input("tz")]
+        public Input<string>? Tz { get; set; }
+
         public RadarrArgs()
         {
+            Tz = "Europe/London";
         }
     }
 }

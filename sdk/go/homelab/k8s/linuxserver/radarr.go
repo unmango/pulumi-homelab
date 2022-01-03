@@ -36,6 +36,9 @@ func NewRadarr(ctx *pulumi.Context,
 	if args.Deployment != nil {
 		args.Deployment = args.Deployment.ToDeploymentPtrOutput().ApplyT(func(v *k8s.Deployment) *k8s.Deployment { return v.Defaults() }).(k8s.DeploymentPtrOutput)
 	}
+	if isZero(args.Tz) {
+		args.Tz = pulumi.StringPtr("Europe/London")
+	}
 	var resource Radarr
 	err := ctx.RegisterRemoteComponentResource("homelab:k8s/linuxserver:Radarr", name, args, &resource, opts...)
 	if err != nil {
@@ -53,8 +56,14 @@ type radarrArgs struct {
 	Name *string `pulumi:"name"`
 	// Namespace to provision resources in.
 	Namespace *string `pulumi:"namespace"`
+	// Group ID to run as.
+	Pgid *string `pulumi:"pgid"`
+	// User ID to run as.
+	Puid *string `pulumi:"puid"`
 	// Arguments for the kubernetes service.
 	Service *k8s.Service `pulumi:"service"`
+	// Timezone to use. e.g. Europe/London
+	Tz *string `pulumi:"tz"`
 }
 
 // The set of arguments for constructing a Radarr resource.
@@ -67,8 +76,14 @@ type RadarrArgs struct {
 	Name pulumi.StringPtrInput
 	// Namespace to provision resources in.
 	Namespace pulumi.StringPtrInput
+	// Group ID to run as.
+	Pgid pulumi.StringPtrInput
+	// User ID to run as.
+	Puid pulumi.StringPtrInput
 	// Arguments for the kubernetes service.
 	Service k8s.ServicePtrInput
+	// Timezone to use. e.g. Europe/London
+	Tz pulumi.StringPtrInput
 }
 
 func (RadarrArgs) ElementType() reflect.Type {

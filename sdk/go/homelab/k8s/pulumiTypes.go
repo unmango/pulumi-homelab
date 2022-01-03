@@ -317,6 +317,33 @@ type ImageArgs struct {
 	Tag *string `pulumi:"tag"`
 }
 
+// Options for specifying a persistent volume claim.
+type PersistentVolumeClaimArgs struct {
+	// Access mode for the volume.
+	AccessMode *string `pulumi:"accessMode"`
+	// Existing volume claim to use.
+	ExistingClaim *string `pulumi:"existingClaim"`
+	// Size of the volume.
+	Size *string `pulumi:"size"`
+	// Storage class to use to provision the volume.
+	StorageClass *string `pulumi:"storageClass"`
+	// Path within the volume to mount.
+	SubPath *string `pulumi:"subPath"`
+}
+
+// Defaults sets the appropriate defaults for PersistentVolumeClaimArgs
+func (val *PersistentVolumeClaimArgs) Defaults() *PersistentVolumeClaimArgs {
+	if val == nil {
+		return nil
+	}
+	tmp := *val
+	if isZero(tmp.AccessMode) {
+		accessMode_ := "ReadWriteOnce"
+		tmp.AccessMode = &accessMode_
+	}
+	return &tmp
+}
+
 type Service struct {
 	// Optional service name.
 	Name *string `pulumi:"name"`

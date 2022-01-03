@@ -92,6 +92,33 @@
                     "value": "LoadBalancer"
                 }
             ]
+        },
+        "homelab:k8s:PersistentVolumeClaimArgs": {
+            "type": "object",
+            "description": "Options for specifying a persistent volume claim.",
+            "properties": {
+                "existingClaim": {
+                    "type": "string",
+                    "description": "Existing volume claim to use."
+                },
+                "storageClass": {
+                    "type": "string",
+                    "description": "Storage class to use to provision the volume."
+                },
+                "subPath": {
+                    "type": "string",
+                    "description": "Path within the volume to mount."
+                },
+                "accessMode": {
+                    "type": "string",
+                    "description": "Access mode for the volume.",
+                    "default": "ReadWriteOnce"
+                },
+                "size": {
+                    "type": "string",
+                    "description": "Size of the volume."
+                }
+            }
         }
     },
     "resources": {

@@ -54,7 +54,10 @@ export class Radarr extends pulumi.ComponentResource {
             resourceInputs["image"] = args ? args.image : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["namespace"] = args ? args.namespace : undefined;
+            resourceInputs["pgid"] = args ? args.pgid : undefined;
+            resourceInputs["puid"] = args ? args.puid : undefined;
             resourceInputs["service"] = args ? args.service : undefined;
+            resourceInputs["tz"] = (args ? args.tz : undefined) ?? "Europe/London";
             resourceInputs["port"] = undefined /*out*/;
             resourceInputs["serviceName"] = undefined /*out*/;
         } else {
@@ -91,7 +94,19 @@ export interface RadarrArgs {
      */
     namespace?: pulumi.Input<string>;
     /**
+     * Group ID to run as.
+     */
+    pgid?: pulumi.Input<string>;
+    /**
+     * User ID to run as.
+     */
+    puid?: pulumi.Input<string>;
+    /**
      * Arguments for the kubernetes service.
      */
     service?: pulumi.Input<inputs.k8s.ServiceArgs>;
+    /**
+     * Timezone to use. e.g. Europe/London
+     */
+    tz?: pulumi.Input<string>;
 }

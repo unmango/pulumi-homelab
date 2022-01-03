@@ -20,14 +20,20 @@ class RadarrArgs:
                  image: Optional[pulumi.Input[Union[str, '_k8s.ImageArgsArgs']]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  namespace: Optional[pulumi.Input[str]] = None,
-                 service: Optional[pulumi.Input['_k8s.ServiceArgs']] = None):
+                 pgid: Optional[pulumi.Input[str]] = None,
+                 puid: Optional[pulumi.Input[str]] = None,
+                 service: Optional[pulumi.Input['_k8s.ServiceArgs']] = None,
+                 tz: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Radarr resource.
         :param pulumi.Input['_k8s.DeploymentArgs'] deployment: Arguments for the kubernetes deployment.
         :param pulumi.Input[Union[str, '_k8s.ImageArgsArgs']] image: Optional custom image to use.
         :param pulumi.Input[str] name: Optional name override.
         :param pulumi.Input[str] namespace: Namespace to provision resources in.
+        :param pulumi.Input[str] pgid: Group ID to run as.
+        :param pulumi.Input[str] puid: User ID to run as.
         :param pulumi.Input['_k8s.ServiceArgs'] service: Arguments for the kubernetes service.
+        :param pulumi.Input[str] tz: Timezone to use. e.g. Europe/London
         """
         if deployment is not None:
             pulumi.set(__self__, "deployment", deployment)
@@ -37,8 +43,16 @@ class RadarrArgs:
             pulumi.set(__self__, "name", name)
         if namespace is not None:
             pulumi.set(__self__, "namespace", namespace)
+        if pgid is not None:
+            pulumi.set(__self__, "pgid", pgid)
+        if puid is not None:
+            pulumi.set(__self__, "puid", puid)
         if service is not None:
             pulumi.set(__self__, "service", service)
+        if tz is None:
+            tz = 'Europe/London'
+        if tz is not None:
+            pulumi.set(__self__, "tz", tz)
 
     @property
     @pulumi.getter
@@ -90,6 +104,30 @@ class RadarrArgs:
 
     @property
     @pulumi.getter
+    def pgid(self) -> Optional[pulumi.Input[str]]:
+        """
+        Group ID to run as.
+        """
+        return pulumi.get(self, "pgid")
+
+    @pgid.setter
+    def pgid(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "pgid", value)
+
+    @property
+    @pulumi.getter
+    def puid(self) -> Optional[pulumi.Input[str]]:
+        """
+        User ID to run as.
+        """
+        return pulumi.get(self, "puid")
+
+    @puid.setter
+    def puid(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "puid", value)
+
+    @property
+    @pulumi.getter
     def service(self) -> Optional[pulumi.Input['_k8s.ServiceArgs']]:
         """
         Arguments for the kubernetes service.
@@ -99,6 +137,18 @@ class RadarrArgs:
     @service.setter
     def service(self, value: Optional[pulumi.Input['_k8s.ServiceArgs']]):
         pulumi.set(self, "service", value)
+
+    @property
+    @pulumi.getter
+    def tz(self) -> Optional[pulumi.Input[str]]:
+        """
+        Timezone to use. e.g. Europe/London
+        """
+        return pulumi.get(self, "tz")
+
+    @tz.setter
+    def tz(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "tz", value)
 
 
 class Radarr(pulumi.ComponentResource):
@@ -110,7 +160,10 @@ class Radarr(pulumi.ComponentResource):
                  image: Optional[pulumi.Input[Union[str, pulumi.InputType['_k8s.ImageArgsArgs']]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  namespace: Optional[pulumi.Input[str]] = None,
+                 pgid: Optional[pulumi.Input[str]] = None,
+                 puid: Optional[pulumi.Input[str]] = None,
                  service: Optional[pulumi.Input[pulumi.InputType['_k8s.ServiceArgs']]] = None,
+                 tz: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
         Create a Radarr resource with the given unique name, props, and options.
@@ -120,7 +173,10 @@ class Radarr(pulumi.ComponentResource):
         :param pulumi.Input[Union[str, pulumi.InputType['_k8s.ImageArgsArgs']]] image: Optional custom image to use.
         :param pulumi.Input[str] name: Optional name override.
         :param pulumi.Input[str] namespace: Namespace to provision resources in.
+        :param pulumi.Input[str] pgid: Group ID to run as.
+        :param pulumi.Input[str] puid: User ID to run as.
         :param pulumi.Input[pulumi.InputType['_k8s.ServiceArgs']] service: Arguments for the kubernetes service.
+        :param pulumi.Input[str] tz: Timezone to use. e.g. Europe/London
         """
         ...
     @overload
@@ -149,7 +205,10 @@ class Radarr(pulumi.ComponentResource):
                  image: Optional[pulumi.Input[Union[str, pulumi.InputType['_k8s.ImageArgsArgs']]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  namespace: Optional[pulumi.Input[str]] = None,
+                 pgid: Optional[pulumi.Input[str]] = None,
+                 puid: Optional[pulumi.Input[str]] = None,
                  service: Optional[pulumi.Input[pulumi.InputType['_k8s.ServiceArgs']]] = None,
+                 tz: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()
@@ -168,7 +227,12 @@ class Radarr(pulumi.ComponentResource):
             __props__.__dict__["image"] = image
             __props__.__dict__["name"] = name
             __props__.__dict__["namespace"] = namespace
+            __props__.__dict__["pgid"] = pgid
+            __props__.__dict__["puid"] = puid
             __props__.__dict__["service"] = service
+            if tz is None:
+                tz = 'Europe/London'
+            __props__.__dict__["tz"] = tz
             __props__.__dict__["port"] = None
             __props__.__dict__["service_name"] = None
         super(Radarr, __self__).__init__(
