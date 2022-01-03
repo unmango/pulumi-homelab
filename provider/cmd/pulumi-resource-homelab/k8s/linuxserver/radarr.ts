@@ -56,6 +56,7 @@ export class Radarr extends pulumi.ComponentResource {
             });
         };
 
+        const explicitMounts: pulumi.Output<kx.types.VolumeMount>[] = [];
         const claims: Partial<Record<
             ExplicitVolumes,
             kx.PersistentVolumeClaim>
@@ -64,6 +65,10 @@ export class Radarr extends pulumi.ComponentResource {
         const persistence = args.persistence;
         if (persistence?.config) {
             claims['config'] = createClaim('config', persistence.config);
+            explicitMounts.push(claims['config'].mount(
+                '/config',
+                pulumi.output(persistence.config).apply(x => x.subPath),
+            ))
         }
 
         if (persistence?.downloads) {
