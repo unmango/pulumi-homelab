@@ -7,7 +7,6 @@ import {
     KubernetesArgs,
 } from './linuxserver';
 import {
-    PersistenceArgsBase,
     PersistentVolumeClaimArgs,
     PersistentVolumeClaimMap,
 } from 'types/kubernetes';
@@ -19,15 +18,13 @@ export const defaultPort = 7878;
 
 const imageFormatter = createImageFormatter('radarr');
 
+type ExplicitVolumes =
+    | 'config'
+    | 'downloads'
+    | 'movies';
+
 export interface RadarrArgs extends KubernetesArgs {
-    persistence?: pulumi.Input<
-        & PersistenceArgsBase
-        & PersistentVolumeClaimMap<
-            | 'config'
-            | 'downloads'
-            | 'movies'
-        >
-    >;
+    persistence?: PersistentVolumeClaimMap<ExplicitVolumes>;
 }
 
 export class Radarr extends pulumi.ComponentResource {
@@ -43,24 +40,39 @@ export class Radarr extends pulumi.ComponentResource {
         super(getType('radarr'), name, args, opts);
 
         const createClaim = (
-            claimName: string,
-            claimArgs?: PersistentVolumeClaimArgs,
-        ): kx.PersistentVolumeClaim | undefined => {
-            return claimArgs ? new kx.PersistentVolumeClaim(claimName, {
+            claimName: ExplicitVolumes,
+            claimArgs: pulumi.Input<PersistentVolumeClaimArgs>,
+        ): kx.PersistentVolumeClaim => {
+            return new kx.PersistentVolumeClaim(claimName, {
                 metadata: {
                     name: args.name,
                     namespace: args.namespace,
                 },
-                spec: asPersistentVolumeClaimSpec(claimArgs),
+                spec: pulumi.output(claimArgs).apply(a => {
+                    return asPersistentVolumeClaimSpec(a);
+                }),
             }, {
                 parent: this,
-            }) : undefined;
+            });
         };
 
-        const pArgs = pulumi.output(args.persistence);
-        const configClaim = pArgs.apply(p => p?.enabled ? createClaim('config', p.config) : undefined);
-        const downloadsClaim = pArgs.apply(p => p?.enabled ? createClaim('downloads', p.downloads) : undefined);
-        const moviesClaim = pArgs.apply(p => p?.enabled ? createClaim('movies', p.movies) : undefined);
+        const claims: Partial<Record<
+            ExplicitVolumes,
+            kx.PersistentVolumeClaim>
+        > = {};
+
+        const persistence = args.persistence;
+        if (persistence?.config) {
+            claims['config'] = createClaim('config', persistence.config);
+        }
+
+        if (persistence?.downloads) {
+            claims['downloads'] = createClaim('downloads', persistence.downloads);
+        }
+
+        if (persistence?.movies) {
+            claims['movies'] = createClaim('movies', persistence.movies);
+        }
 
         const podBuilder = new kx.PodBuilder({
             containers: [{
@@ -95,8 +107,8 @@ export class Radarr extends pulumi.ComponentResource {
 
         const service = new kx.Service(name, {
             metadata: {
-                name: pulumi.all([args.service, args.name]).apply(([service, name]) => {
-                    return service.name ?? name ?? undefined;
+                name: pulumi.all([args.service, args.name]).apply(([service, explicitName]) => {
+                    return service.name ?? explicitName ?? undefined;
                 }),
                 namespace: args.namespace,
             },
@@ -112,13 +124,19 @@ export class Radarr extends pulumi.ComponentResource {
             parent: this,
         });
 
+        this.configVolumeClaim = claims['config'];
         this.deployment = deployment;
+        this.downloadsVolumeClaim = claims['downloads'];
+        this.moveiesVolumeClaim = claims['movies'];
         this.port = pulumi.Output.create(defaultPort);
         this.service = service;
         this.serviceName = service.metadata.name;
 
         this.registerOutputs({
+            configVolumeClaim : claims['config'],
             deployment,
+            downloadsVolumeClaim: claims['downloads'],
+            moviesVolumeClaim: claims['movies'],
             port: defaultPort,
             service,
             serviceName: service.metadata.name,

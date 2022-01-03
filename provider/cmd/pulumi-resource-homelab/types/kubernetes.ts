@@ -40,7 +40,3 @@ export interface PersistentVolumeClaimArgs {
 export type PersistentVolumeClaimMap<T extends string> = {
     [P in T]?: pulumi.Input<PersistentVolumeClaimArgs>;
 }
-
-export interface PersistenceArgsBase {
-    enabled?: pulumi.Input<boolean>;
-}
