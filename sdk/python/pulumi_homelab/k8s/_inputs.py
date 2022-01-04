@@ -12,7 +12,9 @@ from ._enums import *
 __all__ = [
     'DeploymentStrategyArgs',
     'DeploymentArgs',
-    'ImageArgsArgs',
+    'ImageArgs',
+    'PersistentVolumeClaimExistingClaimArgs',
+    'PersistentVolumeClaimStorageClassArgs',
     'ServiceArgs',
 ]
 
@@ -65,7 +67,7 @@ class DeploymentArgs:
 
 
 @pulumi.input_type
-class ImageArgsArgs:
+class ImageArgs:
     def __init__(__self__, *,
                  registry: Optional[pulumi.Input[str]] = None,
                  repository: Optional[pulumi.Input[str]] = None,
@@ -117,6 +119,152 @@ class ImageArgsArgs:
     @tag.setter
     def tag(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "tag", value)
+
+
+@pulumi.input_type
+class PersistentVolumeClaimExistingClaimArgs:
+    def __init__(__self__, *,
+                 existing_claim: pulumi.Input[str],
+                 type: pulumi.Input[str],
+                 sub_path: Optional[pulumi.Input[str]] = None):
+        """
+        Arguments for specifying an existing persistent volume claim.
+        :param pulumi.Input[str] existing_claim: Existing volume claim to use.
+        :param pulumi.Input[str] type: Type of persistent volume claim.
+               Expected value is 'existingClaim'
+        :param pulumi.Input[str] sub_path: Path within the volume to mount.
+        """
+        pulumi.set(__self__, "existing_claim", existing_claim)
+        pulumi.set(__self__, "type", 'existingClaim')
+        if sub_path is not None:
+            pulumi.set(__self__, "sub_path", sub_path)
+
+    @property
+    @pulumi.getter(name="existingClaim")
+    def existing_claim(self) -> pulumi.Input[str]:
+        """
+        Existing volume claim to use.
+        """
+        return pulumi.get(self, "existing_claim")
+
+    @existing_claim.setter
+    def existing_claim(self, value: pulumi.Input[str]):
+        pulumi.set(self, "existing_claim", value)
+
+    @property
+    @pulumi.getter
+    def type(self) -> pulumi.Input[str]:
+        """
+        Type of persistent volume claim.
+        Expected value is 'existingClaim'
+        """
+        return pulumi.get(self, "type")
+
+    @type.setter
+    def type(self, value: pulumi.Input[str]):
+        pulumi.set(self, "type", value)
+
+    @property
+    @pulumi.getter(name="subPath")
+    def sub_path(self) -> Optional[pulumi.Input[str]]:
+        """
+        Path within the volume to mount.
+        """
+        return pulumi.get(self, "sub_path")
+
+    @sub_path.setter
+    def sub_path(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "sub_path", value)
+
+
+@pulumi.input_type
+class PersistentVolumeClaimStorageClassArgs:
+    def __init__(__self__, *,
+                 storage_class: pulumi.Input[str],
+                 type: pulumi.Input[str],
+                 access_mode: Optional[pulumi.Input[str]] = None,
+                 size: Optional[pulumi.Input[str]] = None,
+                 sub_path: Optional[pulumi.Input[str]] = None):
+        """
+        Options for creating a persistent volume claim from a storage class.
+        :param pulumi.Input[str] storage_class: Storage class to use to provision the volume.
+        :param pulumi.Input[str] type: Type of persistent volume claim.
+               Expected value is 'storageClass'
+        :param pulumi.Input[str] access_mode: Access mode for the volume.
+        :param pulumi.Input[str] size: Size of the volume.
+        :param pulumi.Input[str] sub_path: Path within the volume to mount.
+        """
+        pulumi.set(__self__, "storage_class", storage_class)
+        pulumi.set(__self__, "type", 'storageClass')
+        if access_mode is None:
+            access_mode = 'ReadWriteOnce'
+        if access_mode is not None:
+            pulumi.set(__self__, "access_mode", access_mode)
+        if size is not None:
+            pulumi.set(__self__, "size", size)
+        if sub_path is not None:
+            pulumi.set(__self__, "sub_path", sub_path)
+
+    @property
+    @pulumi.getter(name="storageClass")
+    def storage_class(self) -> pulumi.Input[str]:
+        """
+        Storage class to use to provision the volume.
+        """
+        return pulumi.get(self, "storage_class")
+
+    @storage_class.setter
+    def storage_class(self, value: pulumi.Input[str]):
+        pulumi.set(self, "storage_class", value)
+
+    @property
+    @pulumi.getter
+    def type(self) -> pulumi.Input[str]:
+        """
+        Type of persistent volume claim.
+        Expected value is 'storageClass'
+        """
+        return pulumi.get(self, "type")
+
+    @type.setter
+    def type(self, value: pulumi.Input[str]):
+        pulumi.set(self, "type", value)
+
+    @property
+    @pulumi.getter(name="accessMode")
+    def access_mode(self) -> Optional[pulumi.Input[str]]:
+        """
+        Access mode for the volume.
+        """
+        return pulumi.get(self, "access_mode")
+
+    @access_mode.setter
+    def access_mode(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "access_mode", value)
+
+    @property
+    @pulumi.getter
+    def size(self) -> Optional[pulumi.Input[str]]:
+        """
+        Size of the volume.
+        """
+        return pulumi.get(self, "size")
+
+    @size.setter
+    def size(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "size", value)
+
+    @property
+    @pulumi.getter(name="subPath")
+    def sub_path(self) -> Optional[pulumi.Input[str]]:
+        """
+        Path within the volume to mount.
+        """
+        return pulumi.get(self, "sub_path")
+
+    @sub_path.setter
+    def sub_path(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "sub_path", value)
 
 
 @pulumi.input_type

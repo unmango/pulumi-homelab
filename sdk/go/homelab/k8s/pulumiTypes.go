@@ -308,7 +308,7 @@ func (o DeploymentStrategyPtrOutput) Type() DeploymentStrategyTypePtrOutput {
 	}).(DeploymentStrategyTypePtrOutput)
 }
 
-type ImageArgs struct {
+type Image struct {
 	// Registry to use for the image. e.g. 'lcsr.io'
 	Registry *string `pulumi:"registry"`
 	// Repository to use for the image. e.g. 'linuxserver'
@@ -317,22 +317,34 @@ type ImageArgs struct {
 	Tag *string `pulumi:"tag"`
 }
 
-// Options for specifying a persistent volume claim.
-type PersistentVolumeClaimArgs struct {
+// Arguments for specifying an existing persistent volume claim.
+type PersistentVolumeClaimExistingClaim struct {
+	// Existing volume claim to use.
+	ExistingClaim string `pulumi:"existingClaim"`
+	// Path within the volume to mount.
+	SubPath *string `pulumi:"subPath"`
+	// Type of persistent volume claim.
+	// Expected value is 'existingClaim'
+	Type string `pulumi:"type"`
+}
+
+// Options for creating a persistent volume claim from a storage class.
+type PersistentVolumeClaimStorageClass struct {
 	// Access mode for the volume.
 	AccessMode *string `pulumi:"accessMode"`
-	// Existing volume claim to use.
-	ExistingClaim *string `pulumi:"existingClaim"`
 	// Size of the volume.
 	Size *string `pulumi:"size"`
 	// Storage class to use to provision the volume.
-	StorageClass *string `pulumi:"storageClass"`
+	StorageClass string `pulumi:"storageClass"`
 	// Path within the volume to mount.
 	SubPath *string `pulumi:"subPath"`
+	// Type of persistent volume claim.
+	// Expected value is 'storageClass'
+	Type string `pulumi:"type"`
 }
 
-// Defaults sets the appropriate defaults for PersistentVolumeClaimArgs
-func (val *PersistentVolumeClaimArgs) Defaults() *PersistentVolumeClaimArgs {
+// Defaults sets the appropriate defaults for PersistentVolumeClaimStorageClass
+func (val *PersistentVolumeClaimStorageClass) Defaults() *PersistentVolumeClaimStorageClass {
 	if val == nil {
 		return nil
 	}

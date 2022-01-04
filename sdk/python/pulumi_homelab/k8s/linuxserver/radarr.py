@@ -9,6 +9,7 @@ from typing import Any, Mapping, Optional, Sequence, Union, overload
 from ... import _utilities
 from ... import k8s
 from ... import k8s as _k8s
+from ._inputs import *
 import pulumi_kubernetes
 
 __all__ = ['RadarrArgs', 'Radarr']
@@ -17,9 +18,10 @@ __all__ = ['RadarrArgs', 'Radarr']
 class RadarrArgs:
     def __init__(__self__, *,
                  deployment: Optional[pulumi.Input['_k8s.DeploymentArgs']] = None,
-                 image: Optional[pulumi.Input[Union[str, '_k8s.ImageArgsArgs']]] = None,
+                 image: Optional[pulumi.Input[Union[str, '_k8s.ImageArgs']]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  namespace: Optional[pulumi.Input[str]] = None,
+                 persistence: Optional['RadarrPersistenceArgs'] = None,
                  pgid: Optional[pulumi.Input[str]] = None,
                  puid: Optional[pulumi.Input[str]] = None,
                  service: Optional[pulumi.Input['_k8s.ServiceArgs']] = None,
@@ -27,9 +29,10 @@ class RadarrArgs:
         """
         The set of arguments for constructing a Radarr resource.
         :param pulumi.Input['_k8s.DeploymentArgs'] deployment: Arguments for the kubernetes deployment.
-        :param pulumi.Input[Union[str, '_k8s.ImageArgsArgs']] image: Optional custom image to use.
+        :param pulumi.Input[Union[str, '_k8s.ImageArgs']] image: Optional custom image to use.
         :param pulumi.Input[str] name: Optional name override.
         :param pulumi.Input[str] namespace: Namespace to provision resources in.
+        :param 'RadarrPersistenceArgs' persistence: Options for persistence.
         :param pulumi.Input[str] pgid: Group ID to run as.
         :param pulumi.Input[str] puid: User ID to run as.
         :param pulumi.Input['_k8s.ServiceArgs'] service: Arguments for the kubernetes service.
@@ -43,6 +46,8 @@ class RadarrArgs:
             pulumi.set(__self__, "name", name)
         if namespace is not None:
             pulumi.set(__self__, "namespace", namespace)
+        if persistence is not None:
+            pulumi.set(__self__, "persistence", persistence)
         if pgid is not None:
             pulumi.set(__self__, "pgid", pgid)
         if puid is not None:
@@ -68,14 +73,14 @@ class RadarrArgs:
 
     @property
     @pulumi.getter
-    def image(self) -> Optional[pulumi.Input[Union[str, '_k8s.ImageArgsArgs']]]:
+    def image(self) -> Optional[pulumi.Input[Union[str, '_k8s.ImageArgs']]]:
         """
         Optional custom image to use.
         """
         return pulumi.get(self, "image")
 
     @image.setter
-    def image(self, value: Optional[pulumi.Input[Union[str, '_k8s.ImageArgsArgs']]]):
+    def image(self, value: Optional[pulumi.Input[Union[str, '_k8s.ImageArgs']]]):
         pulumi.set(self, "image", value)
 
     @property
@@ -101,6 +106,18 @@ class RadarrArgs:
     @namespace.setter
     def namespace(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "namespace", value)
+
+    @property
+    @pulumi.getter
+    def persistence(self) -> Optional['RadarrPersistenceArgs']:
+        """
+        Options for persistence.
+        """
+        return pulumi.get(self, "persistence")
+
+    @persistence.setter
+    def persistence(self, value: Optional['RadarrPersistenceArgs']):
+        pulumi.set(self, "persistence", value)
 
     @property
     @pulumi.getter
@@ -157,9 +174,10 @@ class Radarr(pulumi.ComponentResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  deployment: Optional[pulumi.Input[pulumi.InputType['_k8s.DeploymentArgs']]] = None,
-                 image: Optional[pulumi.Input[Union[str, pulumi.InputType['_k8s.ImageArgsArgs']]]] = None,
+                 image: Optional[pulumi.Input[Union[str, pulumi.InputType['_k8s.ImageArgs']]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  namespace: Optional[pulumi.Input[str]] = None,
+                 persistence: Optional[pulumi.InputType['RadarrPersistenceArgs']] = None,
                  pgid: Optional[pulumi.Input[str]] = None,
                  puid: Optional[pulumi.Input[str]] = None,
                  service: Optional[pulumi.Input[pulumi.InputType['_k8s.ServiceArgs']]] = None,
@@ -170,9 +188,10 @@ class Radarr(pulumi.ComponentResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['_k8s.DeploymentArgs']] deployment: Arguments for the kubernetes deployment.
-        :param pulumi.Input[Union[str, pulumi.InputType['_k8s.ImageArgsArgs']]] image: Optional custom image to use.
+        :param pulumi.Input[Union[str, pulumi.InputType['_k8s.ImageArgs']]] image: Optional custom image to use.
         :param pulumi.Input[str] name: Optional name override.
         :param pulumi.Input[str] namespace: Namespace to provision resources in.
+        :param pulumi.InputType['RadarrPersistenceArgs'] persistence: Options for persistence.
         :param pulumi.Input[str] pgid: Group ID to run as.
         :param pulumi.Input[str] puid: User ID to run as.
         :param pulumi.Input[pulumi.InputType['_k8s.ServiceArgs']] service: Arguments for the kubernetes service.
@@ -202,9 +221,10 @@ class Radarr(pulumi.ComponentResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  deployment: Optional[pulumi.Input[pulumi.InputType['_k8s.DeploymentArgs']]] = None,
-                 image: Optional[pulumi.Input[Union[str, pulumi.InputType['_k8s.ImageArgsArgs']]]] = None,
+                 image: Optional[pulumi.Input[Union[str, pulumi.InputType['_k8s.ImageArgs']]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  namespace: Optional[pulumi.Input[str]] = None,
+                 persistence: Optional[pulumi.InputType['RadarrPersistenceArgs']] = None,
                  pgid: Optional[pulumi.Input[str]] = None,
                  puid: Optional[pulumi.Input[str]] = None,
                  service: Optional[pulumi.Input[pulumi.InputType['_k8s.ServiceArgs']]] = None,
@@ -227,6 +247,7 @@ class Radarr(pulumi.ComponentResource):
             __props__.__dict__["image"] = image
             __props__.__dict__["name"] = name
             __props__.__dict__["namespace"] = namespace
+            __props__.__dict__["persistence"] = persistence
             __props__.__dict__["pgid"] = pgid
             __props__.__dict__["puid"] = puid
             __props__.__dict__["service"] = service

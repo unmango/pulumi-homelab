@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.Homelab.K8s.Inputs
 {
 
-    public sealed class ImageArgsArgs : Pulumi.ResourceArgs
+    public sealed class ImageArgs : Pulumi.ResourceArgs
     {
         /// <summary>
         /// Registry to use for the image. e.g. 'lcsr.io'
@@ -30,7 +30,7 @@ namespace Pulumi.Homelab.K8s.Inputs
         [Input("tag")]
         public Input<string>? Tag { get; set; }
 
-        public ImageArgsArgs()
+        public ImageArgs()
         {
         }
     }

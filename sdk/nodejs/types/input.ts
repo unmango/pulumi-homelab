@@ -39,7 +39,7 @@ export namespace k8s {
         };
     }
 
-    export interface ImageArgsArgs {
+    export interface ImageArgs {
         /**
          * Registry to use for the image. e.g. 'lcsr.io'
          */
@@ -54,6 +54,61 @@ export namespace k8s {
         tag?: pulumi.Input<string>;
     }
 
+    /**
+     * Arguments for specifying an existing persistent volume claim.
+     */
+    export interface PersistentVolumeClaimExistingClaimArgs {
+        /**
+         * Existing volume claim to use.
+         */
+        existingClaim: pulumi.Input<string>;
+        /**
+         * Path within the volume to mount.
+         */
+        subPath?: pulumi.Input<string>;
+        /**
+         * Type of persistent volume claim.
+         * Expected value is 'existingClaim'
+         */
+        type: pulumi.Input<"existingClaim">;
+    }
+
+    /**
+     * Options for creating a persistent volume claim from a storage class.
+     */
+    export interface PersistentVolumeClaimStorageClassArgs {
+        /**
+         * Access mode for the volume.
+         */
+        accessMode?: pulumi.Input<string>;
+        /**
+         * Size of the volume.
+         */
+        size?: pulumi.Input<string>;
+        /**
+         * Storage class to use to provision the volume.
+         */
+        storageClass: pulumi.Input<string>;
+        /**
+         * Path within the volume to mount.
+         */
+        subPath?: pulumi.Input<string>;
+        /**
+         * Type of persistent volume claim.
+         * Expected value is 'storageClass'
+         */
+        type: pulumi.Input<"storageClass">;
+    }
+    /**
+     * persistentVolumeClaimStorageClassArgsProvideDefaults sets the appropriate defaults for PersistentVolumeClaimStorageClassArgs
+     */
+    export function persistentVolumeClaimStorageClassArgsProvideDefaults(val: PersistentVolumeClaimStorageClassArgs): PersistentVolumeClaimStorageClassArgs {
+        return {
+            ...val,
+            accessMode: (val.accessMode) ?? "ReadWriteOnce",
+        };
+    }
+
     export interface ServiceArgs {
         /**
          * Optional service name.
@@ -63,5 +118,24 @@ export namespace k8s {
          * Type of service to deploy.
          */
         type: pulumi.Input<enums.k8s.ServiceType>;
+    }
+    export namespace linuxserver {
+        /**
+         * Radarr persistence options
+         */
+        export interface RadarrPersistenceArgs {
+            /**
+             * Configuration persistence arguments
+             */
+            config?: pulumi.Input<inputs.k8s.PersistentVolumeClaimExistingClaimArgs> | pulumi.Input<inputs.k8s.PersistentVolumeClaimStorageClassArgs>;
+            /**
+             * Downloads persistence arguments
+             */
+            downloads?: pulumi.Input<inputs.k8s.PersistentVolumeClaimExistingClaimArgs> | pulumi.Input<inputs.k8s.PersistentVolumeClaimStorageClassArgs>;
+            /**
+             * Movies persistence arguments
+             */
+            movies?: pulumi.Input<inputs.k8s.PersistentVolumeClaimExistingClaimArgs> | pulumi.Input<inputs.k8s.PersistentVolumeClaimStorageClassArgs>;
+        }
     }
 }

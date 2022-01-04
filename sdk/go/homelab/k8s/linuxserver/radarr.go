@@ -56,6 +56,8 @@ type radarrArgs struct {
 	Name *string `pulumi:"name"`
 	// Namespace to provision resources in.
 	Namespace *string `pulumi:"namespace"`
+	// Options for persistence.
+	Persistence *RadarrPersistence `pulumi:"persistence"`
 	// Group ID to run as.
 	Pgid *string `pulumi:"pgid"`
 	// User ID to run as.
@@ -76,6 +78,8 @@ type RadarrArgs struct {
 	Name pulumi.StringPtrInput
 	// Namespace to provision resources in.
 	Namespace pulumi.StringPtrInput
+	// Options for persistence.
+	Persistence *RadarrPersistenceArgs
 	// Group ID to run as.
 	Pgid pulumi.StringPtrInput
 	// User ID to run as.

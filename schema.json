@@ -16,7 +16,7 @@
     "repository": "https://github.com/unmango/pulumi-homelab",
     "pluginDownloadURL": "",
     "types": {
-        "homelab:k8s:ImageArgs": {
+        "homelab:k8s:Image": {
             "type": "object",
             "properties": {
                 "registry": {
@@ -93,13 +93,37 @@
                 }
             ]
         },
-        "homelab:k8s:PersistentVolumeClaimArgs": {
+        "homelab:k8s:PersistentVolumeClaimExistingClaim": {
             "type": "object",
-            "description": "Options for specifying a persistent volume claim.",
+            "description": "Arguments for specifying an existing persistent volume claim.",
             "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "existingClaim",
+                    "description": "Type of persistent volume claim.\nExpected value is 'existingClaim'"
+                },
                 "existingClaim": {
                     "type": "string",
                     "description": "Existing volume claim to use."
+                },
+                "subPath": {
+                    "type": "string",
+                    "description": "Path within the volume to mount."
+                }
+            },
+            "required": [
+                "type",
+                "existingClaim"
+            ]
+        },
+        "homelab:k8s:PersistentVolumeClaimStorageClass": {
+            "type": "object",
+            "description": "Options for creating a persistent volume claim from a storage class.",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "storageClass",
+                    "description": "Type of persistent volume claim.\nExpected value is 'storageClass'"
                 },
                 "storageClass": {
                     "type": "string",
@@ -117,6 +141,79 @@
                 "size": {
                     "type": "string",
                     "description": "Size of the volume."
+                }
+            },
+            "required": [
+                "type",
+                "storageClass"
+            ]
+        },
+        "homelab:k8s/linuxserver:RadarrPersistence": {
+            "type": "object",
+            "description": "Radarr persistence options",
+            "properties": {
+                "config": {
+                    "description": "Configuration persistence arguments",
+                    "discriminator": {
+                        "propertyName": "type",
+                        "mapping": {
+                            "existingClaim": "#/types/homelab:k8s:PersistentVolumeClaimExistingClaim",
+                            "storageClass": "#/types/homelab:k8s:PersistentVolumeClaimStorageClass"
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "$ref": "#/types/homelab:k8s:PersistentVolumeClaimExistingClaim"
+                        },
+                        {
+                            "type": "object",
+                            "$ref": "#/types/homelab:k8s:PersistentVolumeClaimStorageClass"
+                        }
+                    ],
+                    "plain": true
+                },
+                "downloads": {
+                    "description": "Downloads persistence arguments",
+                    "discriminator": {
+                        "propertyName": "type",
+                        "mapping": {
+                            "existingClaim": "#/types/homelab:k8s:PersistentVolumeClaimExistingClaim",
+                            "storageClass": "#/types/homelab:k8s:PersistentVolumeClaimStorageClass"
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "$ref": "#/types/homelab:k8s:PersistentVolumeClaimExistingClaim"
+                        },
+                        {
+                            "type": "object",
+                            "$ref": "#/types/homelab:k8s:PersistentVolumeClaimStorageClass"
+                        }
+                    ],
+                    "plain": true
+                },
+                "movies": {
+                    "description": "Movies persistence arguments",
+                    "discriminator": {
+                        "propertyName": "type",
+                        "mapping": {
+                            "existingClaim": "#/types/homelab:k8s:PersistentVolumeClaimExistingClaim",
+                            "storageClass": "#/types/homelab:k8s:PersistentVolumeClaimStorageClass"
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "$ref": "#/types/homelab:k8s:PersistentVolumeClaimExistingClaim"
+                        },
+                        {
+                            "type": "object",
+                            "$ref": "#/types/homelab:k8s:PersistentVolumeClaimStorageClass"
+                        }
+                    ],
+                    "plain": true
                 }
             }
         }
@@ -166,7 +263,7 @@
                             "type": "string"
                         },
                         {
-                            "$ref": "#/types/homelab:k8s:ImageArgs"
+                            "$ref": "#/types/homelab:k8s:Image"
                         }
                     ]
                 },
@@ -178,6 +275,11 @@
                 "service": {
                     "$ref": "#/types/homelab:k8s:Service",
                     "description": "Arguments for the kubernetes service."
+                },
+                "persistence": {
+                    "$ref": "#/types/homelab:k8s/linuxserver:RadarrPersistence",
+                    "description": "Options for persistence.",
+                    "plain": true
                 },
                 "puid": {
                     "type": "string",

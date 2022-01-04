@@ -7,4 +7,6 @@ import { input as inputs, output as outputs, enums } from "../types";
 import * as utilities from "../utilities";
 
 export namespace k8s {
+    export namespace linuxserver {
+    }
 }

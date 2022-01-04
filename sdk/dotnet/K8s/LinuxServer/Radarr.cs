@@ -74,7 +74,7 @@ namespace Pulumi.Homelab.K8s.LinuxServer
         /// Optional custom image to use.
         /// </summary>
         [Input("image")]
-        public InputUnion<string, Pulumi.Homelab.K8s.Inputs.ImageArgsArgs>? Image { get; set; }
+        public InputUnion<string, Pulumi.Homelab.K8s.Inputs.ImageArgs>? Image { get; set; }
 
         /// <summary>
         /// Optional name override.
@@ -87,6 +87,12 @@ namespace Pulumi.Homelab.K8s.LinuxServer
         /// </summary>
         [Input("namespace")]
         public Input<string>? Namespace { get; set; }
+
+        /// <summary>
+        /// Options for persistence.
+        /// </summary>
+        [Input("persistence")]
+        public Inputs.RadarrPersistenceArgs? Persistence { get; set; }
 
         /// <summary>
         /// Group ID to run as.

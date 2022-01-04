@@ -29,14 +29,22 @@ export interface CommonArgs {
     }>;
 }
 
-export interface PersistentVolumeClaimArgs {
+export interface PersistentVolumeClaimExistingClaimArgs {
     existingClaim?: pulumi.Input<string>;
+    subPath?: pulumi.Input<string>;
+}
+
+export interface PersistentVolumeClaimStorageClassArgs {
     storageClass?: pulumi.Input<string>;
     subPath?: pulumi.Input<string>;
     accessMode?: pulumi.Input<string>;
     size?: pulumi.Input<string>;
 }
 
+export type PersistentVolumeClaimArgs =
+    | PersistentVolumeClaimExistingClaimArgs
+    | PersistentVolumeClaimStorageClassArgs;
+
 export type PersistentVolumeClaimMap<T extends string> = {
-    [P in T]?: pulumi.Input<PersistentVolumeClaimArgs>;
+    [P in T]?: PersistentVolumeClaimArgs;
 }

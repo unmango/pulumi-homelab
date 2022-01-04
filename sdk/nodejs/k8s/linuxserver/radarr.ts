@@ -54,6 +54,7 @@ export class Radarr extends pulumi.ComponentResource {
             resourceInputs["image"] = args ? args.image : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["namespace"] = args ? args.namespace : undefined;
+            resourceInputs["persistence"] = args ? args.persistence : undefined;
             resourceInputs["pgid"] = args ? args.pgid : undefined;
             resourceInputs["puid"] = args ? args.puid : undefined;
             resourceInputs["service"] = args ? args.service : undefined;
@@ -84,7 +85,7 @@ export interface RadarrArgs {
     /**
      * Optional custom image to use.
      */
-    image?: pulumi.Input<string | inputs.k8s.ImageArgsArgs>;
+    image?: pulumi.Input<string | inputs.k8s.ImageArgs>;
     /**
      * Optional name override.
      */
@@ -93,6 +94,10 @@ export interface RadarrArgs {
      * Namespace to provision resources in.
      */
     namespace?: pulumi.Input<string>;
+    /**
+     * Options for persistence.
+     */
+    persistence?: inputs.k8s.linuxserver.RadarrPersistenceArgs;
     /**
      * Group ID to run as.
      */
