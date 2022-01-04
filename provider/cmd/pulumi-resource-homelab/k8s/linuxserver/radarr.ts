@@ -73,13 +73,7 @@ export class Radarr extends pulumi.ComponentResource {
                     persistence.config.subPath,
                 ));
             } else if (config.type === 'existingClaim') {
-                explicitMounts.push(pulumi.output({
-                    volume: {
-                        persistentVolumeClaim: {
-                            claimName: ''
-                        }
-                    }
-                }));
+                explicitMounts.push();
             }
         }
 
