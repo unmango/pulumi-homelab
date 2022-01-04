@@ -59,16 +59,28 @@ export class Radarr extends pulumi.ComponentResource {
         const explicitMounts: pulumi.Output<kx.types.VolumeMount>[] = [];
         const claims: Partial<Record<
             ExplicitVolumes,
-            kx.PersistentVolumeClaim>
-        > = {};
+            kx.PersistentVolumeClaim
+        >> = {};
 
         const persistence = args.persistence;
         if (persistence?.config) {
-            claims['config'] = createClaim('config', persistence.config);
-            explicitMounts.push(claims['config'].mount(
-                '/config',
-                pulumi.output(persistence.config).apply(x => x.subPath),
-            ))
+            const config = persistence.config;
+
+            if (config.type === 'storageClass') {
+                claims['config'] = createClaim('config', persistence.config);
+                explicitMounts.push(claims['config'].mount(
+                    '/config',
+                    persistence.config.subPath,
+                ));
+            } else if (config.type === 'existingClaim') {
+                explicitMounts.push(pulumi.output({
+                    volume: {
+                        persistentVolumeClaim: {
+                            claimName: ''
+                        }
+                    }
+                }));
+            }
         }
 
         if (persistence?.downloads) {
@@ -138,7 +150,7 @@ export class Radarr extends pulumi.ComponentResource {
         this.serviceName = service.metadata.name;
 
         this.registerOutputs({
-            configVolumeClaim : claims['config'],
+            configVolumeClaim: claims['config'],
             deployment,
             downloadsVolumeClaim: claims['downloads'],
             moviesVolumeClaim: claims['movies'],

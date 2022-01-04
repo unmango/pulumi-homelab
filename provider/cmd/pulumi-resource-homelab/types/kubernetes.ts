@@ -30,12 +30,14 @@ export interface CommonArgs {
 }
 
 export interface PersistentVolumeClaimExistingClaimArgs {
-    existingClaim?: pulumi.Input<string>;
+    type: 'existingClaim';
+    existingClaim: pulumi.Input<string>;
     subPath?: pulumi.Input<string>;
 }
 
 export interface PersistentVolumeClaimStorageClassArgs {
-    storageClass?: pulumi.Input<string>;
+    type: 'storageClass';
+    storageClass: pulumi.Input<string>;
     subPath?: pulumi.Input<string>;
     accessMode?: pulumi.Input<string>;
     size?: pulumi.Input<string>;
