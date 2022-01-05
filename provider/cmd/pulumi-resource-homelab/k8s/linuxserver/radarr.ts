@@ -11,8 +11,8 @@ import {
     PersistentVolumeClaimMap,
 } from 'types/kubernetes';
 import {
-    asPersistentVolumeClaimSpec,
-} from 'k8s/util';
+    metadataFactory
+} from '../util';
 
 export const defaultPort = 7878;
 
@@ -39,6 +39,8 @@ export class Radarr extends pulumi.ComponentResource {
     constructor(name: string, args: RadarrArgs, opts?: pulumi.ComponentResourceOptions) {
         super(getType('radarr'), name, args, opts);
 
+        const getMetadata = metadataFactory(args.name, args.namespace);
+
         const createClaim = (
             claimName: ExplicitVolumes,
             claimArgs: pulumi.Input<PersistentVolumeClaimArgs>,
@@ -56,24 +58,32 @@ export class Radarr extends pulumi.ComponentResource {
             });
         };
 
-        const explicitMounts: pulumi.Output<kx.types.VolumeMount>[] = [];
+        const explicitMounts: pulumi.Output<
+            | k8s.types.input.core.v1.VolumeMount
+            | kx.types.VolumeMount
+        >[] = [];
+        
         const claims: Partial<Record<
-            ExplicitVolumes,
-            kx.PersistentVolumeClaim
+            ExplicitVolumes, kx.PersistentVolumeClaim
         >> = {};
 
         const persistence = args.persistence;
-        if (persistence?.config) {
-            const config = persistence.config;
+        if (args.persistence?.config) {
+            const config = args.persistence.config;
 
             if (config.type === 'storageClass') {
-                claims['config'] = createClaim('config', persistence.config);
-                explicitMounts.push(claims['config'].mount(
+                claims['config'] = createClaim('config', config);
+                const mount = claims['config'].mount(
                     '/config',
-                    persistence.config.subPath,
-                ));
+                    config.subPath,
+                );
+
+                explicitMounts.push(mount);
             } else if (config.type === 'existingClaim') {
-                explicitMounts.push();
+                explicitMounts.push({
+                    name: '',
+                    mountPath: '',
+                });
             }
         }
 

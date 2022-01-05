@@ -6,63 +6,71 @@ import {
     PersistentVolumeClaimArgs
 } from 'types/kubernetes';
 
-export function createPersistentVolumeClaim(
-    name: string,
-    metadata: k8s.types.input.meta.v1.ObjectMeta,
-    mountPath: string,
-    args: PersistentVolumeClaimStorageClassArgs,
-    parent: pulumi.Resource,
-): [
-    pulumi.Output<kx.types.VolumeMount>,
-    k8s.core.v1.PersistentVolumeClaim,
-] {
-    const claim = new kx.PersistentVolumeClaim(name, {
-        metadata,
-        spec: {
-            accessModes: [args.accessMode ?? 'ReadWriteOnce'],
-            storageClassName: args.storageClass,
-            resources: args.size ? {
-                requests: {
-                    storage: args.size,
-                },
-            } : undefined,
-        }
-    }, {
-        parent,
+type MetadataFactory = {
+    (suffix?: string): k8s.types.input.meta.v1.ObjectMeta;
+};
+
+export function metadataFactory(
+    name?: pulumi.Input<string>,
+    namespace?: pulumi.Input<string>,
+): MetadataFactory {
+    return (suffix) => ({
+        name: name && suffix ? pulumi.interpolate`${name}-${suffix}` : name,
+        namespace
     });
-
-    const mount = claim.mount(mountPath, args.subPath);
-
-    return [
-        mount,
-        claim,
-    ];
 }
 
-export function createClaimOrMount(
-    name: string,
-    metadata: k8s.types.input.meta.v1.ObjectMeta,
-    mountPath: string,
-    args: PersistentVolumeClaimArgs,
-    parent: pulumi.Resource,
-): [
-    pulumi.Output<kx.types.VolumeMount>,
-    k8s.core.v1.PersistentVolumeClaim,
-] | [
-    k8s.types.input.core.v1.Volume,
-] {
-    if (args.type === 'storageClass') {
-        return createPersistentVolumeClaim(name, metadata, mountPath, args, parent);
-    } else if (args.type === 'existingClaim') {
-        const mount: k8s.types.input.core.v1.Volume = {
-            name,
-            persistentVolumeClaim: {
-                claimName: args.existingClaim,
-            }
-        }
+type PvcFactory = {
+    (
+        name: string,
+        metadata: k8s.types.input.meta.v1.ObjectMeta,
+        args?: PersistentVolumeClaimArgs,
+        parent?: pulumi.Resource,
+    ): k8s.core.v1.PersistentVolumeClaim | undefined;
+};
 
-        return [mount];
+export class PvcBuilder {
+    constructor(private suffix: string, private mountPath: string) { }
+
+    createClaim(
+        name: string,
+        metadata: k8s.types.input.meta.v1.ObjectMeta,
+        args?: PersistentVolumeClaimArgs,
+        parent?: pulumi.Resource,
+    ): k8s.core.v1.PersistentVolumeClaim | undefined {
+        if (args?.type !== 'storageClass') return;
+
+        return new k8s.core.v1.PersistentVolumeClaim(`${name}-${this.suffix}`, {
+            metadata,
+            spec: {
+                accessModes: [args.accessMode ?? 'ReadWriteOnce'],
+                storageClassName: args.storageClass,
+                resources: args.size ? {
+                    requests: {
+                        storage: args.size,
+                    },
+                } : undefined,
+            }
+        }, {
+            parent
+        });
     }
 
-    throw new Error('Unknown argument type.');
+    createMount(name: string): k8s.types.input.core.v1.VolumeMount {
+        return {
+            name: `${name}-${this.suffix}`,
+            mountPath: this.mountPath,
+        }
+    }
+
+    createVolume(name: string, args?: PersistentVolumeClaimArgs): k8s.types.input.core.v1.Volume {
+        return {
+            name: `${name}-${this.suffix}`,
+            persistentVolumeClaim: {
+                claimName: args?.type === 'existingClaim'
+                    ? args.existingClaim
+                    : `${name}-${this.suffix}`,
+            }
+        }
+    }
 }
