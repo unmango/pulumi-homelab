@@ -20,15 +20,6 @@ export function metadataFactory(
     });
 }
 
-type PvcFactory = {
-    (
-        name: string,
-        metadata: k8s.types.input.meta.v1.ObjectMeta,
-        args?: PersistentVolumeClaimArgs,
-        parent?: pulumi.Resource,
-    ): k8s.core.v1.PersistentVolumeClaim | undefined;
-};
-
 export class PvcBuilder {
     constructor(private suffix: string, private mountPath: string) { }
 
@@ -63,11 +54,16 @@ export class PvcBuilder {
         }
     }
 
-    createVolume(name: string, args?: PersistentVolumeClaimArgs): k8s.types.input.core.v1.Volume {
+    createVolume(
+        name: string,
+        args?: PersistentVolumeClaimArgs
+    ): k8s.types.input.core.v1.Volume | undefined {
+        if (!args) return;
+
         return {
             name: `${name}-${this.suffix}`,
             persistentVolumeClaim: {
-                claimName: args?.type === 'existingClaim'
+                claimName: args.type === 'existingClaim'
                     ? args.existingClaim
                     : `${name}-${this.suffix}`,
             }

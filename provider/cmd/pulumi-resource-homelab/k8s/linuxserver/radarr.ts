@@ -1,22 +1,20 @@
 import * as pulumi from '@pulumi/pulumi';
 import * as k8s from '@pulumi/kubernetes';
 import * as kx from '@pulumi/kubernetesx';
+import { PersistentVolumeClaimMap } from 'types/kubernetes';
+import { metadataFactory, PvcBuilder } from '../util';
 import {
     createImageFormatter,
     getType,
     KubernetesArgs,
 } from './linuxserver';
-import {
-    PersistentVolumeClaimArgs,
-    PersistentVolumeClaimMap,
-} from 'types/kubernetes';
-import {
-    metadataFactory
-} from '../util';
 
 export const defaultPort = 7878;
 
 const imageFormatter = createImageFormatter('radarr');
+const configBuilder = new PvcBuilder('config', '/config');
+const downloadsBuilder = new PvcBuilder('downloads', '/downloads');
+const moviesBuilder = new PvcBuilder('movies', '/movies');
 
 type ExplicitVolumes =
     | 'config'
@@ -41,61 +39,57 @@ export class Radarr extends pulumi.ComponentResource {
 
         const getMetadata = metadataFactory(args.name, args.namespace);
 
-        const createClaim = (
-            claimName: ExplicitVolumes,
-            claimArgs: pulumi.Input<PersistentVolumeClaimArgs>,
-        ): kx.PersistentVolumeClaim => {
-            return new kx.PersistentVolumeClaim(claimName, {
-                metadata: {
-                    name: args.name,
-                    namespace: args.namespace,
-                },
-                spec: pulumi.output(claimArgs).apply(a => {
-                    return asPersistentVolumeClaimSpec(a);
-                }),
-            }, {
-                parent: this,
-            });
-        };
-
-        const explicitMounts: pulumi.Output<
-            | k8s.types.input.core.v1.VolumeMount
-            | kx.types.VolumeMount
-        >[] = [];
-        
-        const claims: Partial<Record<
-            ExplicitVolumes, kx.PersistentVolumeClaim
-        >> = {};
-
+        const explicitVolumes: k8s.types.input.core.v1.Volume[] = [];
+        const explicitMounts: k8s.types.input.core.v1.VolumeMount[] = [];
         const persistence = args.persistence;
-        if (args.persistence?.config) {
-            const config = args.persistence.config;
 
-            if (config.type === 'storageClass') {
-                claims['config'] = createClaim('config', config);
-                const mount = claims['config'].mount(
-                    '/config',
-                    config.subPath,
-                );
+        const configVolume = configBuilder.createVolume(name, persistence?.config);
+        const configClaim = configBuilder.createClaim(
+            name,
+            getMetadata('config'),
+            persistence?.config,
+            this,
+        );
+        if (configVolume) {
+            explicitVolumes.push(configVolume);
 
-                explicitMounts.push(mount);
-            } else if (config.type === 'existingClaim') {
-                explicitMounts.push({
-                    name: '',
-                    mountPath: '',
-                });
+            if (configClaim) {
+                explicitMounts.push(configBuilder.createMount(name));
             }
         }
 
-        if (persistence?.downloads) {
-            claims['downloads'] = createClaim('downloads', persistence.downloads);
+        const downloadsVolume = downloadsBuilder.createVolume(name, persistence?.downloads);
+        const downloadsClaim = downloadsBuilder.createClaim(
+            name,
+            getMetadata('downloads'),
+            persistence?.config,
+            this,
+        );
+        if (downloadsVolume) {
+            explicitVolumes.push(downloadsVolume);
+
+            if (downloadsClaim) {
+                explicitMounts.push(downloadsBuilder.createMount(name));
+            }
         }
 
-        if (persistence?.movies) {
-            claims['movies'] = createClaim('movies', persistence.movies);
+        const moviesVolume = moviesBuilder.createVolume(name);
+        const moviesClaim = moviesBuilder.createClaim(
+            name,
+            getMetadata('movies'),
+            persistence?.movies,
+            this,
+        );
+        if (moviesVolume) {
+            explicitVolumes.push(moviesVolume);
+
+            if (moviesClaim) {
+                explicitMounts.push(moviesBuilder.createMount(name));
+            }
         }
 
         const podBuilder = new kx.PodBuilder({
+            volumes: explicitVolumes,
             containers: [{
                 image: imageFormatter(args.image),
                 env: {
@@ -106,7 +100,7 @@ export class Radarr extends pulumi.ComponentResource {
                 ports: {
                     http: defaultPort,
                 },
-                volumeMounts: []
+                volumeMounts: explicitMounts,
             }],
         });
 
@@ -145,19 +139,19 @@ export class Radarr extends pulumi.ComponentResource {
             parent: this,
         });
 
-        this.configVolumeClaim = claims['config'];
+        this.configVolumeClaim = configClaim;
         this.deployment = deployment;
-        this.downloadsVolumeClaim = claims['downloads'];
-        this.moveiesVolumeClaim = claims['movies'];
+        this.downloadsVolumeClaim = downloadsClaim;
+        this.moveiesVolumeClaim = moviesClaim;
         this.port = pulumi.Output.create(defaultPort);
         this.service = service;
         this.serviceName = service.metadata.name;
 
         this.registerOutputs({
-            configVolumeClaim: claims['config'],
+            configVolumeClaim: configClaim,
             deployment,
-            downloadsVolumeClaim: claims['downloads'],
-            moviesVolumeClaim: claims['movies'],
+            downloadsVolumeClaim: downloadsClaim,
+            moviesVolumeClaim: moviesClaim,
             port: defaultPort,
             service,
             serviceName: service.metadata.name,
