@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-homelab
+module github.com/unmango/pulumi-homelab
 
 go 1.17
 
