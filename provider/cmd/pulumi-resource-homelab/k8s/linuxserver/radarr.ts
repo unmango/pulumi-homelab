@@ -123,7 +123,7 @@ export class Radarr extends pulumi.ComponentResource {
         const service = new kx.Service(name, {
             metadata: {
                 name: pulumi.all([args.service, args.name]).apply(([service, explicitName]) => {
-                    return service.name ?? explicitName ?? undefined;
+                    return service?.name ?? explicitName ?? undefined;
                 }),
                 namespace: args.namespace,
             },
