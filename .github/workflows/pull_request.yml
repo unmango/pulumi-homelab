@@ -1,0 +1,54 @@
+name: pull-request
+on:
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - CHANGELOG.md
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PROVIDER: homelab
+  PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+jobs:
+  prerequisites:
+    name: prerequisites
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goversion: [1.16.x]
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Checkout Scripts Repo
+        uses: actions/checkout@v2
+        with:
+          path: ci-scripts
+          repository: pulumi/scripts
+      - name: Unshallow clone for tags
+        run: git fetch --prune --unshallow --tags
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.goversion }}
+      - name: Install pulumictl
+        uses: jaxxstorm/action-install-gh-release@v1.1.0
+        with:
+          repo: pulumi/pulumictl
+      - name: Install Pulumi CLI
+        uses: pulumi/setup-pulumi@v2
+      # - name: Build codegen binaries
+      #   run: make gen
+      - name: Build provider binary
+        run: make build_provider
+      - name: Check worktree clean
+        run: ./ci-scripts/ci/check-worktree-is-clean
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: pulumi-${{ env.PROVIDER }}
+          path: ${{ github.workspace }}/bin
+      # - name: Test Provider Library
+      #   run: make test_provider
