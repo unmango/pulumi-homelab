@@ -1,4 +1,4 @@
-module test
+module github.com/unmango/pulumi-homelab/examples
 
 go 1.17
 
