@@ -1,11 +1,13 @@
-VERSION         := 0.0.1
+PROJECT_NAME 	:= Pulumi Homelab Resource Provider
 
 PACK            := homelab
-PROJECT         := github.com/pulumi/pulumi-${PACK}
+PROJECT         := github.com/unmango/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}
 CODEGEN         := pulumi-gen-${PACK}
-VERSION_PATH    := provider/pkg/version.Version
+VERSION         ?= $(shell pulumictl get version)
+PROVIDER_PATH	  := provider
+VERSION_PATH    := ${PROVIDER_PATH}/pkg/version.Version
 
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.json
@@ -21,6 +23,9 @@ install:: install_provider install_dotnet_sdk install_nodejs_sdk
 # Ensure all dependencies are installed
 ensure::
 	yarn install
+
+gen::
+	(cd provider && go build -o $(WORKING_DIR)/bin/${CODEGEN} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" ${PROJECT}/${PROVIDER_PATH}/cmd/$(CODEGEN))
 
 # Provider
 
