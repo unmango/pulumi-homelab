@@ -128,6 +128,7 @@ export class Radarr extends pulumi.ComponentResource {
                 namespace: args.namespace,
             },
             spec: {
+                selector: deployment.spec.selector.matchLabels,
                 type: pulumi.output(args.service).apply(service => {
                     return service?.type ?? 'ClusterIP';
                 }),
