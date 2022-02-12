@@ -1,12 +1,7 @@
-# homelab Pulumi Component Provider (TypeScript)
+# Homelab Pulumi Component Provider
 
-This repo is a boilerplate showing how to create a Pulumi component provider written in TypeScript. You can search-replace `homelab` with the name of your desired provider as a starting point for creating a component provider for your component resources.
-
-An example `StaticPage` [component resource](https://www.pulumi.com/docs/intro/concepts/resources/#components) is available in `provider/cmd/pulumi-resource-homelab/staticPage.ts`. This component creates a static web page hosted in an AWS S3 Bucket. There is nothing special about `StaticPage` -- it is a typical component resource written in TypeScript.
-
-The component provider makes component resources available to other languages. The implementation is in `provider/cmd/pulumi-resource-homelab/provider.ts`. Each component resource in the provider must have an implementation in the `construct` method to create an instance of the requested component resource and return its `URN` and state (outputs). There is an initial implementation that demonstrates an implementation of `construct` for the example `StaticPage` component.
-
-A code generator is available which generates SDKs in TypeScript, Python, Go and .NET which are also checked in to the `sdk` folder. The SDKs are generated from a schema in `schema.json`. This file should be kept aligned with the component resources supported by the component provider implementation.
+This repo is a collection of Pulumi resources for commonly deployed homelab applications implemented as a [component provider](https://www.pulumi.com/docs/intro/concepts/resources/#components).
+Deployment options exist for both kubernetes and docker, with (hopefully) further customization from there.
 
 An example of using the `StaticPage` component in TypeScript is in `examples/simple`.
 
@@ -51,15 +46,13 @@ $ pulumi up
 
 The `homelab` provider's plugin must be named `pulumi-resource-homelab` (in the format `pulumi-resource-<provider>`).
 
-While the provider plugin must follow this naming convention, the SDK package naming can be customized. TODO explain.
+While the provider plugin must follow this naming convention, the SDK package naming can be customized.
 
 ## Packaging
 
 The provider plugin can be packaged into a tarball and hosted at a custom server URL to make it easier to distribute to users.
 
 Currently, three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-homelab-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-homelab-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-homelab-v0.0.1-windows-amd64.tar.gz`) each containing the same file: the platform-specific binary `pulumi-resource-homelab` created in the `./bin` directory after running `make install_provider`. These artifacts can be generated automatically in the `dist` directory using `make dist`.
-
-TODO explain custom server hosting in more detail.
 
 ## Example component
 
@@ -155,7 +148,6 @@ export class StaticPage extends pulumi.ComponentResource {
 ```
 
 The provider makes this component resource available in the `construct` method in `provider/cmd/pulumi-resource-homelab/provider.ts`. When `construct` is called and the `type` argument is `homelab:index:StaticPage`, we create an instance of the `StaticPage` component resource and return its `URN` and outputs as its state.
-
 
 ```typescript
 async function constructStaticPage(name: string, inputs: pulumi.Inputs,
