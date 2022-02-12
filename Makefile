@@ -1,4 +1,4 @@
-PROJECT_NAME 	:= Pulumi Homelab Resource Provider
+PROJECT_NAME    := Pulumi Homelab Resource Provider
 
 PACK            := homelab
 PROJECT         := github.com/unmango/pulumi-${PACK}
@@ -6,7 +6,7 @@ PROJECT         := github.com/unmango/pulumi-${PACK}
 PROVIDER        := pulumi-resource-${PACK}
 CODEGEN         := pulumi-gen-${PACK}
 VERSION         ?= $(shell pulumictl get version)
-PROVIDER_PATH	  := provider
+PROVIDER_PATH   := provider
 VERSION_PATH    := ${PROVIDER_PATH}/pkg/version.Version
 
 WORKING_DIR     := $(shell pwd)
