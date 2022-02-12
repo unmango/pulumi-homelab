@@ -1,6 +1,17 @@
 {
-    "name": "@pulumi/xyz",
+    "name": "@unmango/pulumi-homelab",
     "version": "${VERSION}",
+    "keywords": [
+        "category/cloud",
+        "category/infrastructure",
+        "kind/component",
+        "pulumi",
+        "kubernetes",
+        "k8s",
+        "docker",
+        "homelab"
+    ],
+    "repository": "https://github.com/unmango/pulumi-homelab",
     "scripts": {
         "build": "tsc"
     },

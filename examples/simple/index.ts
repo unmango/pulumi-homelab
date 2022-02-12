@@ -1,6 +1,6 @@
-import * as xyz from "@pulumi/xyz";
+import * as homelab from "@unmango/pulumi-homelab";
 
-const page = new xyz.StaticPage("page", {
+const page = new homelab.StaticPage("page", {
     indexContent: "<html><body><p>Hello world!</p></body></html>",
 });
 

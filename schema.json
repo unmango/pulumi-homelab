@@ -1,7 +1,22 @@
 {
-    "name": "xyz",
+    "name": "homelab",
+    "displayName": "Homelab",
+    "description": "Popular homelab applications for docker and kubernetes",
+    "publisher": "UnstoppableMango",
+    "keywords": [
+        "category/cloud",
+        "category/infrastructure",
+        "kind/component",
+        "pulumi",
+        "kubernetes",
+        "k8s",
+        "docker",
+        "homelab"
+    ],
+    "repository": "https://github.com/unmango/pulumi-homelab",
+    "pluginDownloadURL": "",
     "resources": {
-        "xyz:index:StaticPage": {
+        "homelab:index:StaticPage": {
             "isComponent": true,
             "inputProperties": {
                 "indexContent": {
@@ -37,9 +52,10 @@
         },
         "go": {
             "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/pulumi/pulumi-xyz/sdk/go/xyz"
+            "importBasePath": "github.com/unmango/pulumi-homelab/sdk/go/homelab"
         },
         "nodejs": {
+            "packageName": "@unmango/pulumi-homelab",
             "dependencies": {
                 "@pulumi/aws": "^4.0.0"
             },
