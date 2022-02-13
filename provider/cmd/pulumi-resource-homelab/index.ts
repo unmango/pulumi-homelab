@@ -19,7 +19,7 @@ import { Provider } from "./provider";
 
 function main(args: string[]) {
     const schema: string = readFileSync(require.resolve("./schema.yaml"), { encoding: "utf-8" });
-    const jsonSchema = JSON.stringify(YAML.parse(schema));
+    const jsonSchema: string = JSON.stringify(YAML.parse(schema));
     let version: string = require("./package.json").version;
     // Node allows for the version to be prefixed by a "v",
     // while semver doesn't. If there is a v, strip it off.
