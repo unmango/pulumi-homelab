@@ -26,9 +26,7 @@ ensure::
 
 build_provider:: ensure
 	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
-	pushd provider/cmd/${PROVIDER}/ && \
-		yarn install && \
-	popd && \
+	yarn install --cwd provider/cmd/${PROVIDER} && \
 	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
 	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
 	rm ./build/index.js.bak && \
@@ -39,9 +37,7 @@ install_provider:: build_provider
 
 # builds all providers required for publishing
 dist:: ensure
-	pushd provider/cmd/${PROVIDER}/ && \
-		yarn install && \
-	popd && \
+	yarn install --cwd provider/cmd/${PROVIDER} && \
 	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
 	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
 	rm ./build/index.js.bak && \
