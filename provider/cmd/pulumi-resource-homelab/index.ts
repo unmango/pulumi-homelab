@@ -14,17 +14,19 @@
 
 import { readFileSync } from "fs";
 import * as pulumi from "@pulumi/pulumi";
+import * as YAML from "yaml";
 import { Provider } from "./provider";
 
 function main(args: string[]) {
-    const schema: string = readFileSync(require.resolve("./schema.json"), {encoding: "utf-8"});
+    const schema: string = readFileSync(require.resolve("./schema.yaml"), { encoding: "utf-8" });
+    const jsonSchema: string = JSON.stringify(YAML.parse(schema));
     let version: string = require("./package.json").version;
     // Node allows for the version to be prefixed by a "v",
     // while semver doesn't. If there is a v, strip it off.
     if (version.startsWith("v")) {
         version = version.slice(1);
     }
-    return pulumi.provider.main(new Provider(version, schema), args);
+    return pulumi.provider.main(new Provider(version, jsonSchema), args);
 }
 
 main(process.argv.slice(2));

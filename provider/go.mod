@@ -3,6 +3,7 @@ module github.com/unmango/pulumi-homelab
 go 1.17
 
 require (
+	github.com/ghodss/yaml v1.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi/pkg/v3 v3.24.1
 )
