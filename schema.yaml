@@ -14,7 +14,7 @@ keywords:
   - docker
   - homelab
 repository: https://github.com/unmango/pulumi-homelab
-pluginDownloadUrl: ""
+pluginDownloadUrl: https://github.com/unmango/pulumi-homelab/releases/download/${VERSION}
 resources:
   homelab:index:StaticPage:
     isComponent: true
