@@ -60,37 +60,28 @@ Let's look at the example `StaticPage` component resource in more detail.
 
 ### Schema
 
-The example `StaticPage` component resource is defined in `schema.json`:
+The example `StaticPage` component resource is defined in `schema.yaml`:
 
-```json
-"resources": {
-    "homelab:index:StaticPage": {
-        "isComponent": true,
-        "inputProperties": {
-            "indexContent": {
-                "type": "string",
-                "description": "The HTML content for index.html."
-            }
-        },
-        "requiredInputs": [
-            "indexContent"
-        ],
-        "properties": {
-            "bucket": {
-                "$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
-                "description": "The bucket resource."
-            },
-            "websiteUrl": {
-                "type": "string",
-                "description": "The website URL."
-            }
-        },
-        "required": [
-            "bucket",
-            "websiteUrl"
-        ]
-    }
-}
+```yaml
+resources:
+  homelab:index:StaticPage:
+    isComponent: true
+    inputProperties:
+      indexContent:
+        type: string
+        description: The HTML content for index.html.
+    requiredInputs:
+      - indexContent
+    properties:
+      bucket:
+        "$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
+        description: The bucket resource.
+      websiteUrl:
+        type: string
+        description: The website URL.
+    required:
+      - bucket
+      - websiteUrl
 ```
 
 The component resource's type token is `homelab:index:StaticPage` in the format of `<package>:<module>:<type>`. In this case, it's in the `homelab` package and `index` module. This is the same type token passed inside the implementation of `StaticPage` in `provider/cmd/pulumi-resource-homelab/staticPage.ts`, and also the same token referenced in `construct` in `provider/cmd/pulumi-resource-homelab/provider.ts`.
@@ -99,36 +90,28 @@ This component has a required `indexContent` input property typed as `string`, a
 
 Since this component returns a type from the `aws` provider, each SDK must reference the associated Pulumi `aws` SDK for the language. For the .NET, Node.js, and Python SDKs, dependencies are specified in the `language` section of the schema:
 
-```json
-"language": {
-    "csharp": {
-        "packageReferences": {
-            "Pulumi": "2.*",
-            "Pulumi.Aws": "3.*"
-        }
-    },
-    "nodejs": {
-        "dependencies": {
-            "@pulumi/aws": "^3.30.0"
-        },
-        "devDependencies": {
-            "typescript": "^3.7.0"
-        }
-    },
-    "python": {
-        "requires": {
-            "pulumi": ">=2.21.2,<3.0.0",
-            "pulumi-aws": ">=3.30.0,<4.0.0"
-        }
-    }
-}
+```yaml
+language:
+  csharp:
+    packageReferences:
+      Pulumi: 2.*
+      Pulumi.Aws: 3.*
+  nodejs:
+    dependencies:
+      "@pulumi/aws": "^3.30.0"
+    devDependencies:
+      typescript: "^3.7.0"
+  python:
+    requires:
+      pulumi: ">=2.21.2,<3.0.0",
+      pulumi-aws: ">=3.30.0,<4.0.0"
 ```
 
 For the Go SDK, dependencies are specified in the `sdk/go.mod` file.
 
 ### Implementation
 
-The implementation of this component is in `provider/cmd/pulumi-resource-homelab/staticPage.ts` and the structure of the component's inputs and outputs aligns with what is defined in `schema.json`:
+The implementation of this component is in `provider/cmd/pulumi-resource-homelab/staticPage.ts` and the structure of the component's inputs and outputs aligns with what is defined in `schema.yaml`:
 
 ```typescript
 export interface StaticPageArgs {
