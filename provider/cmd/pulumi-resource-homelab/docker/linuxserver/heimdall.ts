@@ -12,8 +12,11 @@ export class Heimdall extends pulumi.ComponentResource {
         args = applyDefaults(args);
 
         const volumes: docker.types.input.ContainerVolume[] = [];
-        if (args.config) {
-            volumes.push(args.config);
+        if (args.configPath) {
+            volumes.push({
+                hostPath: args.configPath,
+                containerPath: '/config',
+            });
         }
 
         const container = new docker.Container(name, {
@@ -39,7 +42,7 @@ export class Heimdall extends pulumi.ComponentResource {
 }
 
 export interface HeimdallArgs extends lsio.CommonArgs {
-    config?: docker.types.input.ContainerVolume;
+    configPath?: string;
     ports?: docker.types.input.ContainerPort[];
     restart?: d4r.Restart;
 }
