@@ -15,7 +15,42 @@ keywords:
   - homelab
 repository: https://github.com/unmango/pulumi-homelab
 pluginDownloadUrl: https://github.com/unmango/pulumi-homelab/releases/download/${VERSION}
+types:
+  homelab:docker:RestartPolicy:
+    description: Container restart policy.
+    type: string
+    enum:
+      - name: Always
+        value: always
+      - name: "No"
+        value: "no"
+      - name: OnFailure
+        value: on-failure
+      - name: UnlessStopped
+        value: unless-stopped
+  homelab:docker/linuxserver:HeimdallPorts:
+    description: Port arguments for the container.
+    type: object
+    properties:
+      http:
+        type: number
+        description: External port to expose container port 80.
+      https:
+        type: number
+        description: External port to expose container port 443.
 resources:
+  homelab:docker/linuxserver:Heimdall:
+    isComponent: true
+    inputProperties:
+      configPath:
+        type: string
+        description: Host path to mount to /config in the container.
+      ports:
+        "$ref": "#/types/homelab:docker/linuxserver:HeimdallPorts"
+        description: Port arguments for the container.
+      restart:
+        "$ref": "#/types/homelab:docker:RestartPolicy"
+        description: Container restart policy.
   homelab:index:StaticPage:
     isComponent: true
     inputProperties:
