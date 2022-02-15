@@ -1,12 +1,7 @@
-# homelab Pulumi Component Provider (TypeScript)
+# Homelab Pulumi Component Provider
 
-This repo is a boilerplate showing how to create a Pulumi component provider written in TypeScript. You can search-replace `homelab` with the name of your desired provider as a starting point for creating a component provider for your component resources.
-
-An example `StaticPage` [component resource](https://www.pulumi.com/docs/intro/concepts/resources/#components) is available in `provider/cmd/pulumi-resource-homelab/staticPage.ts`. This component creates a static web page hosted in an AWS S3 Bucket. There is nothing special about `StaticPage` -- it is a typical component resource written in TypeScript.
-
-The component provider makes component resources available to other languages. The implementation is in `provider/cmd/pulumi-resource-homelab/provider.ts`. Each component resource in the provider must have an implementation in the `construct` method to create an instance of the requested component resource and return its `URN` and state (outputs). There is an initial implementation that demonstrates an implementation of `construct` for the example `StaticPage` component.
-
-A code generator is available which generates SDKs in TypeScript, Python, Go and .NET which are also checked in to the `sdk` folder. The SDKs are generated from a schema in `schema.json`. This file should be kept aligned with the component resources supported by the component provider implementation.
+This repo is a collection of Pulumi resources for commonly deployed homelab applications implemented as a [component provider](https://www.pulumi.com/docs/intro/concepts/resources/#components).
+Deployment options exist for both kubernetes and docker, with (hopefully) further customization from there.
 
 An example of using the `StaticPage` component in TypeScript is in `examples/simple`.
 
@@ -41,7 +36,7 @@ $ export PATH=$PATH:$PWD/bin
 $ make install_nodejs_sdk
 $ cd examples/simple
 $ yarn install
-$ yarn link @pulumi/homelab
+$ yarn link @unmango/pulumi-homelab
 $ pulumi stack init test
 $ pulumi config set aws:region us-east-1
 $ pulumi up
@@ -51,7 +46,7 @@ $ pulumi up
 
 The `homelab` provider's plugin must be named `pulumi-resource-homelab` (in the format `pulumi-resource-<provider>`).
 
-While the provider plugin must follow this naming convention, the SDK package naming can be customized. TODO explain.
+While the provider plugin must follow this naming convention, the SDK package naming can be customized.
 
 ## Packaging
 
@@ -59,45 +54,34 @@ The provider plugin can be packaged into a tarball and hosted at a custom server
 
 Currently, three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-homelab-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-homelab-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-homelab-v0.0.1-windows-amd64.tar.gz`) each containing the same file: the platform-specific binary `pulumi-resource-homelab` created in the `./bin` directory after running `make install_provider`. These artifacts can be generated automatically in the `dist` directory using `make dist`.
 
-TODO explain custom server hosting in more detail.
-
 ## Example component
 
 Let's look at the example `StaticPage` component resource in more detail.
 
 ### Schema
 
-The example `StaticPage` component resource is defined in `schema.json`:
+The example `StaticPage` component resource is defined in `schema.yaml`:
 
-```json
-"resources": {
-    "homelab:index:StaticPage": {
-        "isComponent": true,
-        "inputProperties": {
-            "indexContent": {
-                "type": "string",
-                "description": "The HTML content for index.html."
-            }
-        },
-        "requiredInputs": [
-            "indexContent"
-        ],
-        "properties": {
-            "bucket": {
-                "$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
-                "description": "The bucket resource."
-            },
-            "websiteUrl": {
-                "type": "string",
-                "description": "The website URL."
-            }
-        },
-        "required": [
-            "bucket",
-            "websiteUrl"
-        ]
-    }
-}
+```yaml
+resources:
+  homelab:index:StaticPage:
+    isComponent: true
+    inputProperties:
+      indexContent:
+        type: string
+        description: The HTML content for index.html.
+    requiredInputs:
+      - indexContent
+    properties:
+      bucket:
+        "$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
+        description: The bucket resource.
+      websiteUrl:
+        type: string
+        description: The website URL.
+    required:
+      - bucket
+      - websiteUrl
 ```
 
 The component resource's type token is `homelab:index:StaticPage` in the format of `<package>:<module>:<type>`. In this case, it's in the `homelab` package and `index` module. This is the same type token passed inside the implementation of `StaticPage` in `provider/cmd/pulumi-resource-homelab/staticPage.ts`, and also the same token referenced in `construct` in `provider/cmd/pulumi-resource-homelab/provider.ts`.
@@ -106,36 +90,28 @@ This component has a required `indexContent` input property typed as `string`, a
 
 Since this component returns a type from the `aws` provider, each SDK must reference the associated Pulumi `aws` SDK for the language. For the .NET, Node.js, and Python SDKs, dependencies are specified in the `language` section of the schema:
 
-```json
-"language": {
-    "csharp": {
-        "packageReferences": {
-            "Pulumi": "2.*",
-            "Pulumi.Aws": "3.*"
-        }
-    },
-    "nodejs": {
-        "dependencies": {
-            "@pulumi/aws": "^3.30.0"
-        },
-        "devDependencies": {
-            "typescript": "^3.7.0"
-        }
-    },
-    "python": {
-        "requires": {
-            "pulumi": ">=2.21.2,<3.0.0",
-            "pulumi-aws": ">=3.30.0,<4.0.0"
-        }
-    }
-}
+```yaml
+language:
+  csharp:
+    packageReferences:
+      Pulumi: 2.*
+      Pulumi.Aws: 3.*
+  nodejs:
+    dependencies:
+      "@pulumi/aws": "^3.30.0"
+    devDependencies:
+      typescript: "^3.7.0"
+  python:
+    requires:
+      pulumi: ">=2.21.2,<3.0.0",
+      pulumi-aws: ">=3.30.0,<4.0.0"
 ```
 
 For the Go SDK, dependencies are specified in the `sdk/go.mod` file.
 
 ### Implementation
 
-The implementation of this component is in `provider/cmd/pulumi-resource-homelab/staticPage.ts` and the structure of the component's inputs and outputs aligns with what is defined in `schema.json`:
+The implementation of this component is in `provider/cmd/pulumi-resource-homelab/staticPage.ts` and the structure of the component's inputs and outputs aligns with what is defined in `schema.yaml`:
 
 ```typescript
 export interface StaticPageArgs {
@@ -155,7 +131,6 @@ export class StaticPage extends pulumi.ComponentResource {
 ```
 
 The provider makes this component resource available in the `construct` method in `provider/cmd/pulumi-resource-homelab/provider.ts`. When `construct` is called and the `type` argument is `homelab:index:StaticPage`, we create an instance of the `StaticPage` component resource and return its `URN` and outputs as its state.
-
 
 ```typescript
 async function constructStaticPage(name: string, inputs: pulumi.Inputs,
