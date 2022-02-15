@@ -1,15 +1,12 @@
 import * as pulumi from '@pulumi/pulumi';
 import * as docker from '@pulumi/docker';
-import * as lsio from 'types/linuxserver';
-import * as d4r from 'types/docker';
+import * as types from 'types';
 
 export class Heimdall extends pulumi.ComponentResource {
     public readonly container: docker.Container;
 
     constructor(name: string, args: HeimdallArgs, opts?: pulumi.ComponentResourceOptions) {
         super('homelab:k8s/linuxserver:heimdall', name, args, opts);
-
-        args = applyDefaults(args);
 
         const volumes: docker.types.input.ContainerVolume[] = [];
         if (args.configPath) {
@@ -27,7 +24,17 @@ export class Heimdall extends pulumi.ComponentResource {
                 pulumi.interpolate`TZ=${args.tz}`
             ],
             volumes,
-            ports: args.ports,
+            ports: pulumi.output(args.ports)
+                .apply<docker.types.input.ContainerPort[]>((ports) => ([
+                    {
+                        internal: 80,
+                        external: ports?.http,
+                    },
+                    {
+                        internal: 443,
+                        external: ports?.https,
+                    }
+                ])),
             restart: args.restart,
         }, {
             parent: this,
@@ -41,29 +48,13 @@ export class Heimdall extends pulumi.ComponentResource {
     }
 }
 
-export interface HeimdallArgs extends lsio.CommonArgs {
-    configPath?: string;
-    ports?: docker.types.input.ContainerPort[];
-    restart?: d4r.Restart;
+export interface HeimdallPortsArgs {
+    http?: pulumi.Input<number>;
+    https?: pulumi.Input<number>;
 }
 
-function applyDefaults(args: HeimdallArgs): HeimdallArgs {
-    if (!args.ports) {
-        args.ports = [
-            {
-                internal: 80,
-                external: 80,
-            },
-            {
-                internal: 443,
-                external: 443,
-            }
-        ]
-    }
-
-    if (!args.restart) {
-        args.restart = 'unless-stopped';
-    }
-
-    return args;
+export interface HeimdallArgs extends types.linuxserver.CommonArgs {
+    configPath?: pulumi.Input<string>;
+    ports?: pulumi.Input<HeimdallPortsArgs>;
+    restart?: pulumi.Input<types.docker.RestartPolicy>;
 }
