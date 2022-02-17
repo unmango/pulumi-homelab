@@ -25,9 +25,9 @@ export class Heimdall extends pulumi.ComponentResource {
         const container = new docker.Container(name, {
             image: image.repoDigest,
             envs: [
-                pulumi.interpolate`PGID=${args.pgid}`,
-                pulumi.interpolate`PUID=${args.puid}`,
-                pulumi.interpolate`TZ=${args.tz}`
+                pulumi.interpolate`PGID=${args.pgid ?? ''}`,
+                pulumi.interpolate`PUID=${args.puid ?? ''}`,
+                pulumi.interpolate`TZ=${args.tz ?? ''}`
             ],
             volumes,
             ports: pulumi.output(args.ports)

@@ -2,31 +2,29 @@ import * as pulumi from '@pulumi/pulumi';
 import { Heimdall } from './heimdall';
 import 'mocha';
 
-describe('Heimdall', function() {
-    describe('when created with defaults', function() {
+describe('Heimdall', function () {
+    describe('when created with defaults', function () {
         const expectedName = 'test';
         let heimdall: Heimdall;
 
-        before(function() {
+        before(function () {
             heimdall = new Heimdall(expectedName, {});
         });
 
-        // TODO
-        // it('sets container name', function(done) {
-        //     pulumi.all([heimdall.container.name]).apply(([name]) => {
-        //         if(expectedName !== name) {
-        //             done(new Error('Names did not match'));
-        //         }
-        //         else {
-        //             done();
-        //         }
-        //     });
-        // });
+        ['PGID', 'PUID', 'TZ'].forEach(variable => {
+            it(`sets ${variable} to undefined`, function (done) {
+                pulumi.all([heimdall.container.envs]).apply(([envs]) => {
+                    if (envs.includes(`${variable}=`)) {
+                        done();
+                    } else {
+                        done(new Error('Environment variable not set'));
+                    }
+                });
+            });
+        });
 
-        
-
-        it('does not create config volume', function(done) {
-            if (!heimdall.container?.volumes) {
+        it('does not create config volume', function (done) {
+            if (!heimdall.container.volumes) {
                 done(new Error('Container volumes not defined'));
             }
 
@@ -39,17 +37,43 @@ describe('Heimdall', function() {
                 }
             });
         });
+
+        it('defines internal port 80', function(done){
+            pulumi.all([heimdall.container.ports]).apply(([ports]) => {
+                if (!ports || ports.length <= 0) {
+                    done(new Error('No ports defined'));
+                }
+
+                const httpPorts = ports!.filter(port => port.internal === 80);
+
+                if (!httpPorts || httpPorts.length !== 1) {
+                    done(new Error('No http port defined'));
+                }
+
+                const httpPort = httpPorts[0];
+
+                if (httpPort.internal !== 80) {
+                    done(new Error('Internal http port not mapped to 80'));
+                }
+
+                if (httpPort.external !== undefined) {
+                    done(new Error('Unexpected external port definition'));
+                } else {
+                    done();
+                }
+            });
+        });
     });
 
-    describe('when `configPath` is provided', function() {
+    describe('when `configPath` is provided', function () {
         const expectedPath = 'test';
 
         const heimdall = new Heimdall('test', {
             configPath: expectedPath,
         });
 
-        it('creates config volume', function(done) {
-            if (!heimdall.container?.volumes) {
+        it('creates config volume', function (done) {
+            if (!heimdall.container.volumes) {
                 done(new Error('Container volumes not defined'));
             }
 
