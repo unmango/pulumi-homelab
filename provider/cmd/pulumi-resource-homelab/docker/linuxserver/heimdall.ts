@@ -16,8 +16,14 @@ export class Heimdall extends pulumi.ComponentResource {
             });
         }
 
+        const image = new docker.RemoteImage(name, {
+            name: 'lscr.io/linuxserver/heimdall',
+        }, {
+            parent: this,
+        });
+
         const container = new docker.Container(name, {
-            image: 'lscr.io/linuxserver/heimdall',
+            image: image.repoDigest,
             envs: [
                 pulumi.interpolate`PGID=${args.pgid}`,
                 pulumi.interpolate`PUID=${args.puid}`,
