@@ -28,12 +28,7 @@ build_provider:: ensure
 	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
 	pushd provider/cmd/${PROVIDER}/ && \
 		yarn install && \
-	popd && \
-	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
-	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
-	rm ./build/index.js.bak && \
-	rm -rf ./bin && mkdir bin && \
-	npx nexe build/index.js -r build/schema.yaml -t $(target) -o bin/${PROVIDER}
+	popd
 
 install_provider:: build_provider
 
