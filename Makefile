@@ -32,12 +32,7 @@ gen::
 build_provider:: ensure
 	pushd provider/cmd/${PROVIDER}/ && \
 		yarn install && \
-	popd && \
-	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
-	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
-	rm ./build/index.js.bak && \
-	rm -rf ./bin && mkdir bin && \
-	npx nexe build/index.js -t $(target) -o bin/${PROVIDER}
+	popd
 
 install_provider:: build_provider
 
