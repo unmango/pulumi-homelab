@@ -38,7 +38,10 @@ describe('Heimdall', function () {
             });
         });
 
-        const portTests: [number, string][] = [[80, 'http'], [443, 'https']];
+        const portTests: [number, string][] = [
+            [80, 'http'],
+            [443, 'https'],
+        ];
         portTests.forEach(([expectedPort, portName]) => {
             it(`defines internal port ${expectedPort}`, function (done) {
                 pulumi.all([heimdall.container.ports]).apply(([ports]) => {
