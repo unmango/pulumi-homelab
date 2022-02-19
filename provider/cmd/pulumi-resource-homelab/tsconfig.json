@@ -23,5 +23,6 @@
     ],
     "include": [
         "types/*.ts",
+        "docker/**/*.ts"
     ]
 }
