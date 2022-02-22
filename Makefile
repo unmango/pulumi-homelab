@@ -78,7 +78,7 @@ build_dotnet_sdk:: gen_dotnet_sdk
 		echo "${DOTNET_VERSION}" >version.txt && \
 		dotnet build /p:Version=${DOTNET_VERSION}
 
-install_dotnet_sdk:: build_dotnet_sdk
+install_dotnet_sdk::
 	rm -rf ${WORKING_DIR}/nuget
 	mkdir -p ${WORKING_DIR}/nuget
 	find . -name '*.nupkg' -print -exec cp -p {} ${WORKING_DIR}/nuget \;
@@ -99,7 +99,7 @@ build_nodejs_sdk:: gen_nodejs_sdk
 		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json && \
 		rm ./bin/package.json.bak
 
-install_nodejs_sdk:: build_nodejs_sdk
+install_nodejs_sdk::
 	yarn link --cwd ${WORKING_DIR}/sdk/nodejs/bin
 
 
