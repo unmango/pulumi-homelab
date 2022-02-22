@@ -98,10 +98,8 @@ jobs:
       - name: Restore binary perms
         run: find ${{ github.workspace }} -name "pulumi-*-${{ env.PROVIDER }}" -print
           -exec chmod +x {} \;
-      - name: Generate SDK
-        run: make build_${{ matrix.language }}_sdk
-      # - name: Build SDK
-      #   run: make build_${{ matrix.language }}
+      - name: Build SDK
+        run: make build_${{ matrix.language }}
       - name: Check worktree clean
         run: ./ci-scripts/ci/check-worktree-is-clean
       - name: Compress SDK folder

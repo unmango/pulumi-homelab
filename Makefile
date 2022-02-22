@@ -60,6 +60,9 @@ gen_go_sdk::
 	rm -rf sdk/go
 	cd provider/cmd/${CODEGEN} && go run . go ../../../sdk/go ${SCHEMA_PATH}
 
+build_go_sdk:: gen_go_sdk
+	#noop for CI
+
 
 # .NET SDK
 
