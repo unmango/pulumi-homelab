@@ -1,6 +1,6 @@
 SHELL           := /bin/bash
 
-VERSION         := 0.0.1
+VERSION         := $(shell pulumictl get version)
 
 PACK            := homelab
 PROJECT         := github.com/unmango/pulumi-${PACK}
@@ -72,7 +72,7 @@ gen_dotnet_sdk::
 	rm -rf sdk/dotnet
 	cd provider/cmd/${CODEGEN} && go run . dotnet ../../../sdk/dotnet ${SCHEMA_PATH}
 
-build_dotnet_sdk:: DOTNET_VERSION := ${VERSION}
+build_dotnet_sdk:: DOTNET_VERSION := $(shell pulumictl get version --language dotnet)
 build_dotnet_sdk:: gen_dotnet_sdk
 	cd sdk/dotnet/ && \
 		echo "${DOTNET_VERSION}" >version.txt && \
@@ -90,6 +90,7 @@ gen_nodejs_sdk::
 	rm -rf sdk/nodejs
 	cd provider/cmd/${CODEGEN} && go run . nodejs ../../../sdk/nodejs ${SCHEMA_PATH}
 
+build_nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
 build_nodejs_sdk:: gen_nodejs_sdk
 	cd sdk/nodejs/ && \
 		yarn install && \
@@ -110,7 +111,7 @@ gen_python_sdk::
 	cd provider/cmd/${CODEGEN} && go run . python ../../../sdk/python ${SCHEMA_PATH}
 	cp ${WORKING_DIR}/README.md sdk/python
 
-build_python_sdk:: PYPI_VERSION := ${VERSION}
+build_python_sdk:: PYPI_VERSION := $(shell pulumictl get version --language python)
 build_python_sdk:: gen_python_sdk
 	cd sdk/python/ && \
 		python3 setup.py clean --all 2>/dev/null && \
