@@ -289,11 +289,3 @@ jobs:
       #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       #   name: Publish SDKs
       #   run: ./ci-scripts/ci/publish-tfgen-package ${{ github.workspace }}
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            ${{ github.workspace}}/sdk/python.tar.gz
-            ${{ github.workspace}}/sdk/nodejs.tar.gz
-            ${{ github.workspace}}/sdk/dotnet.tar.gz
-          prerelease: true
