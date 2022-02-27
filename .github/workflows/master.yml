@@ -217,7 +217,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ github.workspace }}/bin/*
+          files: ${{ github.workspace }}/dist/*
           tag_name: ${{ env.VERSION }}
           prerelease: true
           draft: true
