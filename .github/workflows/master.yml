@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - "feature-**"
+      - ci
     paths-ignore:
       - CHANGELOG.md
     tags-ignore:
