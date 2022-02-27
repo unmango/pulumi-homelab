@@ -19,11 +19,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           lfs: true
-      - name: Checkout Scripts Repo
-        uses: actions/checkout@v2
-        with:
-          path: ci-scripts
-          repository: pulumi/scripts
       - name: Unshallow clone for tags
         run: git fetch --prune --unshallow --tags
       - name: Install pulumictl
@@ -32,12 +27,9 @@ jobs:
           repo: pulumi/pulumictl
       - name: Install Pulumi CLI
         uses: pulumi/setup-pulumi@v2
-      # - name: Build codegen binaries
-      #   run: make gen
       - name: Build provider binary
         run: make build_provider
-      - name: Check worktree clean
-        run: ./ci-scripts/ci/check-worktree-is-clean
+      # TODO: Maybe check working tree is clean like Pulumi does
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -60,11 +52,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Checkout Scripts Repo
-        uses: actions/checkout@v2
-        with:
-          path: ci-scripts
-          repository: pulumi/scripts
       - name: Unshallow clone for tags
         run: git fetch --prune --unshallow --tags
       - name: Install Go
@@ -100,8 +87,7 @@ jobs:
           -exec chmod +x {} \;
       - name: Build SDK
         run: make build_${{ matrix.language }}_sdk
-      - name: Check worktree clean
-        run: ./ci-scripts/ci/check-worktree-is-clean
+      # TODO: Maybe check working tree is clean like Pulumi does
       - name: Compress SDK folder
         run: tar -zcf sdk/${{ matrix.language }}.tar.gz -C sdk/${{ matrix.language }} .
       - name: Upload artifacts
@@ -126,11 +112,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ env.PR_COMMIT_SHA }}
-      - name: Checkout Scripts Repo
-        uses: actions/checkout@v2
-        with:
-          path: ci-scripts
-          repository: pulumi/scripts
       - name: Unshallow clone for tags
         run: git fetch --prune --unshallow --tags
       - name: Install Go
