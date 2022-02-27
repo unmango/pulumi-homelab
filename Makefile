@@ -48,7 +48,7 @@ dist:: ensure
 	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
 	rm ./build/index.js.bak && \
 	rm -rf dist  && mkdir dist && \
-	for TARGET in "darwin-amd64" "darwin-arm64" "windows-amd64" "linux-amd64" "linux-arm64"; do \
+	for TARGET in "darwin-amd64" "windows-amd64" "linux-amd64"; do \
 		rm -rf ./bin && mkdir bin && \
 		npx nexe build/index.js -r build/schema.yaml -t "$${TARGET}-14.15.3" -o bin/${PROVIDER} && \
 		tar -czvf "dist/$(PROVIDER)-v$(VERSION)-$${TARGET}.tar.gz" bin; \
