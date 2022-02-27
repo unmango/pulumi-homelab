@@ -210,16 +210,14 @@ jobs:
           repo: pulumi/pulumictl
       - name: Install Pulumi CLI
         uses: pulumi/setup-pulumi@v2
-      - name: Download binaries
-        uses: actions/download-artifact@v2
-        with:
-          name: pulumi-${{ env.PROVIDER }}
+      - name: Prepare provider for distribution
+        run: make dist
       - name: Set PreRelease Version
         run: echo "VERSION=v$(pulumictl get version --language generic)" >> $GITHUB_ENV
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: pulumi-${{ env.PROVIDER }}
+          files: ${{ github.workspace }}/bin/*
           tag_name: ${{ env.VERSION }}
           prerelease: true
           draft: true
