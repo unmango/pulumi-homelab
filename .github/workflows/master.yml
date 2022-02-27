@@ -214,11 +214,15 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: pulumi-${{ env.PROVIDER }}
+      - name: Set PreRelease Version
+        run: echo "VERSION=v$(pulumictl get version --language generic)" >> $GITHUB_ENV
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: pulumi-${{ env.PROVIDER }}
+          tag_name: ${{ env.VERSION }}
           prerelease: true
+          draft: true
       # - name: Set PreRelease Version
       #   run: echo "GORELEASER_CURRENT_TAG=v$(pulumictl get version --language generic)" >> $GITHUB_ENV
       # - name: Run GoReleaser
