@@ -167,6 +167,7 @@ jobs:
         uses: haveyoudebuggedit/gotestfmt-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      # TODO: yarn link and whatnot for tests
       - name: Run tests
         run: |
           set -euo pipefail

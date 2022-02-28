@@ -15,17 +15,17 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-  NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
+  NUGET_PUBLISH_KEY: ${{ secrets.NUGET_API_KEY }}
   PROVIDER: homelab
   PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-  PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+  PYPI_PASSWORD: ${{ secrets.PYPI_TOKEN }}
 jobs:
   prerequisites:
     name: prerequisites
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goversion: [1.16.x]
+        nodeversion: [16.x]
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -34,10 +34,11 @@ jobs:
       - name: Unshallow clone for tags
         run: git fetch --prune --unshallow --tags
         if: ${{ !env.ACT }}
-      - name: Install Go
-        uses: actions/setup-go@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
         with:
-          go-version: ${{ matrix.goversion }}
+          node-version: ${{matrix.nodeversion}}
+          registry-url: https://registry.npmjs.org
       - name: Install pulumictl
         uses: jaxxstorm/action-install-gh-release@v1.1.0
         with:
@@ -62,11 +63,11 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        dotnetversion: [ 3.1.301 ]
-        goversion: [ 1.16.x ]
-        language: [ nodejs, python, dotnet, go ]
-        nodeversion: [ 14.x ]
-        pythonversion: [ 3.7 ]
+        dotnetversion: [3.1.301]
+        goversion: [1.16.x]
+        language: [nodejs, python, dotnet, go]
+        nodeversion: [14.x]
+        pythonversion: [3.7]
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -96,7 +97,7 @@ jobs:
           repo: pulumi/pulumictl
       - name: Install Pulumi CLI
         uses: pulumi/setup-pulumi@v2
-      - name: Download provider + tfgen binaries
+      - name: Download provider
         uses: actions/download-artifact@v2
         with:
           name: pulumi-${{ env.PROVIDER }}
@@ -186,10 +187,11 @@ jobs:
         uses: haveyoudebuggedit/gotestfmt-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      # TODO: yarn link and whatnot for tests
       - name: Run tests
         run: |
           set -euo pipefail
-          cd examples && go test -json  -v -count=1 -cover -timeout 2h -tags=${{ matrix.language
+          cd examples && go test -json -v -count=1 -cover -timeout 2h -tags=${{ matrix.language
           }} -parallel 4 . 2>&1 | tee /tmp/gotest.log | gotestfmt
   publish:
     name: publish
@@ -197,7 +199,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goversion: [ 1.16.x ]
+        goversion: [1.16.x]
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -234,7 +236,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goversion: [ 1.16.x ]
+        goversion: [1.16.x]
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2

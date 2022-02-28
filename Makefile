@@ -51,7 +51,7 @@ dist:: ensure
 	for TARGET in "darwin-amd64" "windows-amd64" "linux-amd64"; do \
 		rm -rf ./bin && mkdir bin && \
 		npx nexe build/index.js -r build/schema.yaml -t "$${TARGET}-14.15.3" -o bin/${PROVIDER} && \
-		tar -czvf "dist/$(PROVIDER)-v$(VERSION)-$${TARGET}.tar.gz" bin; \
+		tar -czvf "dist/$(PROVIDER)-v$(VERSION)-$${TARGET}.tar.gz" -C bin .; \
 	done
 
 # Go SDK
