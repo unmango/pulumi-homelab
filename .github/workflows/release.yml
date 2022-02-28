@@ -211,15 +211,6 @@ jobs:
         with:
           files: ${{ github.workspace }}/dist/*
           tag_name: ${{ env.VERSION }}
-          prerelease: true
-          draft: true
-      # - name: Set PreRelease Version
-      #   run: echo "GORELEASER_CURRENT_TAG=v$(pulumictl get version --language generic)" >> $GITHUB_ENV
-      # - name: Run GoReleaser
-      #   uses: goreleaser/goreleaser-action@v2
-      #   with:
-      #     args: -p 1 -f .goreleaser.prerelease.yml --rm-dist --skip-validate --timeout 60m0s
-      #     version: latest
   publish_sdk:
     name: publish_sdk
     needs: publish
