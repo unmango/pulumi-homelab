@@ -1,4 +1,6 @@
-VERSION         := 0.0.1
+SHELL           := /bin/bash
+
+VERSION         := $(shell pulumictl get version)
 
 PACK            := homelab
 PROJECT         := github.com/unmango/pulumi-${PACK}
@@ -46,10 +48,10 @@ dist:: ensure
 	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
 	rm ./build/index.js.bak && \
 	rm -rf dist  && mkdir dist && \
-	for TARGET in "darwin-amd64" "win-amd64" "linux-amd64"; do \
+	for TARGET in "darwin-amd64" "windows-amd64" "linux-amd64"; do \
 		rm -rf ./bin && mkdir bin && \
 		npx nexe build/index.js -r build/schema.yaml -t "$${TARGET}-14.15.3" -o bin/${PROVIDER} && \
-		tar -czvf "dist/$(PROVIDER)-v$(VERSION)-$${TARGET}.tar.gz" bin; \
+		tar -czvf "dist/$(PROVIDER)-v$(VERSION)-$${TARGET}.tar.gz" -C bin .; \
 	done
 
 # Go SDK
@@ -58,6 +60,11 @@ gen_go_sdk::
 	rm -rf sdk/go
 	cd provider/cmd/${CODEGEN} && go run . go ../../../sdk/go ${SCHEMA_PATH}
 
+build_go_sdk:: gen_go_sdk
+	#noop for CI
+
+install_go_sdk::
+	#noop for CI
 
 # .NET SDK
 
@@ -65,13 +72,13 @@ gen_dotnet_sdk::
 	rm -rf sdk/dotnet
 	cd provider/cmd/${CODEGEN} && go run . dotnet ../../../sdk/dotnet ${SCHEMA_PATH}
 
-build_dotnet_sdk:: DOTNET_VERSION := ${VERSION}
+build_dotnet_sdk:: DOTNET_VERSION := $(shell pulumictl get version --language dotnet)
 build_dotnet_sdk:: gen_dotnet_sdk
 	cd sdk/dotnet/ && \
 		echo "${DOTNET_VERSION}" >version.txt && \
 		dotnet build /p:Version=${DOTNET_VERSION}
 
-install_dotnet_sdk:: build_dotnet_sdk
+install_dotnet_sdk::
 	rm -rf ${WORKING_DIR}/nuget
 	mkdir -p ${WORKING_DIR}/nuget
 	find . -name '*.nupkg' -print -exec cp -p {} ${WORKING_DIR}/nuget \;
@@ -83,6 +90,7 @@ gen_nodejs_sdk::
 	rm -rf sdk/nodejs
 	cd provider/cmd/${CODEGEN} && go run . nodejs ../../../sdk/nodejs ${SCHEMA_PATH}
 
+build_nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
 build_nodejs_sdk:: gen_nodejs_sdk
 	cd sdk/nodejs/ && \
 		yarn install && \
@@ -92,7 +100,7 @@ build_nodejs_sdk:: gen_nodejs_sdk
 		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json && \
 		rm ./bin/package.json.bak
 
-install_nodejs_sdk:: build_nodejs_sdk
+install_nodejs_sdk::
 	yarn link --cwd ${WORKING_DIR}/sdk/nodejs/bin
 
 
@@ -103,7 +111,7 @@ gen_python_sdk::
 	cd provider/cmd/${CODEGEN} && go run . python ../../../sdk/python ${SCHEMA_PATH}
 	cp ${WORKING_DIR}/README.md sdk/python
 
-build_python_sdk:: PYPI_VERSION := ${VERSION}
+build_python_sdk:: PYPI_VERSION := $(shell pulumictl get version --language python)
 build_python_sdk:: gen_python_sdk
 	cd sdk/python/ && \
 		python3 setup.py clean --all 2>/dev/null && \
@@ -111,3 +119,6 @@ build_python_sdk:: gen_python_sdk
 		sed -i.bak -e "s/\$${VERSION}/${PYPI_VERSION}/g" -e "s/\$${PLUGIN_VERSION}/${VERSION}/g" ./bin/setup.py && \
 		rm ./bin/setup.py.bak && \
 		cd ./bin && python3 setup.py build sdist
+
+install_python_sdk::
+	#noop for CI
