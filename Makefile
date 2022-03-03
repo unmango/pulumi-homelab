@@ -39,6 +39,12 @@ build_provider:: ensure
 
 install_provider:: build_provider
 
+test_provider::
+	pushd provider/cmd/${PROVIDER}/ && \
+		yarn install && \
+		npm run test && \
+	popd
+
 # builds all providers required for publishing
 dist:: ensure
 	rm -rf work && cp -r provider/cmd/${PROVIDER} work && \
