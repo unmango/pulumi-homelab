@@ -4,9 +4,10 @@ import * as types from 'types';
 
 export class Heimdall extends pulumi.ComponentResource {
     public readonly container: docker.Container;
+    public readonly image: docker.RemoteImage;
 
     constructor(name: string, args: HeimdallArgs, opts?: pulumi.ComponentResourceOptions) {
-        super('homelab:k8s/linuxserver:heimdall', name, args, opts);
+        super('homelab:docker/linuxserver:heimdall', name, args, opts);
 
         const volumes: docker.types.input.ContainerVolume[] = [];
         if (args.configPath) {
@@ -47,9 +48,11 @@ export class Heimdall extends pulumi.ComponentResource {
         });
 
         this.container = container;
+        this.image = image;
 
         this.registerOutputs({
             container,
+            image,
         });
     }
 }
