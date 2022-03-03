@@ -10,11 +10,21 @@
         "pretty": true,
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "baseUrl": ".",
+        "paths": {
+            "types": ["./types/*"]
+        }
     },
     "files": [
         "index.ts",
         "provider.ts",
         "staticPage.ts"
+    ],
+    "include": [
+        "types/*.ts",
+    ],
+    "exclude": [
+        "**/*.spec.ts"
     ]
 }
