@@ -18,8 +18,7 @@
     },
     "files": [
         "index.ts",
-        "provider.ts",
-        "staticPage.ts"
+        "provider.ts"
     ],
     "include": [
         "types/*.ts",

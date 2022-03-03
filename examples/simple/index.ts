@@ -1,8 +1,7 @@
 import * as homelab from "@unmango/pulumi-homelab";
 
-const page = new homelab.StaticPage("page", {
-    indexContent: "<html><body><p>Hello world!</p></body></html>",
+const heimdall = new homelab.docker.linuxserver.Heimdall("heimdall", {
+    configPath: '.'
 });
 
-export const bucket = page.bucket;
-export const url = page.websiteUrl;
+// export const container = heimdall.container;

@@ -6,23 +6,15 @@ import * as utilities from "./utilities";
 
 // Export members:
 export * from "./provider";
-export * from "./staticPage";
 
-// Import resources to register:
-import { StaticPage } from "./staticPage";
+// Export sub-modules:
+import * as docker from "./docker";
+import * as types from "./types";
 
-const _module = {
-    version: utilities.getVersion(),
-    construct: (name: string, type: string, urn: string): pulumi.Resource => {
-        switch (type) {
-            case "homelab:index:StaticPage":
-                return new StaticPage(name, <any>undefined, { urn })
-            default:
-                throw new Error(`unknown resource type ${type}`);
-        }
-    },
+export {
+    docker,
+    types,
 };
-pulumi.runtime.registerResourceModule("homelab", "index", _module)
 
 import { Provider } from "./provider";
 

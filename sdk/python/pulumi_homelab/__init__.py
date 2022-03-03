@@ -6,16 +6,23 @@ from . import _utilities
 import typing
 # Export this package's modules as members:
 from .provider import *
-from .static_page import *
+
+# Make subpackages available:
+if typing.TYPE_CHECKING:
+    import pulumi_homelab.docker as __docker
+    docker = __docker
+else:
+    docker = _utilities.lazy_import('pulumi_homelab.docker')
+
 _utilities.register(
     resource_modules="""
 [
  {
   "pkg": "homelab",
-  "mod": "index",
-  "fqn": "pulumi_homelab",
+  "mod": "docker/linuxserver",
+  "fqn": "pulumi_homelab.docker.linuxserver",
   "classes": {
-   "homelab:index:StaticPage": "StaticPage"
+   "homelab:docker/linuxserver:Heimdall": "Heimdall"
   }
  }
 ]
