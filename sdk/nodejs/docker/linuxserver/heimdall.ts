@@ -22,7 +22,14 @@ export class Heimdall extends pulumi.ComponentResource {
         return obj['__pulumiType'] === Heimdall.__pulumiType;
     }
 
-    public /*out*/ readonly container!: pulumi.Output<pulumiDocker.Container | undefined>;
+    /**
+     * Heimdall container resource.
+     */
+    public /*out*/ readonly container!: pulumi.Output<pulumiDocker.Container>;
+    /**
+     * Linuxserver Heimdall image resource.
+     */
+    public /*out*/ readonly image!: pulumi.Output<pulumiDocker.RemoteImage>;
 
     /**
      * Create a Heimdall resource with the given unique name, arguments, and options.
@@ -39,8 +46,10 @@ export class Heimdall extends pulumi.ComponentResource {
             resourceInputs["ports"] = args ? args.ports : undefined;
             resourceInputs["restart"] = args ? args.restart : undefined;
             resourceInputs["container"] = undefined /*out*/;
+            resourceInputs["image"] = undefined /*out*/;
         } else {
             resourceInputs["container"] = undefined /*out*/;
+            resourceInputs["image"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Heimdall.__pulumiType, name, resourceInputs, opts, true /*remote*/);

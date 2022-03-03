@@ -15,7 +15,10 @@ import (
 type Heimdall struct {
 	pulumi.ResourceState
 
+	// Heimdall container resource.
 	Container docker.ContainerOutput `pulumi:"container"`
+	// Linuxserver Heimdall image resource.
+	Image docker.RemoteImageOutput `pulumi:"image"`
 }
 
 // NewHeimdall registers a new resource with the given unique name, arguments, and options.

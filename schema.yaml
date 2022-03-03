@@ -54,6 +54,13 @@ resources:
     properties:
       container:
         "$ref": "/docker/v3.0.0/schema.json#/resources/docker:index%2Fcontainer:Container"
+        description: Heimdall container resource.
+      image:
+        "$ref": "/docker/v3.0.0/schema.json#/resources/docker:index%2fremoteImage:RemoteImage"
+        description: Linuxserver Heimdall image resource.
+    required:
+      - container
+      - image
 language:
   csharp:
     packageReferences:

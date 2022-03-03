@@ -132,6 +132,7 @@ class Heimdall(pulumi.ComponentResource):
             __props__.__dict__["ports"] = ports
             __props__.__dict__["restart"] = restart
             __props__.__dict__["container"] = None
+            __props__.__dict__["image"] = None
         super(Heimdall, __self__).__init__(
             'homelab:docker/linuxserver:Heimdall',
             resource_name,
@@ -141,6 +142,17 @@ class Heimdall(pulumi.ComponentResource):
 
     @property
     @pulumi.getter
-    def container(self) -> pulumi.Output[Optional['pulumi_docker.Container']]:
+    def container(self) -> pulumi.Output['pulumi_docker.Container']:
+        """
+        Heimdall container resource.
+        """
         return pulumi.get(self, "container")
+
+    @property
+    @pulumi.getter
+    def image(self) -> pulumi.Output['pulumi_docker.RemoteImage']:
+        """
+        Linuxserver Heimdall image resource.
+        """
+        return pulumi.get(self, "image")
 
