@@ -23,5 +23,9 @@
     ],
     "include": [
         "types/*.ts",
+        "docker/**/*.ts"
+    ],
+    "exclude": [
+        "**/*.spec.ts"
     ]
 }

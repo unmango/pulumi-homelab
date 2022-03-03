@@ -41,10 +41,12 @@ install_provider:: build_provider
 
 # builds all providers required for publishing
 dist:: ensure
-	pushd provider/cmd/${PROVIDER}/ && \
+	rm -rf work && cp -r provider/cmd/${PROVIDER} work && \
+	pushd work/ && \
 		yarn install && \
+		mv tsconfig.pack.json tsconfig.json && \
 	popd && \
-	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
+	rm -rf build && npx --package @vercel/ncc ncc build work/index.ts -o build && \
 	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
 	rm ./build/index.js.bak && \
 	rm -rf dist  && mkdir dist && \
