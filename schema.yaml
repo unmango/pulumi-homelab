@@ -51,6 +51,9 @@ resources:
       restart:
         "$ref": "#/types/homelab:docker:RestartPolicy"
         description: Container restart policy.
+    properties:
+      container:
+        "$ref": "/docker/v3.0.0/schema.json#/resources/docker:index%2Fcontainer:Container"
 language:
   csharp:
     packageReferences:

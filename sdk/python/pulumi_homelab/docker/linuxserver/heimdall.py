@@ -9,6 +9,7 @@ from typing import Any, Mapping, Optional, Sequence, Union, overload
 from ... import _utilities
 from ... import docker
 from ._inputs import *
+import pulumi_docker
 
 __all__ = ['HeimdallArgs', 'Heimdall']
 
@@ -130,10 +131,16 @@ class Heimdall(pulumi.ComponentResource):
             __props__.__dict__["config_path"] = config_path
             __props__.__dict__["ports"] = ports
             __props__.__dict__["restart"] = restart
+            __props__.__dict__["container"] = None
         super(Heimdall, __self__).__init__(
             'homelab:docker/linuxserver:Heimdall',
             resource_name,
             __props__,
             opts,
             remote=True)
+
+    @property
+    @pulumi.getter
+    def container(self) -> pulumi.Output[Optional['pulumi_docker.Container']]:
+        return pulumi.get(self, "container")
 

@@ -7,12 +7,15 @@ import (
 	"context"
 	"reflect"
 
+	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/unmango/pulumi-homelab/sdk/go/homelab/docker"
 )
 
 type Heimdall struct {
 	pulumi.ResourceState
+
+	Container docker.ContainerOutput `pulumi:"container"`
 }
 
 // NewHeimdall registers a new resource with the given unique name, arguments, and options.

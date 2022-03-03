@@ -12,6 +12,10 @@ namespace Pulumi.Homelab.Docker/linuxserver
     [HomelabResourceType("homelab:docker/linuxserver:Heimdall")]
     public partial class Heimdall : Pulumi.ComponentResource
     {
+        [Output("container")]
+        public Output<Pulumi.Docker.Container?> Container { get; private set; } = null!;
+
+
         /// <summary>
         /// Create a Heimdall resource with the given unique name, arguments, and options.
         /// </summary>

@@ -5,6 +5,8 @@ import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "../../types";
 import * as utilities from "../../utilities";
 
+import * as pulumiDocker from "@pulumi/docker";
+
 export class Heimdall extends pulumi.ComponentResource {
     /** @internal */
     public static readonly __pulumiType = 'homelab:docker/linuxserver:Heimdall';
@@ -20,6 +22,7 @@ export class Heimdall extends pulumi.ComponentResource {
         return obj['__pulumiType'] === Heimdall.__pulumiType;
     }
 
+    public /*out*/ readonly container!: pulumi.Output<pulumiDocker.Container | undefined>;
 
     /**
      * Create a Heimdall resource with the given unique name, arguments, and options.
@@ -35,7 +38,9 @@ export class Heimdall extends pulumi.ComponentResource {
             resourceInputs["configPath"] = args ? args.configPath : undefined;
             resourceInputs["ports"] = args ? args.ports : undefined;
             resourceInputs["restart"] = args ? args.restart : undefined;
+            resourceInputs["container"] = undefined /*out*/;
         } else {
+            resourceInputs["container"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Heimdall.__pulumiType, name, resourceInputs, opts, true /*remote*/);
