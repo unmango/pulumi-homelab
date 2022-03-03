@@ -23,8 +23,5 @@
     ],
     "include": [
         "types/*.ts",
-    ],
-    "exclude": [
-        "**/*.spec.ts"
     ]
 }
