@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Homelab.Docker/linuxserver
+namespace Pulumi.Homelab.Docker.LinuxServer
 {
     [HomelabResourceType("homelab:docker/linuxserver:Heimdall")]
     public partial class Heimdall : Pulumi.ComponentResource

@@ -63,6 +63,11 @@ resources:
       - image
 language:
   csharp:
+    dictionaryConstructors: true
+    namespaces:
+      "": Provider
+      docker: Docker
+      docker/linuxserver: Docker.LinuxServer
     packageReferences:
       Pulumi: 3.*
       Pulumi.Docker: 3.*
