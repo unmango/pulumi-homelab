@@ -12,6 +12,8 @@ VERSION_PATH    := provider/pkg/version.Version
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
 
+TESTPARALLELISM := 4
+
 override target := "14.15.3"
 
 generate:: gen_go_sdk gen_dotnet_sdk gen_nodejs_sdk gen_python_sdk
@@ -40,10 +42,9 @@ build_provider:: ensure
 install_provider:: build_provider
 
 test_provider::
-	pushd provider/cmd/${PROVIDER}/ && \
+	cd provider/cmd/${PROVIDER}/ && \
 		yarn install && \
-		yarn test && \
-	popd
+		yarn test
 
 # builds all providers required for publishing
 dist:: ensure
@@ -130,3 +131,9 @@ build_python_sdk:: gen_python_sdk
 
 install_python_sdk::
 	#noop for CI
+
+GO_TEST_FAST := go test -short -v -count=1 -cover -timeout 2h -parallel ${TESTPARALLELISM}
+GO_TEST 	 := go test -v -count=1 -cover -timeout 2h -parallel ${TESTPARALLELISM}
+
+test_fast::
+	cd examples && $(GO_TEST_FAST) ./...
