@@ -5,7 +5,7 @@ PROJECT         := github.com/unmango/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}
 CODEGEN         := pulumi-gen-${PACK}
-VERSION         ?= $(shell pulumictl get version)
+VERSION         ?= 0.0.1
 PROVIDER_PATH   := provider
 VERSION_PATH    := ${PROVIDER_PATH}/pkg/version.Version
 
