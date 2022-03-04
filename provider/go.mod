@@ -9,7 +9,6 @@ require (
 )
 
 require (
-	cloud.google.com/go v0.100.2 // indirect
 	cloud.google.com/go/iam v0.3.0 // indirect
 	cloud.google.com/go/kms v1.4.0 // indirect
 	github.com/HdrHistogram/hdrhistogram-go v1.1.2 // indirect
@@ -26,7 +25,6 @@ require (
 	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.7 // indirect
-	github.com/googleapis/gax-go/v2 v2.1.1 // indirect
 	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
@@ -36,8 +34,6 @@ require (
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kevinburke/ssh_config v1.1.0 // indirect
-	github.com/kr/pretty v0.2.1 // indirect
-	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/go-ps v1.0.0 // indirect
