@@ -110,6 +110,7 @@ build_nodejs_sdk:: gen_nodejs_sdk
 		rm ./bin/package.json.bak
 
 install_nodejs_sdk::
+	-yarn unlink --cwd ${WORKING_DIR}/sdk/nodejs/bin
 	yarn link --cwd ${WORKING_DIR}/sdk/nodejs/bin
 
 
