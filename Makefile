@@ -1,6 +1,6 @@
 SHELL           := /bin/bash
 
-VERSION         := $(shell pulumictl get version)
+VERSION         ?= $(shell pulumictl get version)
 
 PACK            := homelab
 PROJECT         := github.com/unmango/pulumi-${PACK}
