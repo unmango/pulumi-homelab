@@ -1,4 +1,5 @@
 {
   "resource": true,
-  "name": "homelab"
+  "name": "homelab",
+  "server": "https://github.com/unmango/pulumi-homelab/releases/download/${VERSION}"
 }

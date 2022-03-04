@@ -58,6 +58,7 @@ namespace Pulumi.Homelab
         {
             InvokeOptions dst = src ?? new InvokeOptions{};
             dst.Version = src?.Version ?? Version;
+            dst.PluginDownloadURL = src?.PluginDownloadURL ?? "https://github.com/unmango/pulumi-homelab/releases/download/${VERSION}";
             return dst;
         }
 

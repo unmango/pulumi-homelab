@@ -31,6 +31,7 @@ func NewStaticPage(ctx *pulumi.Context,
 	if args.IndexContent == nil {
 		return nil, errors.New("invalid value for required argument 'IndexContent'")
 	}
+	opts = pkgResourceDefaultOpts(opts)
 	var resource StaticPage
 	err := ctx.RegisterRemoteComponentResource("homelab:index:StaticPage", name, args, &resource, opts...)
 	if err != nil {
