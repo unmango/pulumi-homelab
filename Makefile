@@ -34,7 +34,7 @@ build_provider:: ensure
 		yarn install && \
 		mv tsconfig.pack.json tsconfig.json && \
 	popd && \
-	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
+	rm -rf build && npx --package @vercel/ncc ncc build work/index.ts -o build && \
 	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
 	rm ./build/index.js.bak && \
 	rm -rf ./bin && mkdir bin && \
