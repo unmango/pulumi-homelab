@@ -115,7 +115,11 @@ jobs:
       matrix:
         dotnetversion: [3.1.301]
         goversion: [1.16.x]
-        language: [nodejs, python, dotnet, go]
+        language:
+          - nodejs
+          # - python
+          # - dotnet
+          # - go
         nodeversion: [14.x]
         pythonversion: [3.7]
     steps:
@@ -173,11 +177,12 @@ jobs:
           pip3 install pipenv
       - name: Install dependencies
         run: make install_${{ matrix.language}}_sdk
+      - name: Install plugins
+        run: pulumi plugin install resource docker $(pulumictl get latest-plugin pulumi-docker)
       - name: Set up gotestfmt
         uses: haveyoudebuggedit/gotestfmt-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      # TODO: yarn link and whatnot for tests
       - name: Run tests
         run: |
           set -euo pipefail
