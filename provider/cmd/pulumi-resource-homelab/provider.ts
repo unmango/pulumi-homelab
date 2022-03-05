@@ -15,7 +15,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as provider from "@pulumi/pulumi/provider";
 
-import { Heimdall, HeimdallArgs } from 'docker/linuxserver';
+import { Heimdall, HeimdallArgs } from './docker/linuxserver';
 
 export class Provider implements provider.Provider {
     constructor(readonly version: string, readonly schema: string) { }
