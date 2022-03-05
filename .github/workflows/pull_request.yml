@@ -167,6 +167,8 @@ jobs:
           pip3 install pipenv
       - name: Install dependencies
         run: make install_${{ matrix.language}}_sdk
+      - name: Install plugins
+        run: pulumi plugin install resource docker $(pulumictl get latest-plugin pulumi-docker)
       - name: Set up gotestfmt
         uses: haveyoudebuggedit/gotestfmt-action@v2
         with:
