@@ -29,6 +29,7 @@ ensure::
 # Provider
 
 build_provider:: ensure
+	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
 	rm -rf work && cp -r provider/cmd/${PROVIDER} work && \
 	pushd work/ && \
 		yarn install && \
@@ -49,6 +50,7 @@ test_provider::
 
 # builds all providers required for publishing
 dist:: ensure
+	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
 	rm -rf work && cp -r provider/cmd/${PROVIDER} work && \
 	pushd work/ && \
 		yarn install && \
