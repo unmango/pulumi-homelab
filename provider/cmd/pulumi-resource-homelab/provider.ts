@@ -23,7 +23,7 @@ export class Provider implements provider.Provider {
     async construct(name: string, type: string, inputs: pulumi.Inputs,
         options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
         switch (type) {
-            case "homelab:docker/linuxserver:heimdall":
+            case "homelab:docker/linuxserver:Heimdall":
                 return await constructDockerHeimdall(name, inputs, options);
             default:
                 throw new Error(`unknown resource type ${type}`);
