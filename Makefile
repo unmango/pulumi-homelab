@@ -1,6 +1,6 @@
 SHELL           := /bin/bash
 
-VERSION         := $(shell pulumictl get version)
+VERSION         ?= $(shell pulumictl get version)
 
 PACK            := homelab
 PROJECT         := github.com/unmango/pulumi-${PACK}
@@ -11,6 +11,8 @@ VERSION_PATH    := provider/pkg/version.Version
 
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
+
+TESTPARALLELISM := 4
 
 override target := "14.15.3"
 
@@ -28,10 +30,12 @@ ensure::
 
 build_provider:: ensure
 	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
-	pushd provider/cmd/${PROVIDER}/ && \
+	rm -rf work && cp -r provider/cmd/${PROVIDER} work && \
+	pushd work/ && \
 		yarn install && \
+		mv tsconfig.pack.json tsconfig.json && \
 	popd && \
-	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
+	rm -rf build && npx --package @vercel/ncc ncc build work/index.ts -o build && \
 	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
 	rm ./build/index.js.bak && \
 	rm -rf ./bin && mkdir bin && \
@@ -39,8 +43,14 @@ build_provider:: ensure
 
 install_provider:: build_provider
 
+test_provider::
+	cd provider/cmd/${PROVIDER}/ && \
+		yarn install && \
+		yarn test
+
 # builds all providers required for publishing
 dist:: ensure
+	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
 	rm -rf work && cp -r provider/cmd/${PROVIDER} work && \
 	pushd work/ && \
 		yarn install && \
@@ -103,6 +113,7 @@ build_nodejs_sdk:: gen_nodejs_sdk
 		rm ./bin/package.json.bak
 
 install_nodejs_sdk::
+	-yarn unlink --cwd ${WORKING_DIR}/sdk/nodejs/bin
 	yarn link --cwd ${WORKING_DIR}/sdk/nodejs/bin
 
 
@@ -124,3 +135,9 @@ build_python_sdk:: gen_python_sdk
 
 install_python_sdk::
 	#noop for CI
+
+GO_TEST_FAST := go test -short -v -count=1 -cover -timeout 2h -parallel ${TESTPARALLELISM}
+GO_TEST 	 := go test -v -count=1 -cover -timeout 2h -parallel ${TESTPARALLELISM}
+
+test_fast::
+	cd examples && $(GO_TEST_FAST) ./...

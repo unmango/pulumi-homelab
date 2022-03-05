@@ -13,9 +13,16 @@
         "strict": true
     },
     "files": [
+        "docker/index.ts",
+        "docker/linuxserver/heimdall.ts",
+        "docker/linuxserver/index.ts",
         "index.ts",
         "provider.ts",
-        "staticPage.ts",
+        "types/enums/docker/index.ts",
+        "types/enums/index.ts",
+        "types/index.ts",
+        "types/input.ts",
+        "types/output.ts",
         "utilities.ts"
     ]
 }

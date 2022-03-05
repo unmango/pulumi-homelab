@@ -15,40 +15,72 @@ keywords:
   - homelab
 repository: https://github.com/unmango/pulumi-homelab
 pluginDownloadUrl: https://github.com/unmango/pulumi-homelab/releases/download/${VERSION}
+types:
+  homelab:docker:RestartPolicy:
+    description: Container restart policy.
+    type: string
+    enum:
+      - name: Always
+        value: always
+      - name: "No"
+        value: "no"
+      - name: OnFailure
+        value: on-failure
+      - name: UnlessStopped
+        value: unless-stopped
+  homelab:docker/linuxserver:HeimdallPorts:
+    description: Port arguments for the container.
+    type: object
+    properties:
+      http:
+        type: number
+        description: External port to expose container port 80.
+      https:
+        type: number
+        description: External port to expose container port 443.
 resources:
-  homelab:index:StaticPage:
+  homelab:docker/linuxserver:Heimdall:
     isComponent: true
     inputProperties:
-      indexContent:
+      configPath:
         type: string
-        description: The HTML content for index.html.
-    requiredInputs:
-      - indexContent
+        description: Host path to mount to /config in the container.
+      ports:
+        "$ref": "#/types/homelab:docker/linuxserver:HeimdallPorts"
+        description: Port arguments for the container.
+      restart:
+        "$ref": "#/types/homelab:docker:RestartPolicy"
+        description: Container restart policy.
     properties:
-      bucket:
-        "$ref": "/aws/v4.0.0/schema.json#/resources/aws:s3%2Fbucket:Bucket"
-        description: The bucket resource.
-      websiteUrl:
-        type: string
-        description: The website URL.
+      container:
+        "$ref": "/docker/v3.0.0/schema.json#/resources/docker:index%2Fcontainer:Container"
+        description: Heimdall container resource.
+      image:
+        "$ref": "/docker/v3.0.0/schema.json#/resources/docker:index%2fremoteImage:RemoteImage"
+        description: Linuxserver Heimdall image resource.
     required:
-      - bucket
-      - websiteUrl
+      - container
+      - image
 language:
   csharp:
+    dictionaryConstructors: true
+    namespaces:
+      "": Provider
+      docker: Docker
+      docker/linuxserver: Docker.LinuxServer
     packageReferences:
       Pulumi: 3.*
-      Pulumi.Aws: 4.*
+      Pulumi.Docker: 3.*
   go:
     generateResourceContainerTypes: true
     importBasePath: github.com/unmango/pulumi-homelab/sdk/go/homelab
   nodejs:
     packageName: "@unmango/pulumi-homelab"
     dependencies:
-      "@pulumi/aws": "^4.0.0"
+      "@pulumi/docker": "^3.0.0"
     devDependencies:
       typescript: "^3.7.0"
   python:
     requires:
       pulumi: ">=3.0.0,<4.0.0"
-      pulumi-aws: ">=4.0.0,<5.0.0"
+      pulumi-docker: ">=3.0.0,<4.0.0"
