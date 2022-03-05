@@ -124,7 +124,11 @@ jobs:
       matrix:
         dotnetversion: [3.1.301]
         goversion: [1.16.x]
-        language: [nodejs, python, dotnet, go]
+        language:
+          - nodejs
+          # - python
+          # - dotnet
+          # - go
         nodeversion: [14.x]
         pythonversion: [3.7]
     steps:
@@ -186,7 +190,6 @@ jobs:
         uses: haveyoudebuggedit/gotestfmt-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      # TODO: yarn link and whatnot for tests
       - name: Run tests
         run: |
           set -euo pipefail
