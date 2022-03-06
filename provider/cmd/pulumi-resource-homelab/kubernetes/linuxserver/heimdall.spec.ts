@@ -2,6 +2,8 @@ import * as pulumi from '@pulumi/pulumi';
 import { Heimdall } from './heimdall';
 import 'mocha';
 
+// TODO: Test for setting `statefulSet.serviceName` to `service.metadata.name`
+
 describe('Kubernetes Heimdall', function () {
     describe('when created with defaults', function () {
         let heimdall: Heimdall;
@@ -120,6 +122,29 @@ describe('Kubernetes Heimdall', function () {
                         done(new Error(`Namespace was not set to ${expectedNamespace}`));
                     }
                 });
+            });
+        });
+    });
+
+    describe('when `service.type` is provided', function () {
+        const expectedType = 'ClusterIP';
+        let heimdall: Heimdall;
+
+        before(function () {
+            heimdall = new Heimdall('test', {
+                service: {
+                    type: expectedType,
+                },
+            });
+        });
+
+        it('sets service type', function(done) {
+            pulumi.all([heimdall.service.spec.type]).apply(([type]) => {
+                if (type === expectedType) {
+                    done();
+                } else {
+                    done(new Error('Service type not set to expected type'));
+                }
             });
         });
     });
