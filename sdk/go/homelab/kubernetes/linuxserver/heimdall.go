@@ -7,10 +7,9 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
+	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/apps/v1"
+	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/unmango/pulumi-homelab/sdk/go/homelab/docker"
-	"github.com/unmango/pulumi-homelab/sdk/go/homelab/linuxserver"
 )
 
 // Heimdall is a way to organise all those links to your most
@@ -19,10 +18,10 @@ import (
 type Heimdall struct {
 	pulumi.ResourceState
 
-	// Heimdall container resource.
-	Container docker.ContainerOutput `pulumi:"container"`
-	// Linuxserver Heimdall image resource.
-	Image docker.RemoteImageOutput `pulumi:"image"`
+	// Heimdall service object.
+	Service corev1.ServiceOutput `pulumi:"service"`
+	// Heimdall stateful set object.
+	StatefulSet appsv1.StatefulSetOutput `pulumi:"statefulSet"`
 }
 
 // NewHeimdall registers a new resource with the given unique name, arguments, and options.
@@ -32,9 +31,12 @@ func NewHeimdall(ctx *pulumi.Context,
 		args = &HeimdallArgs{}
 	}
 
+	if args.Persistence != nil {
+		args.Persistence = args.Persistence.ToHeimdallPersistencePtrOutput().ApplyT(func(v *HeimdallPersistence) *HeimdallPersistence { return v.Defaults() }).(HeimdallPersistencePtrOutput)
+	}
 	opts = pkgResourceDefaultOpts(opts)
 	var resource Heimdall
-	err := ctx.RegisterRemoteComponentResource("homelab:docker/linuxserver:Heimdall", name, args, &resource, opts...)
+	err := ctx.RegisterRemoteComponentResource("homelab:kubernetes/linuxserver:Heimdall", name, args, &resource, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,36 +44,36 @@ func NewHeimdall(ctx *pulumi.Context,
 }
 
 type heimdallArgs struct {
-	// Host path to mount to /config in the container.
-	ConfigPath *string `pulumi:"configPath"`
+	// The namespace to put resources in.
+	Namespace *string `pulumi:"namespace"`
+	// Heidmall persistence options.
+	Persistence *HeimdallPersistence `pulumi:"persistence"`
 	// The user id to run the container as.
 	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
 	Pgid *string `pulumi:"pgid"`
-	// Port arguments for the container.
-	Ports *linuxserver.HeimdallPorts `pulumi:"ports"`
 	// The group id to run the container as.
 	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
 	Puid *string `pulumi:"puid"`
-	// Container restart policy.
-	Restart *docker.RestartPolicy `pulumi:"restart"`
+	// Arguments for the kubernetes service.
+	Service *HeimdallService `pulumi:"service"`
 	// The timezone to use.
 	Tz *string `pulumi:"tz"`
 }
 
 // The set of arguments for constructing a Heimdall resource.
 type HeimdallArgs struct {
-	// Host path to mount to /config in the container.
-	ConfigPath pulumi.StringPtrInput
+	// The namespace to put resources in.
+	Namespace pulumi.StringPtrInput
+	// Heidmall persistence options.
+	Persistence HeimdallPersistencePtrInput
 	// The user id to run the container as.
 	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
 	Pgid pulumi.StringPtrInput
-	// Port arguments for the container.
-	Ports linuxserver.HeimdallPortsPtrInput
 	// The group id to run the container as.
 	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
 	Puid pulumi.StringPtrInput
-	// Container restart policy.
-	Restart docker.RestartPolicyPtrInput
+	// Arguments for the kubernetes service.
+	Service HeimdallServicePtrInput
 	// The timezone to use.
 	Tz pulumi.StringPtrInput
 }

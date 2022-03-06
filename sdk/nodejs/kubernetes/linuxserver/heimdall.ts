@@ -5,7 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "../../types";
 import * as utilities from "../../utilities";
 
-import * as pulumiDocker from "@pulumi/docker";
+import * as pulumiKubernetes from "@pulumi/kubernetes";
 
 /**
  * Heimdall is a way to organise all those links to your most
@@ -14,7 +14,7 @@ import * as pulumiDocker from "@pulumi/docker";
  */
 export class Heimdall extends pulumi.ComponentResource {
     /** @internal */
-    public static readonly __pulumiType = 'homelab:docker/linuxserver:Heimdall';
+    public static readonly __pulumiType = 'homelab:kubernetes/linuxserver:Heimdall';
 
     /**
      * Returns true if the given object is an instance of Heimdall.  This is designed to work even
@@ -28,13 +28,13 @@ export class Heimdall extends pulumi.ComponentResource {
     }
 
     /**
-     * Heimdall container resource.
+     * Heimdall service object.
      */
-    public /*out*/ readonly container!: pulumi.Output<pulumiDocker.Container>;
+    public readonly service!: pulumi.Output<pulumiKubernetes.core.v1.Service>;
     /**
-     * Linuxserver Heimdall image resource.
+     * Heimdall stateful set object.
      */
-    public /*out*/ readonly image!: pulumi.Output<pulumiDocker.RemoteImage>;
+    public /*out*/ readonly statefulSet!: pulumi.Output<pulumiKubernetes.apps.v1.StatefulSet>;
 
     /**
      * Create a Heimdall resource with the given unique name, arguments, and options.
@@ -47,17 +47,16 @@ export class Heimdall extends pulumi.ComponentResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            resourceInputs["configPath"] = args ? args.configPath : undefined;
+            resourceInputs["namespace"] = args ? args.namespace : undefined;
+            resourceInputs["persistence"] = args ? (args.persistence ? pulumi.output(args.persistence).apply(inputs.kubernetes.linuxserver.heimdallPersistenceArgsProvideDefaults) : undefined) : undefined;
             resourceInputs["pgid"] = args ? args.pgid : undefined;
-            resourceInputs["ports"] = args ? args.ports : undefined;
             resourceInputs["puid"] = args ? args.puid : undefined;
-            resourceInputs["restart"] = args ? args.restart : undefined;
+            resourceInputs["service"] = args ? args.service : undefined;
             resourceInputs["tz"] = args ? args.tz : undefined;
-            resourceInputs["container"] = undefined /*out*/;
-            resourceInputs["image"] = undefined /*out*/;
+            resourceInputs["statefulSet"] = undefined /*out*/;
         } else {
-            resourceInputs["container"] = undefined /*out*/;
-            resourceInputs["image"] = undefined /*out*/;
+            resourceInputs["service"] = undefined /*out*/;
+            resourceInputs["statefulSet"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Heimdall.__pulumiType, name, resourceInputs, opts, true /*remote*/);
@@ -69,27 +68,27 @@ export class Heimdall extends pulumi.ComponentResource {
  */
 export interface HeimdallArgs {
     /**
-     * Host path to mount to /config in the container.
+     * The namespace to put resources in.
      */
-    configPath?: pulumi.Input<string>;
+    namespace?: pulumi.Input<string>;
+    /**
+     * Heidmall persistence options.
+     */
+    persistence?: pulumi.Input<inputs.kubernetes.linuxserver.HeimdallPersistenceArgs>;
     /**
      * The user id to run the container as.
      * See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
      */
     pgid?: pulumi.Input<string>;
     /**
-     * Port arguments for the container.
-     */
-    ports?: pulumi.Input<inputs.linuxserver.HeimdallPortsArgs>;
-    /**
      * The group id to run the container as.
      * See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
      */
     puid?: pulumi.Input<string>;
     /**
-     * Container restart policy.
+     * Arguments for the kubernetes service.
      */
-    restart?: pulumi.Input<enums.docker.RestartPolicy>;
+    service?: pulumi.Input<inputs.kubernetes.linuxserver.HeimdallServiceArgs>;
     /**
      * The timezone to use.
      */

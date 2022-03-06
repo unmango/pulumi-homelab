@@ -7,11 +7,11 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Homelab.Docker.LinuxServer.Inputs
+namespace Pulumi.Homelab.LinuxServer.Inputs
 {
 
     /// <summary>
-    /// Port arguments for the container.
+    /// Port arguments for the service.
     /// </summary>
     public sealed class HeimdallPortsArgs : Pulumi.ResourceArgs
     {

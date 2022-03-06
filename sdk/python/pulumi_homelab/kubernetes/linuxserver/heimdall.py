@@ -7,56 +7,69 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from ... import _utilities
-from ... import docker
+from ... import kubernetes
 from ... import linuxserver as _linuxserver
-import pulumi_docker
+from ._inputs import *
+import pulumi_kubernetes
 
 __all__ = ['HeimdallArgs', 'Heimdall']
 
 @pulumi.input_type
 class HeimdallArgs:
     def __init__(__self__, *,
-                 config_path: Optional[pulumi.Input[str]] = None,
+                 namespace: Optional[pulumi.Input[str]] = None,
+                 persistence: Optional[pulumi.Input['HeimdallPersistenceArgs']] = None,
                  pgid: Optional[pulumi.Input[str]] = None,
-                 ports: Optional[pulumi.Input['_linuxserver.HeimdallPortsArgs']] = None,
                  puid: Optional[pulumi.Input[str]] = None,
-                 restart: Optional[pulumi.Input['_docker.RestartPolicy']] = None,
+                 service: Optional[pulumi.Input['HeimdallServiceArgs']] = None,
                  tz: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Heimdall resource.
-        :param pulumi.Input[str] config_path: Host path to mount to /config in the container.
+        :param pulumi.Input[str] namespace: The namespace to put resources in.
+        :param pulumi.Input['HeimdallPersistenceArgs'] persistence: Heidmall persistence options.
         :param pulumi.Input[str] pgid: The user id to run the container as.
                See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
-        :param pulumi.Input['_linuxserver.HeimdallPortsArgs'] ports: Port arguments for the container.
         :param pulumi.Input[str] puid: The group id to run the container as.
                See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
-        :param pulumi.Input['_docker.RestartPolicy'] restart: Container restart policy.
+        :param pulumi.Input['HeimdallServiceArgs'] service: Arguments for the kubernetes service.
         :param pulumi.Input[str] tz: The timezone to use.
         """
-        if config_path is not None:
-            pulumi.set(__self__, "config_path", config_path)
+        if namespace is not None:
+            pulumi.set(__self__, "namespace", namespace)
+        if persistence is not None:
+            pulumi.set(__self__, "persistence", persistence)
         if pgid is not None:
             pulumi.set(__self__, "pgid", pgid)
-        if ports is not None:
-            pulumi.set(__self__, "ports", ports)
         if puid is not None:
             pulumi.set(__self__, "puid", puid)
-        if restart is not None:
-            pulumi.set(__self__, "restart", restart)
+        if service is not None:
+            pulumi.set(__self__, "service", service)
         if tz is not None:
             pulumi.set(__self__, "tz", tz)
 
     @property
-    @pulumi.getter(name="configPath")
-    def config_path(self) -> Optional[pulumi.Input[str]]:
+    @pulumi.getter
+    def namespace(self) -> Optional[pulumi.Input[str]]:
         """
-        Host path to mount to /config in the container.
+        The namespace to put resources in.
         """
-        return pulumi.get(self, "config_path")
+        return pulumi.get(self, "namespace")
 
-    @config_path.setter
-    def config_path(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "config_path", value)
+    @namespace.setter
+    def namespace(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "namespace", value)
+
+    @property
+    @pulumi.getter
+    def persistence(self) -> Optional[pulumi.Input['HeimdallPersistenceArgs']]:
+        """
+        Heidmall persistence options.
+        """
+        return pulumi.get(self, "persistence")
+
+    @persistence.setter
+    def persistence(self, value: Optional[pulumi.Input['HeimdallPersistenceArgs']]):
+        pulumi.set(self, "persistence", value)
 
     @property
     @pulumi.getter
@@ -73,18 +86,6 @@ class HeimdallArgs:
 
     @property
     @pulumi.getter
-    def ports(self) -> Optional[pulumi.Input['_linuxserver.HeimdallPortsArgs']]:
-        """
-        Port arguments for the container.
-        """
-        return pulumi.get(self, "ports")
-
-    @ports.setter
-    def ports(self, value: Optional[pulumi.Input['_linuxserver.HeimdallPortsArgs']]):
-        pulumi.set(self, "ports", value)
-
-    @property
-    @pulumi.getter
     def puid(self) -> Optional[pulumi.Input[str]]:
         """
         The group id to run the container as.
@@ -98,15 +99,15 @@ class HeimdallArgs:
 
     @property
     @pulumi.getter
-    def restart(self) -> Optional[pulumi.Input['_docker.RestartPolicy']]:
+    def service(self) -> Optional[pulumi.Input['HeimdallServiceArgs']]:
         """
-        Container restart policy.
+        Arguments for the kubernetes service.
         """
-        return pulumi.get(self, "restart")
+        return pulumi.get(self, "service")
 
-    @restart.setter
-    def restart(self, value: Optional[pulumi.Input['_docker.RestartPolicy']]):
-        pulumi.set(self, "restart", value)
+    @service.setter
+    def service(self, value: Optional[pulumi.Input['HeimdallServiceArgs']]):
+        pulumi.set(self, "service", value)
 
     @property
     @pulumi.getter
@@ -126,11 +127,11 @@ class Heimdall(pulumi.ComponentResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 config_path: Optional[pulumi.Input[str]] = None,
+                 namespace: Optional[pulumi.Input[str]] = None,
+                 persistence: Optional[pulumi.Input[pulumi.InputType['HeimdallPersistenceArgs']]] = None,
                  pgid: Optional[pulumi.Input[str]] = None,
-                 ports: Optional[pulumi.Input[pulumi.InputType['_linuxserver.HeimdallPortsArgs']]] = None,
                  puid: Optional[pulumi.Input[str]] = None,
-                 restart: Optional[pulumi.Input['_docker.RestartPolicy']] = None,
+                 service: Optional[pulumi.Input[pulumi.InputType['HeimdallServiceArgs']]] = None,
                  tz: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
@@ -140,13 +141,13 @@ class Heimdall(pulumi.ComponentResource):
 
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] config_path: Host path to mount to /config in the container.
+        :param pulumi.Input[str] namespace: The namespace to put resources in.
+        :param pulumi.Input[pulumi.InputType['HeimdallPersistenceArgs']] persistence: Heidmall persistence options.
         :param pulumi.Input[str] pgid: The user id to run the container as.
                See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
-        :param pulumi.Input[pulumi.InputType['_linuxserver.HeimdallPortsArgs']] ports: Port arguments for the container.
         :param pulumi.Input[str] puid: The group id to run the container as.
                See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
-        :param pulumi.Input['_docker.RestartPolicy'] restart: Container restart policy.
+        :param pulumi.Input[pulumi.InputType['HeimdallServiceArgs']] service: Arguments for the kubernetes service.
         :param pulumi.Input[str] tz: The timezone to use.
         """
         ...
@@ -175,11 +176,11 @@ class Heimdall(pulumi.ComponentResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 config_path: Optional[pulumi.Input[str]] = None,
+                 namespace: Optional[pulumi.Input[str]] = None,
+                 persistence: Optional[pulumi.Input[pulumi.InputType['HeimdallPersistenceArgs']]] = None,
                  pgid: Optional[pulumi.Input[str]] = None,
-                 ports: Optional[pulumi.Input[pulumi.InputType['_linuxserver.HeimdallPortsArgs']]] = None,
                  puid: Optional[pulumi.Input[str]] = None,
-                 restart: Optional[pulumi.Input['_docker.RestartPolicy']] = None,
+                 service: Optional[pulumi.Input[pulumi.InputType['HeimdallServiceArgs']]] = None,
                  tz: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         if opts is None:
@@ -197,16 +198,15 @@ class Heimdall(pulumi.ComponentResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = HeimdallArgs.__new__(HeimdallArgs)
 
-            __props__.__dict__["config_path"] = config_path
+            __props__.__dict__["namespace"] = namespace
+            __props__.__dict__["persistence"] = persistence
             __props__.__dict__["pgid"] = pgid
-            __props__.__dict__["ports"] = ports
             __props__.__dict__["puid"] = puid
-            __props__.__dict__["restart"] = restart
+            __props__.__dict__["service"] = service
             __props__.__dict__["tz"] = tz
-            __props__.__dict__["container"] = None
-            __props__.__dict__["image"] = None
+            __props__.__dict__["stateful_set"] = None
         super(Heimdall, __self__).__init__(
-            'homelab:docker/linuxserver:Heimdall',
+            'homelab:kubernetes/linuxserver:Heimdall',
             resource_name,
             __props__,
             opts,
@@ -214,17 +214,17 @@ class Heimdall(pulumi.ComponentResource):
 
     @property
     @pulumi.getter
-    def container(self) -> pulumi.Output['pulumi_docker.Container']:
+    def service(self) -> pulumi.Output['pulumi_kubernetes.core.v1.Service']:
         """
-        Heimdall container resource.
+        Heimdall service object.
         """
-        return pulumi.get(self, "container")
+        return pulumi.get(self, "service")
 
     @property
-    @pulumi.getter
-    def image(self) -> pulumi.Output['pulumi_docker.RemoteImage']:
+    @pulumi.getter(name="statefulSet")
+    def stateful_set(self) -> pulumi.Output['pulumi_kubernetes.apps.v1.StatefulSet']:
         """
-        Linuxserver Heimdall image resource.
+        Heimdall stateful set object.
         """
-        return pulumi.get(self, "image")
+        return pulumi.get(self, "stateful_set")
 

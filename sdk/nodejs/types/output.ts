@@ -4,7 +4,12 @@
 import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "../types";
 
-export namespace docker {
+import * as utilities from "../utilities";
+
+export namespace kubernetes {
     export namespace linuxserver {
     }
+}
+
+export namespace linuxserver {
 }

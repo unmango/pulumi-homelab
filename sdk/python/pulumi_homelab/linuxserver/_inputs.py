@@ -6,7 +6,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from ... import _utilities
+from .. import _utilities
 
 __all__ = [
     'HeimdallPortsArgs',
@@ -18,7 +18,7 @@ class HeimdallPortsArgs:
                  http: Optional[pulumi.Input[float]] = None,
                  https: Optional[pulumi.Input[float]] = None):
         """
-        Port arguments for the container.
+        Port arguments for the service.
         :param pulumi.Input[float] http: External port to expose container port 80.
         :param pulumi.Input[float] https: External port to expose container port 443.
         """

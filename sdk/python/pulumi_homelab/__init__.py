@@ -11,8 +11,14 @@ from .provider import *
 if typing.TYPE_CHECKING:
     import pulumi_homelab.docker as __docker
     docker = __docker
+    import pulumi_homelab.kubernetes as __kubernetes
+    kubernetes = __kubernetes
+    import pulumi_homelab.linuxserver as __linuxserver
+    linuxserver = __linuxserver
 else:
     docker = _utilities.lazy_import('pulumi_homelab.docker')
+    kubernetes = _utilities.lazy_import('pulumi_homelab.kubernetes')
+    linuxserver = _utilities.lazy_import('pulumi_homelab.linuxserver')
 
 _utilities.register(
     resource_modules="""
@@ -23,6 +29,14 @@ _utilities.register(
   "fqn": "pulumi_homelab.docker.linuxserver",
   "classes": {
    "homelab:docker/linuxserver:Heimdall": "Heimdall"
+  }
+ },
+ {
+  "pkg": "homelab",
+  "mod": "kubernetes/linuxserver",
+  "fqn": "pulumi_homelab.kubernetes.linuxserver",
+  "classes": {
+   "homelab:kubernetes/linuxserver:Heimdall": "Heimdall"
   }
  }
 ]

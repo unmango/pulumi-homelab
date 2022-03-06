@@ -17,7 +17,8 @@
         "install": "node scripts/install-pulumi-plugin.js resource homelab ${VERSION}"
     },
     "dependencies": {
-        "@pulumi/docker": "^3.0.0"
+        "@pulumi/docker": "^3.0.0",
+        "@pulumi/kubernetes": "^3.0.0"
     },
     "devDependencies": {
         "typescript": "^3.7.0"
