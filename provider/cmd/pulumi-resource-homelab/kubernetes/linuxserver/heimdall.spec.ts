@@ -73,6 +73,28 @@ describe('Kubernetes Heimdall', function () {
             });
         });
 
+        it('creates an config volume mount', function (done) {
+            pulumi.all([heimdall.statefulSet.spec.template.spec.containers]).apply(([containers]) => {
+                if (containers.length !== 1) {
+                    done(new Error('Incorrect number of container templates'));
+                }
+
+                const mounts = containers[0].volumeMounts;
+
+                if (mounts.length !== 1) {
+                    done(new Error('Incorrect number of mounts'));
+                }
+
+                const mount = mounts[0];
+
+                if (mount.name === 'config' && mount.mountPath === '/config') {
+                    done();
+                } else {
+                    done(new Error('Volume mount not created'));
+                }
+            });
+        });
+
         const portTests: [number, string][] = [
             [80, 'http'],
             [443, 'https'],
