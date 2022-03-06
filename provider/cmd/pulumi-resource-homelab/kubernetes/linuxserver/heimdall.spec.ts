@@ -12,13 +12,13 @@ describe('Kubernetes Heimdall', function () {
         before(function () {
             heimdall = new Heimdall(expectedName, {});
         });
-        
+
         const namespaceTests: [string, (x: Heimdall) => pulumi.Output<string>][] = [
             ['service', (x: Heimdall) => x.service.metadata.namespace],
             ['statefulSet', (x: Heimdall) => x.statefulSet.metadata.namespace],
         ];
         namespaceTests.forEach(([resourceType, getter]) => {
-            it(`does not define ${resourceType} \`namespace\``, function(done) {
+            it(`does not define ${resourceType} \`namespace\``, function (done) {
                 pulumi.all([getter(heimdall)]).apply(([namespace]) => {
                     if (namespace) {
                         done(new Error('No namespace expected'));
@@ -47,7 +47,7 @@ describe('Kubernetes Heimdall', function () {
             });
         });
 
-        it('sets statefulSet selector', function(done) {
+        it('sets statefulSet selector', function (done) {
             pulumi.all([heimdall.statefulSet.spec.selector.matchLabels]).apply(([matchLabels]) => {
                 if (matchLabels['app'] && matchLabels.app === expectedName) {
                     done();
@@ -99,7 +99,7 @@ describe('Kubernetes Heimdall', function () {
             });
         });
 
-        it('does NOT define service ports', function(done) {
+        it('does NOT define service ports', function (done) {
             pulumi.all([heimdall.service.spec.ports]).apply(([ports]) => {
                 if (ports.length > 0) {
                     done(new Error('No ports expected to be defined'));
@@ -119,13 +119,13 @@ describe('Kubernetes Heimdall', function () {
                 namespace: expectedNamespace,
             });
         });
-        
+
         const namespaceTests: [string, (x: Heimdall) => pulumi.Output<string>][] = [
             ['service', (x: Heimdall) => x.service.metadata.namespace],
             ['statefulSet', (x: Heimdall) => x.statefulSet.metadata.namespace],
         ];
         namespaceTests.forEach(([resourceType, getter]) => {
-            it(`sets ${resourceType} \`namespace\``, function(done) {
+            it(`sets ${resourceType} \`namespace\``, function (done) {
                 pulumi.all([getter(heimdall)]).apply(([namespace]) => {
                     if (namespace === expectedNamespace) {
                         done();
@@ -149,12 +149,122 @@ describe('Kubernetes Heimdall', function () {
             });
         });
 
-        it('sets service type', function(done) {
+        it('sets service type', function (done) {
             pulumi.all([heimdall.service.spec.type]).apply(([type]) => {
                 if (type === expectedType) {
                     done();
                 } else {
                     done(new Error('Service type not set to expected type'));
+                }
+            });
+        });
+    });
+
+    describe('when persistence is disabled', function () {
+        let heimdall: Heimdall;
+
+        before(function () {
+            heimdall = new Heimdall('test', {
+                persistence: {
+                    enabled: false,
+                },
+            });
+        });
+
+        it('creates an `emptydir` config volume', function (done) {
+            pulumi.all([heimdall.statefulSet.spec.template.spec.volumes]).apply(([volumes]) => {
+                if (volumes.length !== 1) {
+                    done(new Error('Incorrect number of volumes'));
+                }
+
+                const volume = volumes[0];
+
+                if (volume.name === 'config' && volume.emptyDir) {
+                    done();
+                } else {
+                    done(new Error('Emptydir volume not created'));
+                }
+            });
+        });
+    });
+
+    describe('when persistence is enabled', function () {
+        const expectedAccessModes = ['ReadWriteOnce'];
+        const expectedSize = '69Gi';
+        const expectedStorageClass = 'big-drives';
+        let heimdall: Heimdall;
+
+        before(function () {
+            heimdall = new Heimdall('test', {
+                persistence: {
+                    enabled: true,
+                    accessModes: expectedAccessModes,
+                    size: expectedSize,
+                    storageClass: expectedStorageClass,
+                },
+            });
+        });
+
+        it('creates a volume claim template with expected access modes', function (done) {
+            pulumi.all([heimdall.statefulSet.spec.volumeClaimTemplates]).apply(([templates]) => {
+                if (templates.length !== 1) {
+                    done(new Error('Incorrect number of templates'));
+                }
+
+                const template = templates[0];
+
+                if (template.metadata.name !== 'config') {
+                    done(new Error('Incorrect template name'));
+                }
+                
+                for (let i = 0; i < expectedAccessModes.length; i++) {
+                    if (template.spec.accessModes[i] !== expectedAccessModes[i]) {
+                        done(new Error('Access modes do not match'));
+                    }
+                }
+
+                done();
+            });
+        });
+
+        it('creates a volume claim template with expected size', function (done) {
+            pulumi.all([heimdall.statefulSet.spec.volumeClaimTemplates]).apply(([templates]) => {
+                if (templates.length !== 1) {
+                    done(new Error('Incorrect number of templates'));
+                }
+
+                const template = templates[0];
+
+                if (template.metadata.name !== 'config') {
+                    done(new Error('Incorrect template name'));
+                }
+
+                const requests = template.spec.resources.requests;
+                
+                if (requests && requests.storage && requests.storage === expectedSize) {
+                    done();
+                } else {
+                    done(new Error('Storage request not set to expected size'));
+                }
+            });
+        });
+
+        it('creates a volume claim template with expected storage class', function (done) {
+            pulumi.all([heimdall.statefulSet.spec.volumeClaimTemplates]).apply(([templates]) => {
+                if (templates.length !== 1) {
+                    done(new Error('Incorrect number of templates'));
+                }
+
+                const template = templates[0];
+
+                if (template.metadata.name !== 'config') {
+                    done(new Error('Incorrect template name'));
+                }
+                
+                if (template.spec.storageClassName === expectedStorageClass) {
+                    done();
+                } else {
+                    done(new Error('Storage request not set to expected size'));
                 }
             });
         });
