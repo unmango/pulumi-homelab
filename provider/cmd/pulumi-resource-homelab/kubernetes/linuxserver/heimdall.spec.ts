@@ -4,11 +4,26 @@ import 'mocha';
 
 describe('Kubernetes Heimdall', function () {
     describe('when created with defaults', function () {
-        const expectedName = 'test';
         let heimdall: Heimdall;
 
         before(function () {
-            heimdall = new Heimdall(expectedName, {});
+            heimdall = new Heimdall('test', {});
+        });
+        
+        const namespaceTests: [string, (x: Heimdall) => pulumi.Output<string>][] = [
+            ['service', (x: Heimdall) => x.service.metadata.namespace],
+            ['statefulSet', (x: Heimdall) => x.statefulSet.metadata.namespace],
+        ];
+        namespaceTests.forEach(([resourceType, getter]) => {
+            it(`does not define ${resourceType} \`namespace\``, function(done) {
+                pulumi.all([getter(heimdall)]).apply(([namespace]) => {
+                    if (namespace) {
+                        done(new Error('No namespace expected'));
+                    } else {
+                        done();
+                    }
+                })
+            });
         });
 
         ['PGID', 'PUID', 'TZ'].forEach(variable => {
@@ -78,6 +93,33 @@ describe('Kubernetes Heimdall', function () {
                 } else {
                     done();
                 }
+            });
+        });
+    });
+
+    describe('when `namespace` is provided', function () {
+        const expectedNamespace = 'test-namespace';
+        let heimdall: Heimdall;
+
+        before(function () {
+            heimdall = new Heimdall('test', {
+                namespace: expectedNamespace,
+            });
+        });
+        
+        const namespaceTests: [string, (x: Heimdall) => pulumi.Output<string>][] = [
+            ['service', (x: Heimdall) => x.service.metadata.namespace],
+            ['statefulSet', (x: Heimdall) => x.statefulSet.metadata.namespace],
+        ];
+        namespaceTests.forEach(([resourceType, getter]) => {
+            it(`sets ${resourceType} \`namespace\``, function(done) {
+                pulumi.all([getter(heimdall)]).apply(([namespace]) => {
+                    if (namespace === expectedNamespace) {
+                        done();
+                    } else {
+                        done(new Error(`Namespace was not set to ${expectedNamespace}`));
+                    }
+                });
             });
         });
     });
