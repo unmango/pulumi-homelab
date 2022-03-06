@@ -7,7 +7,7 @@ export class Heimdall extends pulumi.ComponentResource {
     public readonly image: docker.RemoteImage;
 
     constructor(name: string, args: HeimdallArgs, opts?: pulumi.ComponentResourceOptions) {
-        super('homelab:docker/linuxserver:heimdall', name, args, opts);
+        super('homelab:docker/linuxserver:Heimdall', name, args, opts);
 
         const volumes: docker.types.input.ContainerVolume[] = [];
         if (args.configPath) {
