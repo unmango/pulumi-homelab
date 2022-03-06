@@ -130,6 +130,22 @@ describe('Kubernetes Heimdall', function () {
                 }
             });
         });
+
+        it('adds DNS config option for alpine ndots issue', function (done) {
+            pulumi.all([heimdall.statefulSet.spec.template.spec.dnsConfig.options]).apply(([options]) => {
+                if (options.length !== 1) {
+                    done(new Error('Incorrect number of DNS config options'));
+                }
+
+                const option = options[0];
+
+                if (option.name === 'ndots' && option.value === '2') {
+                    done();
+                } else {
+                    done(new Error('ndots DNS option not set properly'));
+                }
+            })
+        });
     });
 
     describe('when `namespace` is provided', function () {
