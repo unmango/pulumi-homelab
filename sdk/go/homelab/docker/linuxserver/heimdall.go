@@ -12,6 +12,9 @@ import (
 	"github.com/unmango/pulumi-homelab/sdk/go/homelab/docker"
 )
 
+// Heimdall is a way to organise all those links to your most
+// used web sites and web applications in a simple way.
+// https://github.com/linuxserver/docker-heimdall
 type Heimdall struct {
 	pulumi.ResourceState
 
@@ -40,20 +43,36 @@ func NewHeimdall(ctx *pulumi.Context,
 type heimdallArgs struct {
 	// Host path to mount to /config in the container.
 	ConfigPath *string `pulumi:"configPath"`
+	// The user id to run the container as.
+	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+	Pgid *string `pulumi:"pgid"`
 	// Port arguments for the container.
 	Ports *HeimdallPorts `pulumi:"ports"`
+	// The group id to run the container as.
+	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+	Puid *string `pulumi:"puid"`
 	// Container restart policy.
 	Restart *docker.RestartPolicy `pulumi:"restart"`
+	// The timezone to use.
+	Tz *string `pulumi:"tz"`
 }
 
 // The set of arguments for constructing a Heimdall resource.
 type HeimdallArgs struct {
 	// Host path to mount to /config in the container.
 	ConfigPath pulumi.StringPtrInput
+	// The user id to run the container as.
+	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+	Pgid pulumi.StringPtrInput
 	// Port arguments for the container.
 	Ports HeimdallPortsPtrInput
+	// The group id to run the container as.
+	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+	Puid pulumi.StringPtrInput
 	// Container restart policy.
 	Restart docker.RestartPolicyPtrInput
+	// The timezone to use.
+	Tz pulumi.StringPtrInput
 }
 
 func (HeimdallArgs) ElementType() reflect.Type {

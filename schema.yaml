@@ -41,16 +41,33 @@ types:
 resources:
   homelab:docker/linuxserver:Heimdall:
     isComponent: true
+    description: |
+      Heimdall is a way to organise all those links to your most
+      used web sites and web applications in a simple way.
+      https://github.com/linuxserver/docker-heimdall
     inputProperties:
       configPath:
         type: string
         description: Host path to mount to /config in the container.
+      pgid:
+        type: string
+        description: |
+          The user id to run the container as.
+          See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
       ports:
         "$ref": "#/types/homelab:docker/linuxserver:HeimdallPorts"
         description: Port arguments for the container.
+      puid:
+        type: string
+        description: |
+          The group id to run the container as.
+          See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
       restart:
         "$ref": "#/types/homelab:docker:RestartPolicy"
         description: Container restart policy.
+      tz:
+        type: string
+        description: The timezone to use.
     properties:
       container:
         "$ref": "/docker/v3.0.0/schema.json#/resources/docker:index%2Fcontainer:Container"

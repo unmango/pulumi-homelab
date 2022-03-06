@@ -17,20 +17,34 @@ __all__ = ['HeimdallArgs', 'Heimdall']
 class HeimdallArgs:
     def __init__(__self__, *,
                  config_path: Optional[pulumi.Input[str]] = None,
+                 pgid: Optional[pulumi.Input[str]] = None,
                  ports: Optional[pulumi.Input['HeimdallPortsArgs']] = None,
-                 restart: Optional[pulumi.Input['_docker.RestartPolicy']] = None):
+                 puid: Optional[pulumi.Input[str]] = None,
+                 restart: Optional[pulumi.Input['_docker.RestartPolicy']] = None,
+                 tz: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Heimdall resource.
         :param pulumi.Input[str] config_path: Host path to mount to /config in the container.
+        :param pulumi.Input[str] pgid: The user id to run the container as.
+               See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
         :param pulumi.Input['HeimdallPortsArgs'] ports: Port arguments for the container.
+        :param pulumi.Input[str] puid: The group id to run the container as.
+               See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
         :param pulumi.Input['_docker.RestartPolicy'] restart: Container restart policy.
+        :param pulumi.Input[str] tz: The timezone to use.
         """
         if config_path is not None:
             pulumi.set(__self__, "config_path", config_path)
+        if pgid is not None:
+            pulumi.set(__self__, "pgid", pgid)
         if ports is not None:
             pulumi.set(__self__, "ports", ports)
+        if puid is not None:
+            pulumi.set(__self__, "puid", puid)
         if restart is not None:
             pulumi.set(__self__, "restart", restart)
+        if tz is not None:
+            pulumi.set(__self__, "tz", tz)
 
     @property
     @pulumi.getter(name="configPath")
@@ -46,6 +60,19 @@ class HeimdallArgs:
 
     @property
     @pulumi.getter
+    def pgid(self) -> Optional[pulumi.Input[str]]:
+        """
+        The user id to run the container as.
+        See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+        """
+        return pulumi.get(self, "pgid")
+
+    @pgid.setter
+    def pgid(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "pgid", value)
+
+    @property
+    @pulumi.getter
     def ports(self) -> Optional[pulumi.Input['HeimdallPortsArgs']]:
         """
         Port arguments for the container.
@@ -55,6 +82,19 @@ class HeimdallArgs:
     @ports.setter
     def ports(self, value: Optional[pulumi.Input['HeimdallPortsArgs']]):
         pulumi.set(self, "ports", value)
+
+    @property
+    @pulumi.getter
+    def puid(self) -> Optional[pulumi.Input[str]]:
+        """
+        The group id to run the container as.
+        See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+        """
+        return pulumi.get(self, "puid")
+
+    @puid.setter
+    def puid(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "puid", value)
 
     @property
     @pulumi.getter
@@ -68,6 +108,18 @@ class HeimdallArgs:
     def restart(self, value: Optional[pulumi.Input['_docker.RestartPolicy']]):
         pulumi.set(self, "restart", value)
 
+    @property
+    @pulumi.getter
+    def tz(self) -> Optional[pulumi.Input[str]]:
+        """
+        The timezone to use.
+        """
+        return pulumi.get(self, "tz")
+
+    @tz.setter
+    def tz(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "tz", value)
+
 
 class Heimdall(pulumi.ComponentResource):
     @overload
@@ -75,16 +127,27 @@ class Heimdall(pulumi.ComponentResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  config_path: Optional[pulumi.Input[str]] = None,
+                 pgid: Optional[pulumi.Input[str]] = None,
                  ports: Optional[pulumi.Input[pulumi.InputType['HeimdallPortsArgs']]] = None,
+                 puid: Optional[pulumi.Input[str]] = None,
                  restart: Optional[pulumi.Input['_docker.RestartPolicy']] = None,
+                 tz: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a Heimdall resource with the given unique name, props, and options.
+        Heimdall is a way to organise all those links to your most
+        used web sites and web applications in a simple way.
+        https://github.com/linuxserver/docker-heimdall
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] config_path: Host path to mount to /config in the container.
+        :param pulumi.Input[str] pgid: The user id to run the container as.
+               See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
         :param pulumi.Input[pulumi.InputType['HeimdallPortsArgs']] ports: Port arguments for the container.
+        :param pulumi.Input[str] puid: The group id to run the container as.
+               See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
         :param pulumi.Input['_docker.RestartPolicy'] restart: Container restart policy.
+        :param pulumi.Input[str] tz: The timezone to use.
         """
         ...
     @overload
@@ -93,7 +156,10 @@ class Heimdall(pulumi.ComponentResource):
                  args: Optional[HeimdallArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Heimdall resource with the given unique name, props, and options.
+        Heimdall is a way to organise all those links to your most
+        used web sites and web applications in a simple way.
+        https://github.com/linuxserver/docker-heimdall
+
         :param str resource_name: The name of the resource.
         :param HeimdallArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -110,8 +176,11 @@ class Heimdall(pulumi.ComponentResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  config_path: Optional[pulumi.Input[str]] = None,
+                 pgid: Optional[pulumi.Input[str]] = None,
                  ports: Optional[pulumi.Input[pulumi.InputType['HeimdallPortsArgs']]] = None,
+                 puid: Optional[pulumi.Input[str]] = None,
                  restart: Optional[pulumi.Input['_docker.RestartPolicy']] = None,
+                 tz: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()
@@ -129,8 +198,11 @@ class Heimdall(pulumi.ComponentResource):
             __props__ = HeimdallArgs.__new__(HeimdallArgs)
 
             __props__.__dict__["config_path"] = config_path
+            __props__.__dict__["pgid"] = pgid
             __props__.__dict__["ports"] = ports
+            __props__.__dict__["puid"] = puid
             __props__.__dict__["restart"] = restart
+            __props__.__dict__["tz"] = tz
             __props__.__dict__["container"] = None
             __props__.__dict__["image"] = None
         super(Heimdall, __self__).__init__(
