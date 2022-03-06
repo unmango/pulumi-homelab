@@ -2,7 +2,7 @@ import * as pulumi from '@pulumi/pulumi';
 import { Heimdall } from './heimdall';
 import 'mocha';
 
-describe('Heimdall', function () {
+describe('Docker Heimdall', function () {
     describe('when created with defaults', function () {
         const expectedName = 'test';
         let heimdall: Heimdall;
@@ -193,27 +193,6 @@ describe('Heimdall', function () {
                     done(new Error('Restart not set'));
                 } else {
                     done();
-                }
-            });
-        });
-    });
-
-    describe('when `puid` is provided', function () {
-        const expectedPuid = '1000';
-        let heimdall: Heimdall;
-
-        before(function () {
-            heimdall = new Heimdall('test', {
-                puid: expectedPuid,
-            });
-        });
-
-        it(`sets PUID environment variable`, function (done) {
-            pulumi.all([heimdall.container.envs]).apply(([envs]) => {
-                if (envs.includes(`PUID=${expectedPuid}`)) {
-                    done();
-                } else {
-                    done(new Error('Environment variable not set'));
                 }
             });
         });

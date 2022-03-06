@@ -17,8 +17,8 @@ export class Heimdall extends pulumi.ComponentResource {
             },
             spec: pulumi.output(args.service)
                 .apply<k8s.types.input.core.v1.ServiceSpec>(serviceArgs => ({
-                    type: serviceArgs.type,
-                    ports: createServicePorts(serviceArgs.ports),
+                    type: serviceArgs?.type,
+                    ports: createServicePorts(serviceArgs?.ports),
                 })),
         }, {
             parent: this,
@@ -140,5 +140,5 @@ export interface HeimdallServiceArgs {
 export interface HeimdallArgs extends types.linuxserver.CommonArgs {
     namespace?: pulumi.Input<string>;
     persistence?: pulumi.Input<HeimdallPersistenceArgs>;
-    service: pulumi.Input<HeimdallServiceArgs>;
+    service?: pulumi.Input<HeimdallServiceArgs>;
 }
