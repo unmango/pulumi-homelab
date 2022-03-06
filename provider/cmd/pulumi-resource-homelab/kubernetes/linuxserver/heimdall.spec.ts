@@ -6,10 +6,11 @@ import 'mocha';
 
 describe('Kubernetes Heimdall', function () {
     describe('when created with defaults', function () {
+        const expectedName = 'test';
         let heimdall: Heimdall;
 
         before(function () {
-            heimdall = new Heimdall('test', {});
+            heimdall = new Heimdall(expectedName, {});
         });
         
         const namespaceTests: [string, (x: Heimdall) => pulumi.Output<string>][] = [
@@ -44,6 +45,16 @@ describe('Kubernetes Heimdall', function () {
                     }
                 });
             });
+        });
+
+        it('sets statefulSet selector', function(done) {
+            pulumi.all([heimdall.statefulSet.spec.selector.matchLabels]).apply(([matchLabels]) => {
+                if (matchLabels['app'] && matchLabels.app === expectedName) {
+                    done();
+                } else {
+                    done(new Error('StatefulSet selector not properly set'));
+                }
+            })
         });
 
         it('creates an `emptydir` config volume', function (done) {
