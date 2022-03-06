@@ -5,3 +5,8 @@ export interface CommonArgs {
     pgid?: pulumi.Input<string>;
     tz?: pulumi.Input<string>;
 }
+
+export interface HeimdallPortsArgs {
+    http?: pulumi.Input<number>;
+    https?: pulumi.Input<number>;
+}

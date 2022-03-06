@@ -15,7 +15,15 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as provider from "@pulumi/pulumi/provider";
 
-import { Heimdall, HeimdallArgs } from './docker/linuxserver';
+import {
+    Heimdall as DockerHeimdall,
+    HeimdallArgs as DockerHeimdallArgs
+} from './docker/linuxserver';
+
+import {
+    Heimdall as K8sHeimdall,
+    HeimdallArgs as K8sHeimdallArgs
+} from './kubernetes/linuxserver';
 
 export class Provider implements provider.Provider {
     constructor(readonly version: string, readonly schema: string) { }
@@ -25,6 +33,8 @@ export class Provider implements provider.Provider {
         switch (type) {
             case "homelab:docker/linuxserver:Heimdall":
                 return await constructDockerHeimdall(name, inputs, options);
+            case "homelab:kubernetes/linuxserver:Heimdall":
+                return await constructKubernetesHeimdall(name, inputs, options);
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
@@ -36,13 +46,29 @@ async function constructDockerHeimdall(
     inputs: pulumi.Inputs,
     options: pulumi.ComponentResourceOptions
 ): Promise<provider.ConstructResult> {
-    const heimdall = new Heimdall(name, inputs as HeimdallArgs, options);
+    const heimdall = new DockerHeimdall(name, inputs as DockerHeimdallArgs, options);
 
     return {
         urn: heimdall.urn,
         state: {
             container: heimdall.container,
             image: heimdall.image,
+        },
+    };
+}
+
+async function constructKubernetesHeimdall(
+    name: string,
+    inputs: pulumi.Inputs,
+    options: pulumi.ComponentResourceOptions
+): Promise<provider.ConstructResult> {
+    const heimdall = new K8sHeimdall(name, inputs as K8sHeimdallArgs, options);
+
+    return {
+        urn: heimdall.urn,
+        state: {
+            service: heimdall.service,
+            statefulSet: heimdall.statefulSet,
         },
     };
 }
