@@ -28,8 +28,48 @@ types:
         value: on-failure
       - name: UnlessStopped
         value: unless-stopped
-  homelab:docker/linuxserver:HeimdallPorts:
-    description: Port arguments for the container.
+  homelab:kubernetes:ServiceType:
+    type: string
+    description: Kubernetes service type.
+    enum:
+      - value: ExternalName
+      - value: ClusterIP
+      - value: NodePort
+      - value: LoadBalancer
+  homelab:kubernetes/linuxserver:HeimdallService:
+    type: object
+    description: Arguments for the kubernetes service.
+    properties:
+      ports:
+        "$ref": "#/types/homelab:linuxserver:HeimdallPorts"
+        description: Port arguments for the container.
+      type:
+        # TODO: Something about this ref isn't right
+        # "$ref": "/kubernetes/v3.0.0/schema.json#/types/kubernetes:core%2Fv1:ServiceSpecType"
+        "$ref": "#/types/homelab:kubernetes:ServiceType"
+        description: Type of service to create.
+  homelab:kubernetes/linuxserver:HeimdallPersistence:
+    type: object
+    description: Heimdall persistence options.
+    properties:
+      accessModes:
+        type: array
+        description: Access modes for the persistent volume claim template.
+        items:
+          type: string
+      enabled:
+        type: boolean
+        description: Whether to enable persistence or not.
+        default: false
+      size:
+        type: string
+        description: Size of the volume to request from the storage class.
+        default: 1Gi
+      storageClass:
+        type: string
+        description: Name of the storage class to use in the persistent volume claim template.
+  homelab:linuxserver:HeimdallPorts:
+    description: Port arguments for the service.
     type: object
     properties:
       http:
@@ -55,7 +95,7 @@ resources:
           The user id to run the container as.
           See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
       ports:
-        "$ref": "#/types/homelab:docker/linuxserver:HeimdallPorts"
+        "$ref": "#/types/homelab:linuxserver:HeimdallPorts"
         description: Port arguments for the container.
       puid:
         type: string
@@ -78,6 +118,45 @@ resources:
     required:
       - container
       - image
+  homelab:kubernetes/linuxserver:Heimdall:
+    isComponent: true
+    description: |
+      Heimdall is a way to organise all those links to your most
+      used web sites and web applications in a simple way.
+      https://github.com/linuxserver/docker-heimdall
+    inputProperties:
+      namespace:
+        type: string
+        description: The namespace to put resources in.
+      persistence:
+        "$ref": "#/types/homelab:kubernetes/linuxserver:HeimdallPersistence"
+        description: Heidmall persistence options.
+      pgid:
+        type: string
+        description: |
+          The user id to run the container as.
+          See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+      puid:
+        type: string
+        description: |
+          The group id to run the container as.
+          See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+      service:
+        "$ref": "#/types/homelab:kubernetes/linuxserver:HeimdallService"
+        description: Arguments for the kubernetes service.
+      tz:
+        type: string
+        description: The timezone to use.
+    properties:
+      service:
+        "$ref": "/kubernetes/v3.0.0/schema.json#/resources/kubernetes:core%2Fv1:Service"
+        description: Heimdall service object.
+      statefulSet:
+        "$ref": "/kubernetes/v3.0.0/schema.json#/resources/kubernetes:apps%2fv1:StatefulSet"
+        description: Heimdall stateful set object.
+    required:
+      - service
+      - statefulSet
 language:
   csharp:
     dictionaryConstructors: true
@@ -85,9 +164,13 @@ language:
       "": Provider
       docker: Docker
       docker/linuxserver: Docker.LinuxServer
+      kubernetes: Kubernetes
+      kubernetes/linuxserver: Kubernetes.LinuxServer
+      linuxserver: LinuxServer
     packageReferences:
       Pulumi: 3.*
       Pulumi.Docker: 3.*
+      Pulumi.Kubernetes: 3.*
   go:
     generateResourceContainerTypes: true
     importBasePath: github.com/unmango/pulumi-homelab/sdk/go/homelab
@@ -95,9 +178,11 @@ language:
     packageName: "@unmango/pulumi-homelab"
     dependencies:
       "@pulumi/docker": "^3.0.0"
+      "@pulumi/kubernetes": "^3.0.0"
     devDependencies:
       typescript: "^3.7.0"
   python:
     requires:
       pulumi: ">=3.0.0,<4.0.0"
       pulumi-docker: ">=3.0.0,<4.0.0"
+      pulumi-kubernetes: ">=3.0.0,<4.0.0"
