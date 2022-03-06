@@ -90,20 +90,16 @@ function createPodVolumes(args?: HeimdallPersistenceArgs): k8s.types.input.core.
     return args?.enabled ? [] : [{ name: configVolumeName, emptyDir: {} }];
 }
 
-function createServicePorts(
-    args?: types.linuxserver.HeimdallPortsArgs
-): k8s.types.input.core.v1.ServicePort[] | undefined {
-    if (!args) return undefined;
-
+function createServicePorts(args?: types.linuxserver.HeimdallPortsArgs): k8s.types.input.core.v1.ServicePort[] {
     const servicePorts: k8s.types.input.core.v1.ServicePort[] = [];
-    if (args.http) {
+    if (args?.http) {
         servicePorts.push({ name: 'http', targetPort: 80, port: args.http });
     }
-    if (args.https) {
+    if (args?.https) {
         servicePorts.push({ name: 'https', targetPort: 443, port: args.https });
     }
 
-    return servicePorts.length > 0 ? servicePorts : undefined;
+    return servicePorts;
 }
 
 function createVolumeClaimTemplates(args?: HeimdallPersistenceArgs): k8s.types.input.core.v1.PersistentVolumeClaim[] {

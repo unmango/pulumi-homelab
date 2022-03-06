@@ -50,7 +50,7 @@ describe('Kubernetes Heimdall', function () {
             [443, 'https'],
         ];
         portTests.forEach(([expectedPort, portName]) => {
-            it(`defines internal port ${expectedPort}`, function (done) {
+            it(`defines container port ${expectedPort}`, function (done) {
                 pulumi.all([heimdall.statefulSet.spec.template.spec.containers]).apply(([containers]) => {
                     if (containers.length !== 1) {
                         done(new Error('Incorrect number of container templates'));
@@ -68,6 +68,16 @@ describe('Kubernetes Heimdall', function () {
                         done(new Error(`No ${portName} port defined`));
                     }
                 });
+            });
+        });
+
+        it('does NOT define service ports', function(done) {
+            pulumi.all([heimdall.service.spec.ports]).apply(([ports]) => {
+                if (ports.length > 0) {
+                    done(new Error('No ports expected to be defined'));
+                } else {
+                    done();
+                }
             });
         });
     });
