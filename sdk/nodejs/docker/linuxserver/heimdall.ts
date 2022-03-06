@@ -7,6 +7,11 @@ import * as utilities from "../../utilities";
 
 import * as pulumiDocker from "@pulumi/docker";
 
+/**
+ * Heimdall is a way to organise all those links to your most
+ * used web sites and web applications in a simple way.
+ * https://github.com/linuxserver/docker-heimdall
+ */
 export class Heimdall extends pulumi.ComponentResource {
     /** @internal */
     public static readonly __pulumiType = 'homelab:docker/linuxserver:Heimdall';
@@ -43,8 +48,11 @@ export class Heimdall extends pulumi.ComponentResource {
         opts = opts || {};
         if (!opts.id) {
             resourceInputs["configPath"] = args ? args.configPath : undefined;
+            resourceInputs["pgid"] = args ? args.pgid : undefined;
             resourceInputs["ports"] = args ? args.ports : undefined;
+            resourceInputs["puid"] = args ? args.puid : undefined;
             resourceInputs["restart"] = args ? args.restart : undefined;
+            resourceInputs["tz"] = args ? args.tz : undefined;
             resourceInputs["container"] = undefined /*out*/;
             resourceInputs["image"] = undefined /*out*/;
         } else {
@@ -65,11 +73,25 @@ export interface HeimdallArgs {
      */
     configPath?: pulumi.Input<string>;
     /**
+     * The user id to run the container as.
+     * See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+     */
+    pgid?: pulumi.Input<string>;
+    /**
      * Port arguments for the container.
      */
     ports?: pulumi.Input<inputs.docker.linuxserver.HeimdallPortsArgs>;
     /**
+     * The group id to run the container as.
+     * See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+     */
+    puid?: pulumi.Input<string>;
+    /**
      * Container restart policy.
      */
     restart?: pulumi.Input<enums.docker.RestartPolicy>;
+    /**
+     * The timezone to use.
+     */
+    tz?: pulumi.Input<string>;
 }

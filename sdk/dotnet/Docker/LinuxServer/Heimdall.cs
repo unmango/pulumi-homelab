@@ -9,6 +9,11 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Homelab.Docker.LinuxServer
 {
+    /// <summary>
+    /// Heimdall is a way to organise all those links to your most
+    /// used web sites and web applications in a simple way.
+    /// https://github.com/linuxserver/docker-heimdall
+    /// </summary>
     [HomelabResourceType("homelab:docker/linuxserver:Heimdall")]
     public partial class Heimdall : Pulumi.ComponentResource
     {
@@ -60,16 +65,36 @@ namespace Pulumi.Homelab.Docker.LinuxServer
         public Input<string>? ConfigPath { get; set; }
 
         /// <summary>
+        /// The user id to run the container as.
+        /// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+        /// </summary>
+        [Input("pgid")]
+        public Input<string>? Pgid { get; set; }
+
+        /// <summary>
         /// Port arguments for the container.
         /// </summary>
         [Input("ports")]
         public Input<Inputs.HeimdallPortsArgs>? Ports { get; set; }
 
         /// <summary>
+        /// The group id to run the container as.
+        /// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
+        /// </summary>
+        [Input("puid")]
+        public Input<string>? Puid { get; set; }
+
+        /// <summary>
         /// Container restart policy.
         /// </summary>
         [Input("restart")]
         public Input<Pulumi.Homelab.Docker.RestartPolicy>? Restart { get; set; }
+
+        /// <summary>
+        /// The timezone to use.
+        /// </summary>
+        [Input("tz")]
+        public Input<string>? Tz { get; set; }
 
         public HeimdallArgs()
         {
