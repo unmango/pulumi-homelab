@@ -25,7 +25,7 @@ describe('Kubernetes Heimdall', function () {
                     } else {
                         done();
                     }
-                })
+                });
             });
         });
 
@@ -54,7 +54,7 @@ describe('Kubernetes Heimdall', function () {
                 } else {
                     done(new Error('StatefulSet selector not properly set'));
                 }
-            })
+            });
         });
 
         it('creates an `emptydir` config volume', function (done) {
@@ -119,15 +119,27 @@ describe('Kubernetes Heimdall', function () {
                     }
                 });
             });
-        });
 
-        it('does NOT define service ports', function (done) {
-            pulumi.all([heimdall.service.spec.ports]).apply(([ports]) => {
-                if (ports.length > 0) {
-                    done(new Error('No ports expected to be defined'));
-                } else {
-                    done();
-                }
+            it('defines default service ports', function (done) {
+                pulumi.all([heimdall.service.spec.ports]).apply(([ports]) => {
+                    if (ports.length <= 0) {
+                        done(new Error('No ports defined'));
+                    }
+
+                    const filtered = ports.filter(x => x.targetPort === expectedPort);
+
+                    if (filtered.length !== 1) {
+                        done(new Error(`${portName} port not defined`));
+                    }
+
+                    const port = filtered[0];
+
+                    if (port.name === portName && port.port === expectedPort) {
+                        done();
+                    } else {
+                        done(new Error('Default port not defined properly'));
+                    }
+                });
             });
         });
 
@@ -144,7 +156,7 @@ describe('Kubernetes Heimdall', function () {
                 } else {
                     done(new Error('ndots DNS option not set properly'));
                 }
-            })
+            });
         });
     });
 
@@ -254,7 +266,7 @@ describe('Kubernetes Heimdall', function () {
                 if (template.metadata.name !== 'config') {
                     done(new Error('Incorrect template name'));
                 }
-                
+
                 for (let i = 0; i < expectedAccessModes.length; i++) {
                     if (template.spec.accessModes[i] !== expectedAccessModes[i]) {
                         done(new Error('Access modes do not match'));
@@ -278,7 +290,7 @@ describe('Kubernetes Heimdall', function () {
                 }
 
                 const requests = template.spec.resources.requests;
-                
+
                 if (requests && requests.storage && requests.storage === expectedSize) {
                     done();
                 } else {
@@ -298,7 +310,7 @@ describe('Kubernetes Heimdall', function () {
                 if (template.metadata.name !== 'config') {
                     done(new Error('Incorrect template name'));
                 }
-                
+
                 if (template.spec.storageClassName === expectedStorageClass) {
                     done();
                 } else {

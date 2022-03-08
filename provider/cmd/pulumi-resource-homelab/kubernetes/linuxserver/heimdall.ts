@@ -11,24 +11,32 @@ export class Heimdall extends pulumi.ComponentResource {
     constructor(name: string, args: HeimdallArgs, opts?: pulumi.ComponentResourceOptions) {
         super('homelab:kubernetes/linuxserver:Heimdall', name, args, opts);
 
+        const appLabels: Record<string, pulumi.Input<string>> = { app: name };
+
         const service = new k8s.core.v1.Service(name, {
             metadata: {
+                labels: appLabels,
                 namespace: args.namespace,
             },
             spec: pulumi.output(args.service)
                 .apply<k8s.types.input.core.v1.ServiceSpec>(serviceArgs => ({
                     type: serviceArgs?.type,
-                    ports: createServicePorts(serviceArgs?.ports),
+                    selector: appLabels,
+                    ports: [
+                        { name: 'http', targetPort: 80, port: serviceArgs?.ports?.http ?? 80 },
+                        { name: 'https', targetPort: 443, port: serviceArgs?.ports?.https ?? 443 },
+                    ],
                 })),
         }, {
             parent: this,
         });
 
-        const appLabels: Record<string, pulumi.Input<string>> = { app: name };
-
         const statefulSet = new k8s.apps.v1.StatefulSet(name, {
             metadata: {
                 namespace: args.namespace,
+                annotations: {
+                    'pulumi.com/skipAwait': 'true'
+                },
             },
             spec: {
                 serviceName: service.metadata.name,
@@ -88,18 +96,6 @@ export class Heimdall extends pulumi.ComponentResource {
 
 function createPodVolumes(args?: HeimdallPersistenceArgs): k8s.types.input.core.v1.Volume[] {
     return args?.enabled ? [] : [{ name: configVolumeName, emptyDir: {} }];
-}
-
-function createServicePorts(args?: types.linuxserver.HeimdallPortsArgs): k8s.types.input.core.v1.ServicePort[] {
-    const servicePorts: k8s.types.input.core.v1.ServicePort[] = [];
-    if (args?.http) {
-        servicePorts.push({ name: 'http', targetPort: 80, port: args.http });
-    }
-    if (args?.https) {
-        servicePorts.push({ name: 'https', targetPort: 443, port: args.https });
-    }
-
-    return servicePorts;
 }
 
 function createVolumeClaimTemplates(args?: HeimdallPersistenceArgs): k8s.types.input.core.v1.PersistentVolumeClaim[] {
