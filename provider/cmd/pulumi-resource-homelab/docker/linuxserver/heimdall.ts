@@ -57,13 +57,8 @@ export class Heimdall extends pulumi.ComponentResource {
     }
 }
 
-export interface HeimdallPortsArgs {
-    http?: pulumi.Input<number>;
-    https?: pulumi.Input<number>;
-}
-
 export interface HeimdallArgs extends types.linuxserver.CommonArgs {
     configPath?: pulumi.Input<string>;
-    ports?: pulumi.Input<HeimdallPortsArgs>;
+    ports?: pulumi.Input<types.linuxserver.HeimdallPortsArgs>;
     restart?: pulumi.Input<types.docker.RestartPolicy>;
 }

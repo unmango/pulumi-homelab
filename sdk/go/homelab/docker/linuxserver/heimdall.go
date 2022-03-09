@@ -10,6 +10,7 @@ import (
 	"github.com/pulumi/pulumi-docker/sdk/v3/go/docker"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/unmango/pulumi-homelab/sdk/go/homelab/docker"
+	"github.com/unmango/pulumi-homelab/sdk/go/homelab/linuxserver"
 )
 
 // Heimdall is a way to organise all those links to your most
@@ -47,7 +48,7 @@ type heimdallArgs struct {
 	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
 	Pgid *string `pulumi:"pgid"`
 	// Port arguments for the container.
-	Ports *HeimdallPorts `pulumi:"ports"`
+	Ports *linuxserver.HeimdallPorts `pulumi:"ports"`
 	// The group id to run the container as.
 	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
 	Puid *string `pulumi:"puid"`
@@ -65,7 +66,7 @@ type HeimdallArgs struct {
 	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
 	Pgid pulumi.StringPtrInput
 	// Port arguments for the container.
-	Ports HeimdallPortsPtrInput
+	Ports linuxserver.HeimdallPortsPtrInput
 	// The group id to run the container as.
 	// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
 	Puid pulumi.StringPtrInput

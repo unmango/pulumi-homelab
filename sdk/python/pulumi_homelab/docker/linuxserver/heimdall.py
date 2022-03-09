@@ -8,7 +8,7 @@ import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from ... import _utilities
 from ... import docker
-from ._inputs import *
+from ... import linuxserver as _linuxserver
 import pulumi_docker
 
 __all__ = ['HeimdallArgs', 'Heimdall']
@@ -18,7 +18,7 @@ class HeimdallArgs:
     def __init__(__self__, *,
                  config_path: Optional[pulumi.Input[str]] = None,
                  pgid: Optional[pulumi.Input[str]] = None,
-                 ports: Optional[pulumi.Input['HeimdallPortsArgs']] = None,
+                 ports: Optional[pulumi.Input['_linuxserver.HeimdallPortsArgs']] = None,
                  puid: Optional[pulumi.Input[str]] = None,
                  restart: Optional[pulumi.Input['_docker.RestartPolicy']] = None,
                  tz: Optional[pulumi.Input[str]] = None):
@@ -27,7 +27,7 @@ class HeimdallArgs:
         :param pulumi.Input[str] config_path: Host path to mount to /config in the container.
         :param pulumi.Input[str] pgid: The user id to run the container as.
                See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
-        :param pulumi.Input['HeimdallPortsArgs'] ports: Port arguments for the container.
+        :param pulumi.Input['_linuxserver.HeimdallPortsArgs'] ports: Port arguments for the container.
         :param pulumi.Input[str] puid: The group id to run the container as.
                See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
         :param pulumi.Input['_docker.RestartPolicy'] restart: Container restart policy.
@@ -73,14 +73,14 @@ class HeimdallArgs:
 
     @property
     @pulumi.getter
-    def ports(self) -> Optional[pulumi.Input['HeimdallPortsArgs']]:
+    def ports(self) -> Optional[pulumi.Input['_linuxserver.HeimdallPortsArgs']]:
         """
         Port arguments for the container.
         """
         return pulumi.get(self, "ports")
 
     @ports.setter
-    def ports(self, value: Optional[pulumi.Input['HeimdallPortsArgs']]):
+    def ports(self, value: Optional[pulumi.Input['_linuxserver.HeimdallPortsArgs']]):
         pulumi.set(self, "ports", value)
 
     @property
@@ -128,7 +128,7 @@ class Heimdall(pulumi.ComponentResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  config_path: Optional[pulumi.Input[str]] = None,
                  pgid: Optional[pulumi.Input[str]] = None,
-                 ports: Optional[pulumi.Input[pulumi.InputType['HeimdallPortsArgs']]] = None,
+                 ports: Optional[pulumi.Input[pulumi.InputType['_linuxserver.HeimdallPortsArgs']]] = None,
                  puid: Optional[pulumi.Input[str]] = None,
                  restart: Optional[pulumi.Input['_docker.RestartPolicy']] = None,
                  tz: Optional[pulumi.Input[str]] = None,
@@ -143,7 +143,7 @@ class Heimdall(pulumi.ComponentResource):
         :param pulumi.Input[str] config_path: Host path to mount to /config in the container.
         :param pulumi.Input[str] pgid: The user id to run the container as.
                See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
-        :param pulumi.Input[pulumi.InputType['HeimdallPortsArgs']] ports: Port arguments for the container.
+        :param pulumi.Input[pulumi.InputType['_linuxserver.HeimdallPortsArgs']] ports: Port arguments for the container.
         :param pulumi.Input[str] puid: The group id to run the container as.
                See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
         :param pulumi.Input['_docker.RestartPolicy'] restart: Container restart policy.
@@ -177,7 +177,7 @@ class Heimdall(pulumi.ComponentResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  config_path: Optional[pulumi.Input[str]] = None,
                  pgid: Optional[pulumi.Input[str]] = None,
-                 ports: Optional[pulumi.Input[pulumi.InputType['HeimdallPortsArgs']]] = None,
+                 ports: Optional[pulumi.Input[pulumi.InputType['_linuxserver.HeimdallPortsArgs']]] = None,
                  puid: Optional[pulumi.Input[str]] = None,
                  restart: Optional[pulumi.Input['_docker.RestartPolicy']] = None,
                  tz: Optional[pulumi.Input[str]] = None,

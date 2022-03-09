@@ -9,10 +9,12 @@ export * from "./provider";
 
 // Export sub-modules:
 import * as docker from "./docker";
+import * as kubernetes from "./kubernetes";
 import * as types from "./types";
 
 export {
     docker,
+    kubernetes,
     types,
 };
 

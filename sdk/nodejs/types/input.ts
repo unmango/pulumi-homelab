@@ -4,20 +4,70 @@
 import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "../types";
 
-export namespace docker {
+import * as utilities from "../utilities";
+
+export namespace kubernetes {
     export namespace linuxserver {
         /**
-         * Port arguments for the container.
+         * Heimdall persistence options.
          */
-        export interface HeimdallPortsArgs {
+        export interface HeimdallPersistenceArgs {
             /**
-             * External port to expose container port 80.
+             * Access modes for the persistent volume claim template.
              */
-            http?: pulumi.Input<number>;
+            accessModes?: pulumi.Input<pulumi.Input<string>[]>;
             /**
-             * External port to expose container port 443.
+             * Whether to enable persistence or not.
              */
-            https?: pulumi.Input<number>;
+            enabled?: pulumi.Input<boolean>;
+            /**
+             * Size of the volume to request from the storage class.
+             */
+            size?: pulumi.Input<string>;
+            /**
+             * Name of the storage class to use in the persistent volume claim template.
+             */
+            storageClass?: pulumi.Input<string>;
         }
+        /**
+         * heimdallPersistenceArgsProvideDefaults sets the appropriate defaults for HeimdallPersistenceArgs
+         */
+        export function heimdallPersistenceArgsProvideDefaults(val: HeimdallPersistenceArgs): HeimdallPersistenceArgs {
+            return {
+                ...val,
+                enabled: (val.enabled) ?? false,
+                size: (val.size) ?? "1Gi",
+            };
+        }
+
+        /**
+         * Arguments for the kubernetes service.
+         */
+        export interface HeimdallServiceArgs {
+            /**
+             * Port arguments for the container.
+             */
+            ports?: pulumi.Input<inputs.linuxserver.HeimdallPortsArgs>;
+            /**
+             * Type of service to create.
+             */
+            type?: pulumi.Input<enums.kubernetes.ServiceType>;
+        }
+    }
+}
+
+export namespace linuxserver {
+    /**
+     * Port arguments for the service.
+     */
+    export interface HeimdallPortsArgs {
+        /**
+         * External port to expose container port 80.
+         */
+        http?: pulumi.Input<number>;
+        /**
+         * External port to expose container port 443.
+         */
+        https?: pulumi.Input<number>;
     }
 }

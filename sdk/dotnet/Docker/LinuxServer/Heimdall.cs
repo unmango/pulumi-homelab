@@ -75,7 +75,7 @@ namespace Pulumi.Homelab.Docker.LinuxServer
         /// Port arguments for the container.
         /// </summary>
         [Input("ports")]
-        public Input<Inputs.HeimdallPortsArgs>? Ports { get; set; }
+        public Input<Pulumi.Homelab.LinuxServer.Inputs.HeimdallPortsArgs>? Ports { get; set; }
 
         /// <summary>
         /// The group id to run the container as.

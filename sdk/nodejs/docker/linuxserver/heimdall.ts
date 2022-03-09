@@ -80,7 +80,7 @@ export interface HeimdallArgs {
     /**
      * Port arguments for the container.
      */
-    ports?: pulumi.Input<inputs.docker.linuxserver.HeimdallPortsArgs>;
+    ports?: pulumi.Input<inputs.linuxserver.HeimdallPortsArgs>;
     /**
      * The group id to run the container as.
      * See https://github.com/linuxserver/docker-heimdall#user--group-identifiers

@@ -22,7 +22,8 @@
     ],
     "include": [
         "types/*.ts",
-        "docker/**/*.ts"
+        "docker/**/*.ts",
+        "kubernetes/**/*.ts"
     ],
     "exclude": [
         "**/*.spec.ts"

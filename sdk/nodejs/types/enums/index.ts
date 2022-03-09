@@ -3,7 +3,9 @@
 
 // Export sub-modules:
 import * as docker from "./docker";
+import * as kubernetes from "./kubernetes";
 
 export {
     docker,
+    kubernetes,
 };

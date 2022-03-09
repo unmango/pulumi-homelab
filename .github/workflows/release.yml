@@ -179,6 +179,8 @@ jobs:
         run: make install_${{ matrix.language}}_sdk
       - name: Install plugins
         run: pulumi plugin install resource docker $(pulumictl get latest-plugin pulumi-docker)
+      - name: Create Kind cluster
+        uses: helm/kind-action@v1.2.0
       - name: Set up gotestfmt
         uses: haveyoudebuggedit/gotestfmt-action@v2
         with:

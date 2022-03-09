@@ -10,7 +10,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Port arguments for the container.
+// Port arguments for the service.
 type HeimdallPorts struct {
 	// External port to expose container port 80.
 	Http *float64 `pulumi:"http"`
@@ -29,7 +29,7 @@ type HeimdallPortsInput interface {
 	ToHeimdallPortsOutputWithContext(context.Context) HeimdallPortsOutput
 }
 
-// Port arguments for the container.
+// Port arguments for the service.
 type HeimdallPortsArgs struct {
 	// External port to expose container port 80.
 	Http pulumi.Float64PtrInput `pulumi:"http"`
@@ -90,7 +90,7 @@ func (i *heimdallPortsPtrType) ToHeimdallPortsPtrOutputWithContext(ctx context.C
 	return pulumi.ToOutputWithContext(ctx, i).(HeimdallPortsPtrOutput)
 }
 
-// Port arguments for the container.
+// Port arguments for the service.
 type HeimdallPortsOutput struct{ *pulumi.OutputState }
 
 func (HeimdallPortsOutput) ElementType() reflect.Type {

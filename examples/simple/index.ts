@@ -1,5 +1,7 @@
 import * as homelab from "@unmango/pulumi-homelab";
 
-const heimdall = new homelab.docker.linuxserver.Heimdall("heimdall");
+const dockerHeimdall = new homelab.docker.linuxserver.Heimdall("heimdall");
+const k8sHeimdall = new homelab.kubernetes.linuxserver.Heimdall("heimdall");
 
-export const container = heimdall.container;
+export const container = dockerHeimdall.container;
+export const statefulSet = k8sHeimdall.statefulSet;
