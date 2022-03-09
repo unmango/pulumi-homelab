@@ -17,6 +17,9 @@ export class Heimdall extends pulumi.ComponentResource {
             metadata: {
                 labels: appLabels,
                 namespace: args.namespace,
+                annotations: {
+                    'pulumi.com/skipAwait': 'true'
+                },
             },
             spec: pulumi.output(args.service)
                 .apply<k8s.types.input.core.v1.ServiceSpec>(serviceArgs => ({
@@ -34,9 +37,6 @@ export class Heimdall extends pulumi.ComponentResource {
         const statefulSet = new k8s.apps.v1.StatefulSet(name, {
             metadata: {
                 namespace: args.namespace,
-                annotations: {
-                    'pulumi.com/skipAwait': 'true'
-                },
             },
             spec: {
                 serviceName: service.metadata.name,
