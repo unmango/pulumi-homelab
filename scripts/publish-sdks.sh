@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Based on
+# https://github.com/pulumi/scripts/blob/b6ee1692954d2b39e7a22b0db80b8cc4b735c101/ci/publish-tfgen-package
+
 set -o errexit
 set -o pipefail
 
@@ -8,7 +11,6 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 SOURCE_ROOT="$1"
 
 # Publish the NPM package.
@@ -72,17 +74,13 @@ npm info 2>/dev/null
 
 popd
 
-if [ -n "${PYPI_USERNAME}" ] ; then
-    PYPI_PUBLISH_USERNAME=${PYPI_USERNAME}
-else
-    PYPI_PUBLISH_USERNAME="pulumi"
-fi
+PYPI_PUBLISH_USERNAME="UnstoppableMango"
 
 echo "Publishing Pip package to pypi as ${PYPI_PUBLISH_USERNAME}:"
 twine upload \
     -u "${PYPI_PUBLISH_USERNAME}" -p "${PYPI_PASSWORD}" \
     "${SOURCE_ROOT}/sdk/python/bin/dist/*.tar.gz" \
---skip-existing \
+    --skip-existing \
     --verbose
 
 # Finally, publish the NuGet package if any exists.
