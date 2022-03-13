@@ -8,27 +8,27 @@ using System.Threading.Tasks;
 using Pulumi.Serialization;
 using Pulumi;
 
-namespace UnMango.Homelab.Docker.LinuxServer
+namespace UnMango.Pulumi.Homelab.Kubernetes.LinuxServer
 {
     /// <summary>
     /// Heimdall is a way to organise all those links to your most
     /// used web sites and web applications in a simple way.
     /// https://github.com/linuxserver/docker-heimdall
     /// </summary>
-    [HomelabResourceType("homelab:docker/linuxserver:Heimdall")]
+    [HomelabResourceType("homelab:kubernetes/linuxserver:Heimdall")]
     public partial class Heimdall : Pulumi.ComponentResource
     {
         /// <summary>
-        /// Heimdall container resource.
+        /// Heimdall service object.
         /// </summary>
-        [Output("container")]
-        public Output<Pulumi.Docker.Container> Container { get; private set; } = null!;
+        [Output("service")]
+        public Output<Pulumi.Kubernetes.Core.V1.Service> Service { get; private set; } = null!;
 
         /// <summary>
-        /// Linuxserver Heimdall image resource.
+        /// Heimdall stateful set object.
         /// </summary>
-        [Output("image")]
-        public Output<Pulumi.Docker.RemoteImage> Image { get; private set; } = null!;
+        [Output("statefulSet")]
+        public Output<Pulumi.Kubernetes.Apps.V1.StatefulSet> StatefulSet { get; private set; } = null!;
 
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace UnMango.Homelab.Docker.LinuxServer
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Heimdall(string name, HeimdallArgs? args = null, ComponentResourceOptions? options = null)
-            : base("homelab:docker/linuxserver:Heimdall", name, args ?? new HeimdallArgs(), MakeResourceOptions(options, ""), remote: true)
+            : base("homelab:kubernetes/linuxserver:Heimdall", name, args ?? new HeimdallArgs(), MakeResourceOptions(options, ""), remote: true)
         {
         }
 
@@ -60,10 +60,16 @@ namespace UnMango.Homelab.Docker.LinuxServer
     public sealed class HeimdallArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// Host path to mount to /config in the container.
+        /// The namespace to put resources in.
         /// </summary>
-        [Input("configPath")]
-        public Input<string>? ConfigPath { get; set; }
+        [Input("namespace")]
+        public Input<string>? Namespace { get; set; }
+
+        /// <summary>
+        /// Heidmall persistence options.
+        /// </summary>
+        [Input("persistence")]
+        public Input<Inputs.HeimdallPersistenceArgs>? Persistence { get; set; }
 
         /// <summary>
         /// The user id to run the container as.
@@ -73,12 +79,6 @@ namespace UnMango.Homelab.Docker.LinuxServer
         public Input<string>? Pgid { get; set; }
 
         /// <summary>
-        /// Port arguments for the container.
-        /// </summary>
-        [Input("ports")]
-        public Input<UnMango.Homelab.LinuxServer.Inputs.HeimdallPortsArgs>? Ports { get; set; }
-
-        /// <summary>
         /// The group id to run the container as.
         /// See https://github.com/linuxserver/docker-heimdall#user--group-identifiers
         /// </summary>
@@ -86,10 +86,10 @@ namespace UnMango.Homelab.Docker.LinuxServer
         public Input<string>? Puid { get; set; }
 
         /// <summary>
-        /// Container restart policy.
+        /// Arguments for the kubernetes service.
         /// </summary>
-        [Input("restart")]
-        public Input<UnMango.Homelab.Docker.RestartPolicy>? Restart { get; set; }
+        [Input("service")]
+        public Input<Inputs.HeimdallServiceArgs>? Service { get; set; }
 
         /// <summary>
         /// The timezone to use.

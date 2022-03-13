@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Pulumi.Serialization;
 using Pulumi;
 
-namespace UnMango.Homelab.Kubernetes.LinuxServer.Inputs
+namespace UnMango.Pulumi.Homelab.Kubernetes.LinuxServer.Inputs
 {
 
     /// <summary>
@@ -20,13 +20,13 @@ namespace UnMango.Homelab.Kubernetes.LinuxServer.Inputs
         /// Port arguments for the container.
         /// </summary>
         [Input("ports")]
-        public Input<UnMango.Homelab.LinuxServer.Inputs.HeimdallPortsArgs>? Ports { get; set; }
+        public Input<UnMango.Pulumi.Homelab.LinuxServer.Inputs.HeimdallPortsArgs>? Ports { get; set; }
 
         /// <summary>
         /// Type of service to create.
         /// </summary>
         [Input("type")]
-        public Input<UnMango.Homelab.Kubernetes.ServiceType>? Type { get; set; }
+        public Input<UnMango.Pulumi.Homelab.Kubernetes.ServiceType>? Type { get; set; }
 
         public HeimdallServiceArgs()
         {

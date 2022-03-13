@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using Pulumi;
 
-namespace UnMango.Homelab
+namespace UnMango.Pulumi.Homelab
 {
     static class Utilities
     {
@@ -68,7 +68,7 @@ namespace UnMango.Homelab
         static Utilities()
         {
             var assembly = typeof(Utilities).GetTypeInfo().Assembly;
-            using var stream = assembly.GetManifestResourceStream("UnMango.Homelab.version.txt");
+            using var stream = assembly.GetManifestResourceStream("UnMango.Pulumi.Homelab.version.txt");
             using var reader = new StreamReader(stream ?? throw new NotSupportedException("Missing embedded version.txt file"));
             version = reader.ReadToEnd().Trim();
             var parts = version.Split("\n");

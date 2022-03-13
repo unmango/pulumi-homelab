@@ -159,7 +159,7 @@ resources:
       - statefulSet
 language:
   csharp:
-    rootNamespace: UnMango
+    rootNamespace: UnMango.Pulumi
     dictionaryConstructors: true
     namespaces:
       "": Provider
