@@ -84,7 +84,8 @@ twine upload \
     --verbose
 
 # Finally, publish the NuGet package if any exists.
-if [ -n "${NUGET_PUBLISH_KEY}" ]; then
+# Skip publishing for now until I can decide on a package name
+if false && [ -n "${NUGET_PUBLISH_KEY}" ]; then
     find "${SOURCE_ROOT}/sdk/dotnet/bin/Debug/" -name 'Pulumi.*.nupkg' \
         -exec dotnet nuget push -k "${NUGET_PUBLISH_KEY}" -s https://api.nuget.org/v3/index.json {} ';'
 fi
