@@ -37,7 +37,7 @@ def readme():
         return "homelab Pulumi Package - Development Version"
 
 
-setup(name='pulumi_homelab',
+setup(name='unmango_pulumi_homelab',
       version=VERSION,
       description="Popular homelab applications for docker and kubernetes",
       long_description=readme(),
@@ -51,7 +51,7 @@ setup(name='pulumi_homelab',
       },
       packages=find_packages(),
       package_data={
-          'pulumi_homelab': [
+          'unmango_pulumi_homelab': [
               'py.typed',
               'pulumi-plugin.json',
           ]

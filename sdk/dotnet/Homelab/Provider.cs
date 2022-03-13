@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.Homelab
+namespace UnMango.Pulumi.Homelab
 {
     [HomelabResourceType("pulumi:providers:homelab")]
     public partial class Provider : Pulumi.ProviderResource

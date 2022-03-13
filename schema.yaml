@@ -159,6 +159,7 @@ resources:
       - statefulSet
 language:
   csharp:
+    rootNamespace: UnMango.Pulumi
     dictionaryConstructors: true
     namespaces:
       "": Provider
@@ -182,6 +183,7 @@ language:
     devDependencies:
       typescript: "^3.7.0"
   python:
+    packageName: unmango_pulumi_homelab
     requires:
       pulumi: ">=3.0.0,<4.0.0"
       pulumi-docker: ">=3.0.0,<4.0.0"

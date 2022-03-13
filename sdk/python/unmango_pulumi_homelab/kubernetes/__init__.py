@@ -9,8 +9,8 @@ from ._enums import *
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
-    import pulumi_homelab.kubernetes.linuxserver as __linuxserver
+    import unmango_pulumi_homelab.kubernetes.linuxserver as __linuxserver
     linuxserver = __linuxserver
 else:
-    linuxserver = _utilities.lazy_import('pulumi_homelab.kubernetes.linuxserver')
+    linuxserver = _utilities.lazy_import('unmango_pulumi_homelab.kubernetes.linuxserver')
 

@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.Homelab.Kubernetes.LinuxServer
+namespace UnMango.Pulumi.Homelab.Kubernetes.LinuxServer
 {
     /// <summary>
     /// Heimdall is a way to organise all those links to your most

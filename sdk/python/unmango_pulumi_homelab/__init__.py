@@ -9,16 +9,16 @@ from .provider import *
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
-    import pulumi_homelab.docker as __docker
+    import unmango_pulumi_homelab.docker as __docker
     docker = __docker
-    import pulumi_homelab.kubernetes as __kubernetes
+    import unmango_pulumi_homelab.kubernetes as __kubernetes
     kubernetes = __kubernetes
-    import pulumi_homelab.linuxserver as __linuxserver
+    import unmango_pulumi_homelab.linuxserver as __linuxserver
     linuxserver = __linuxserver
 else:
-    docker = _utilities.lazy_import('pulumi_homelab.docker')
-    kubernetes = _utilities.lazy_import('pulumi_homelab.kubernetes')
-    linuxserver = _utilities.lazy_import('pulumi_homelab.linuxserver')
+    docker = _utilities.lazy_import('unmango_pulumi_homelab.docker')
+    kubernetes = _utilities.lazy_import('unmango_pulumi_homelab.kubernetes')
+    linuxserver = _utilities.lazy_import('unmango_pulumi_homelab.linuxserver')
 
 _utilities.register(
     resource_modules="""
@@ -26,7 +26,7 @@ _utilities.register(
  {
   "pkg": "homelab",
   "mod": "docker/linuxserver",
-  "fqn": "pulumi_homelab.docker.linuxserver",
+  "fqn": "unmango_pulumi_homelab.docker.linuxserver",
   "classes": {
    "homelab:docker/linuxserver:Heimdall": "Heimdall"
   }
@@ -34,7 +34,7 @@ _utilities.register(
  {
   "pkg": "homelab",
   "mod": "kubernetes/linuxserver",
-  "fqn": "pulumi_homelab.kubernetes.linuxserver",
+  "fqn": "unmango_pulumi_homelab.kubernetes.linuxserver",
   "classes": {
    "homelab:kubernetes/linuxserver:Heimdall": "Heimdall"
   }
@@ -46,7 +46,7 @@ _utilities.register(
  {
   "pkg": "homelab",
   "token": "pulumi:providers:homelab",
-  "fqn": "pulumi_homelab",
+  "fqn": "unmango_pulumi_homelab",
   "class": "Provider"
  }
 ]
