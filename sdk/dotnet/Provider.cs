@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Pulumi.Serialization;
 using Pulumi;
 
-namespace UnMango.Pulumi.Homelab
+namespace UnMango.Homelab
 {
     [HomelabResourceType("pulumi:providers:homelab")]
     public partial class Provider : Pulumi.ProviderResource

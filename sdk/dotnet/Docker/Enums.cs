@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel;
 using Pulumi;
 
-namespace UnMango.Pulumi.Homelab.Docker
+namespace UnMango.Homelab.Docker
 {
     /// <summary>
     /// Container restart policy.

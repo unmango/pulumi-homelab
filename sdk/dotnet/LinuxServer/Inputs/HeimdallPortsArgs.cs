@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Pulumi.Serialization;
 using Pulumi;
 
-namespace UnMango.Pulumi.Homelab.LinuxServer.Inputs
+namespace UnMango.Homelab.LinuxServer.Inputs
 {
 
     /// <summary>
