@@ -277,3 +277,5 @@ jobs:
         run: tar -zxf ${{ github.workspace}}/sdk/dotnet.tar.gz -C ${{ github.workspace}}/sdk/dotnet
       - name: Publish SDKs
         run: ./scripts/publish-sdks.sh ${{ github.workspace }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
