@@ -291,7 +291,5 @@ jobs:
           path: ${{ github.workspace}}/sdk
       - name: Unzip DotNet SDK
         run: tar -zxf ${{ github.workspace}}/sdk/dotnet.tar.gz -C ${{ github.workspace}}/sdk/dotnet
-      # - env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      #   name: Publish SDKs
-      #   run: ./ci-scripts/ci/publish-tfgen-package ${{ github.workspace }}
+      - name: Publish SDKs
+        run: ./scripts/publish-sdks.sh ${{ github.workspace }}
