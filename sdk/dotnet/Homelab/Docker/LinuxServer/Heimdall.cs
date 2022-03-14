@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Pulumi.Serialization;
 using Pulumi;
 
-namespace UnMango.Homelab.Docker.LinuxServer
+namespace Pulumi.UnMango.Homelab.Docker.LinuxServer
 {
     /// <summary>
     /// Heimdall is a way to organise all those links to your most
@@ -76,7 +76,7 @@ namespace UnMango.Homelab.Docker.LinuxServer
         /// Port arguments for the container.
         /// </summary>
         [Input("ports")]
-        public Input<UnMango.Homelab.LinuxServer.Inputs.HeimdallPortsArgs>? Ports { get; set; }
+        public Input<Pulumi.UnMango.Homelab.LinuxServer.Inputs.HeimdallPortsArgs>? Ports { get; set; }
 
         /// <summary>
         /// The group id to run the container as.
@@ -89,7 +89,7 @@ namespace UnMango.Homelab.Docker.LinuxServer
         /// Container restart policy.
         /// </summary>
         [Input("restart")]
-        public Input<UnMango.Homelab.Docker.RestartPolicy>? Restart { get; set; }
+        public Input<Pulumi.UnMango.Homelab.Docker.RestartPolicy>? Restart { get; set; }
 
         /// <summary>
         /// The timezone to use.

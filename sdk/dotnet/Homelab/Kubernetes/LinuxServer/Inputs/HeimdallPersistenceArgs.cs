@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Pulumi.Serialization;
 using Pulumi;
 
-namespace UnMango.Homelab.Kubernetes.LinuxServer.Inputs
+namespace Pulumi.UnMango.Homelab.Kubernetes.LinuxServer.Inputs
 {
 
     /// <summary>

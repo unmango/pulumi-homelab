@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel;
 using Pulumi;
 
-namespace UnMango.Homelab.Kubernetes
+namespace Pulumi.UnMango.Homelab.Kubernetes
 {
     /// <summary>
     /// Kubernetes service type.
