@@ -74,14 +74,17 @@ npm info 2>/dev/null
 
 popd
 
-PYPI_PUBLISH_USERNAME="UnstoppableMango"
+# Skip python package for now
+if false && [ -n "${PYPI_PASSWORD}" ]; then
+    PYPI_PUBLISH_USERNAME="UnstoppableMango"
 
-echo "Publishing Pip package to pypi as ${PYPI_PUBLISH_USERNAME}:"
-twine upload \
-    -u "${PYPI_PUBLISH_USERNAME}" -p "${PYPI_PASSWORD}" \
-    "${SOURCE_ROOT}/sdk/python/bin/dist/*.tar.gz" \
-    --skip-existing \
-    --verbose
+    echo "Publishing Pip package to pypi as ${PYPI_PUBLISH_USERNAME}:"
+    twine upload \
+        -u "${PYPI_PUBLISH_USERNAME}" -p "${PYPI_PASSWORD}" \
+        "${SOURCE_ROOT}/sdk/python/bin/dist/*.tar.gz" \
+        --skip-existing \
+        --verbose
+fi
 
 # Finally, publish the NuGet package if any exists.
 # Skip publishing for now until I can decide on a package name
