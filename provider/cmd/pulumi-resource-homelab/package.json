@@ -4,7 +4,7 @@
         "test": "mocha -r ts-node/register **/*.spec.ts"
     },
     "dependencies": {
-        "@pulumi/docker": "^3.0.0",
+        "@pulumi/docker": "^4.0.0",
         "@pulumi/kubernetes": "^3.0.0",
         "@pulumi/pulumi": "^3.0.0"
     },
